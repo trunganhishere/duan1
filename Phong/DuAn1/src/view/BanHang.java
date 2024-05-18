@@ -35,7 +35,6 @@ public class BanHang extends javax.swing.JPanel {
     /**
      * Creates new form BanHang
      */
-    // trung anh ăn cứt 
     public BanHang() {
         initComponents();
         loadHoaDon();
