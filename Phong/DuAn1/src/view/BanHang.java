@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view;
-// phong an cut
-//hehe
+
 import model.HoaDonChiTiet;
 import Interface.hoaDonInterface;
 import java.text.DecimalFormat;
