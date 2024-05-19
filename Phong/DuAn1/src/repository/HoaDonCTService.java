@@ -32,7 +32,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
                 HoaDon hd = new HoaDon();
                 spct.setId(rs.getString("IDCTSP"));
                 hd.setId(rs.getInt("IDHD"));
-                hdct.setHaoDon(hd);
+                hdct.setHoaDon(hd);
                 hdct.setSanPham(spct);
                 hdct.setDonGia(rs.getDouble("DonGia"));
                 hdct.setSoluong(rs.getInt("soLuong"));
@@ -45,7 +45,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             return null;
         }
     }
-
+    
     @Override
     public boolean updateSoLuongSPHoaDonCT(int IDHD, int IDSPCT, int soLuong) {
         try {
@@ -108,5 +108,24 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             e.printStackTrace();
             return false;
         }
+    }
+    
+    @Override
+    public boolean deleteAllHDCT( int idHD){
+        int check;
+        String sql = """
+                     DELETE FROM [dbo].[HoaDonChiTiet]
+                           WHERE IdHD = ?
+                     """;
+        
+        try(Connection con = ConenctionProvider.getConnection();
+                PreparedStatement ps = con.prepareCall(sql)) {
+            ps.setObject(1, idHD);
+            check = ps.executeUpdate();
+            return check > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

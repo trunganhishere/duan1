@@ -6,6 +6,7 @@ package repository;
 
 import Interface.SanPhamChiTietInterface;
 import JDBCUtil.ConenctionProvider;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -124,4 +125,23 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         }
     }
     
+    @Override
+    public boolean updateSoLuongSPCT(int soLuong, int idSP){
+        int check = 0;
+        String sql = """
+                     UPDATE [dbo].[ChitietSP]
+                        SET[SoLuongTon] = ?
+                      WHERE idSP = ?
+                     """;
+        
+        try(PreparedStatement ps = con.prepareCall(sql)) {
+            ps.setObject(1, soLuong);
+            ps.setObject(2, idSP);
+            check = ps.executeUpdate();
+            return check > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

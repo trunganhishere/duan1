@@ -12,5 +12,6 @@ import model.SanPhamChiTiet;
 public interface SanPhamChiTietInterface {
     List<SanPhamChiTiet> getAll();
     public boolean phucHoiSoLuong(int maSP,int soLuongMoi);
-   
+    public boolean updateSoLuongSPCT(int soLuong, int idSP);
+    
 }
