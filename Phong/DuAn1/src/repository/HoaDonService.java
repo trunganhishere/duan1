@@ -40,7 +40,6 @@ public class HoaDonService implements hoaDonInterface {
                 list.add(hd);
 
             }
-            Collections.reverse(list); 
             return list;
         } catch (Exception e) {
             e.printStackTrace();
