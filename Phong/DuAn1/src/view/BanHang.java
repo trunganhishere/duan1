@@ -51,8 +51,12 @@ public class BanHang extends javax.swing.JPanel {
             HoaDon hoaDon = list.get(i);
             if (hoaDon.getTinhTrang() == 0) {
                 model.addRow(new Object[]{
-                    hoaDon.getId(), hoaDon.getMa(), hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
-                    hoaDon.getTongTien(), hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán", hoaDon.getNgayTao()
+                    hoaDon.getId(),
+                    hoaDon.getMa(),
+                    hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
+                    hoaDon.getTongTien(),
+                    hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán",
+                    hoaDon.getNgayTao()
                 });
             }
         }
@@ -835,12 +839,12 @@ public class BanHang extends javax.swing.JPanel {
             } catch (Exception e) {
             }
             if (check) {
-                JOptionPane.showMessageDialog(this, "Xóa giỏ hàng thành công");
-                loadHoaDon();
                 try {
+                    JOptionPane.showMessageDialog(this, "Xóa giỏ hàng thành công");
+                    loadHoaDon();
                     int idHD = hoadonService.getAll().get(selectedRowDH).getId();
-                loadLableThongTin();
-                loadGioHangByIDHD(idHD);
+                    loadLableThongTin();
+                    loadGioHangByIDHD(idHD);
                 } catch (Exception e) {
                 }
             } else {

@@ -16,7 +16,8 @@ import model.TaiKhoan;
  * @author duong
  */
 public class TaiKhoanService {
-    public ArrayList<TaiKhoan> getAllTaiKhoan(){
+
+    public ArrayList<TaiKhoan> search(String searchKey) {
         String sql = """
                      SELECT [Id]
                            ,[Ten]
@@ -30,13 +31,59 @@ public class TaiKhoanService {
                            ,[TrangThai]
                            ,[Ngaytao]
                            ,[NgaySua]
-                       FROM [dbo].[Users] where TrangThai = 1
+                       FROM [dbo].[Users] where Ten like ? or Sdt like ? or Email like ? 
                      """;
-        
-        try(Connection con = ConenctionProvider.getConnection();
-                PreparedStatement ps = con.prepareCall(sql);
-                ResultSet rs = ps.executeQuery();
-                ) {
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            if (searchKey.length() != 0) {
+                ps.setString(1, "%" + searchKey + "%");
+                ps.setString(2, "%" + searchKey + "%");
+                ps.setString(3, "%" + searchKey + "%");
+                ps.execute();
+            }
+            try (ResultSet rs = ps.executeQuery();) {
+                ArrayList<TaiKhoan> ls = new ArrayList<>();
+                while (rs.next()) {
+                    TaiKhoan tk = new TaiKhoan();
+                    tk.setId(rs.getInt(1));
+                    tk.setTen(rs.getString(2));
+                    tk.setNgaySinh(rs.getDate(3));
+                    tk.setGioiTinh(rs.getBoolean(4));
+                    tk.setSdt(rs.getString(5));
+                    tk.setIdCV(rs.getInt(6));
+                    tk.setTaiKhoan(rs.getString(7));
+                    tk.setMatKhau(rs.getString(8));
+                    tk.setEmail(rs.getString(9));
+                    tk.setTrangThai(rs.getBoolean(10));
+                    tk.setNgayTao(rs.getDate(11));
+                    tk.setNgaySua(rs.getDate(12));
+                    ls.add(tk);
+                }
+                return ls;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<TaiKhoan> getAllTaiKhoan() {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users]
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql); ResultSet rs = ps.executeQuery();) {
             ArrayList<TaiKhoan> ls = new ArrayList<>();
             while (rs.next()) {
                 TaiKhoan tk = new TaiKhoan();
@@ -60,8 +107,8 @@ public class TaiKhoanService {
         }
         return null;
     }
-    
-    public boolean them(TaiKhoan u){
+
+    public boolean them(TaiKhoan u) {
         String sql = """
                      INSERT INTO [dbo].[Users]
                                 ([Ten]
@@ -76,8 +123,7 @@ public class TaiKhoanService {
                           VALUES
                                 (?,?,?,?,?,?,?,?,?)
                      """;
-        try (Connection con = ConenctionProvider.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, u.getTen());
             ps.setObject(2, u.getNgaySinh());
             ps.setObject(3, u.getGioiTinh());
@@ -94,8 +140,8 @@ public class TaiKhoanService {
         }
         return false;
     }
-    
-    public boolean sua(TaiKhoan u ,int id){
+
+    public boolean sua(TaiKhoan u, int id) {
         String sql = """
                     UPDATE [dbo].[Users]
                         SET [Ten] = ?
@@ -109,8 +155,7 @@ public class TaiKhoanService {
                            ,[TrangThai] = ?
                       WHERE Id = ? 
                      """;
-        try (Connection con = ConenctionProvider.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, u.getTen());
             ps.setObject(2, u.getNgaySinh());
             ps.setObject(3, u.getGioiTinh());
@@ -128,15 +173,14 @@ public class TaiKhoanService {
         }
         return false;
     }
-    
+
     public boolean getAllAccount(String userAccount) {
         ArrayList<TaiKhoan> ls = new ArrayList<>();
         String sql = """
                      SELECT [TaiKhoan]
                        FROM [dbo].[Users]
                      """;
-        try (   Connection con = ConenctionProvider.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             TaiKhoan u = new TaiKhoan();
             while (rs.next()) {
