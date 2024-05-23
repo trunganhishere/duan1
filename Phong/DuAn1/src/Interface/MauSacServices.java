@@ -7,9 +7,12 @@ package Interface;
 import model.MauSac;
 import java.util.List;
 
-
 public interface MauSacServices {
-     public List<MauSac> getAll();
-    
-    
+
+    public List<MauSac> getAll();
+
+    public boolean add(MauSac MauSac);
+
+    public boolean update(MauSac cl, int id);
+
 }

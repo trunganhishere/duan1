@@ -7,7 +7,12 @@ package Interface;
 import java.util.List;
 import model.KichCo;
 
-public interface KichCoService {
+public interface KichCoInterface {
+
     public List<KichCo> getAll();
- 
+
+    public boolean add(KichCo kichCo);
+
+    public boolean update(KichCo cl, int id);
+
 }
