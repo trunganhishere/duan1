@@ -13,8 +13,8 @@ import repository.HoaDonService;
 public class HoaDonChiTiet extends javax.swing.JPanel {
      HoaDonService hoaDonService = new HoaDonService();
     List<model.HoaDonChiTiet> listHDCT;
-    private HoaDonChiTietInterface hoaDonChiTietService = new HoaDonChiTietInterface();
-    private KhachHangInterface khachHangService = new KhachHangServiceImpl();
+//    private HoaDonChiTietInterface hoaDonChiTietService = new HoaDonChiTietInterface();
+//    private KhachHangInterface khachHangService = new KhachHangServiceImpl();
 
     /**
      * Creates new form HoaDonChiTiet
