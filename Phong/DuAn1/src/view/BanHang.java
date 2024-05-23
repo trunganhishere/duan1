@@ -271,7 +271,7 @@ public class BanHang extends javax.swing.JPanel {
 
         for (int i = 0; i < listSPCTLoad.size(); i++) {
             SanPhamChiTiet sanPhamChiTiet = listSPCTLoad.get(i);
-            int soLuong = listSoLuong.get(i); // Retrieve the corresponding quantity
+            int soLuong = listSoLuong.get(i); 
 
             tongTien += sanPhamChiTiet.getGiaBan() * soLuong;
         }
@@ -614,7 +614,7 @@ public class BanHang extends javax.swing.JPanel {
         jPanel3.add(cbo_filterThuongHieu1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 380, 130, 30));
 
         jButton11.setBackground(new java.awt.Color(0, 204, 0));
-        jButton11.setText("Xóa hết");
+        jButton11.setText("Xóa SP");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -646,7 +646,7 @@ public class BanHang extends javax.swing.JPanel {
         jPanel3.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 360, -1, -1));
 
         jButton13.setBackground(new java.awt.Color(0, 204, 0));
-        jButton13.setText("Xóa SP");
+        jButton13.setText("Xóa hết");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton13ActionPerformed(evt);
