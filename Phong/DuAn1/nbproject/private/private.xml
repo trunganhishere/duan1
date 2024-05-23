@@ -5,6 +5,7 @@
         <group>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <file>file:/C:/Users/Admin/Desktop/DA1/duan1/Phong/DuAn1/src/repository/SanPhamService.java</file>
             <file>file:/C:/Users/Admin/Desktop/DA1/duan1/Phong/DuAn1/src/view/ViewNhanVien.java</file>
             <file>file:/C:/Users/Admin/Desktop/DA1/duan1/Phong/DuAn1/src/Interface/ThuongHieuInterface.java</file>
@@ -42,9 +43,12 @@
             <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/HoaDonChiTiet.java</file>
             <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/Interface/SanPhamChiTietInterface.java</file>
             <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/JDBCUtil/ConenctionProvider.java</file>
+=======
+>>>>>>> 9d08c2d (toi uu giao dien ban hang)
             <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/DangNhap.java</file>
-            <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/ViewNhanVien.java</file>
-            <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/model/HoaDonChiTiet.java</file>
+            <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/NhanVien.java</file>
+            <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/repository/TaiKhoanService.java</file>
+            <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/ViewQuanLy.java</file>
             <file>file:/C:/Users/duong/Desktop/duan1/Phong/DuAn1/src/view/BanHang.java</file>
 >>>>>>> fe1c410 (19.05)
 >>>>>>> 1f06d3f (19.05)
