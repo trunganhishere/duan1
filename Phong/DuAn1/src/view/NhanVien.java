@@ -4,16 +4,222 @@
  */
 package view;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.TaiKhoan;
+import repository.TaiKhoanService;
+
 
 public class NhanVien extends javax.swing.JPanel {
-
+     ArrayList<String> ls = new ArrayList<>();
+     TaiKhoanService us = new TaiKhoanService();
     /**
      * Creates new form NhanVien
      */
     public NhanVien() {
         initComponents();
+        showData();
+        ls.add("Nhân Viên");
+        ls.add("Quản Lý");
+        DefaultComboBoxModel dcb = (DefaultComboBoxModel) cbbChucVu.getModel();
+        dcb.removeAllElements();
+        dcb.addAll(ls);
+        dcb.setSelectedItem("Nhân Viên");
+    }
+    
+    private String fomatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String newDate = sdf.format(date);
+        return newDate;
+    }
+    
+    private void showData() {
+        DefaultTableModel dtm = (DefaultTableModel) tbl.getModel();
+        dtm.setRowCount(0);
+        for (TaiKhoan u : us.getAllTaiKhoan()) {
+            Object[] rowData = {
+                u.getTen(),
+                fomatDate(u.getNgaySinh()),
+                u.getGioiTinh() == true ? "Nam" : "Nữ",
+                u.getSdt(),
+                u.getTaiKhoan(),
+                u.getIdCV() == 1 ? "Quản Lý" : "Nhân Viên",
+                u.getEmail(),
+                u.getTrangThai() == false ? "Không làm việc":"Làm Việc",
+                u.getNgayTao(),
+                u.getNgaySua()
+            };
+            dtm.addRow(rowData);
+        }
+    }
+    
+    private void fillData(int row) {
+        TaiKhoan u = us.getAllTaiKhoan().get(row);
+        txtTen.setText(u.getTen());
+        txtNgaySinh.setText(fomatDate(u.getNgaySinh()));
+        TxtSDT.setText(u.getSdt());
+        txtEmail.setText(u.getEmail());
+        txtMatKhau.setText(u.getMatKhau());
+        txtTaiKhoan.setText(u.getTaiKhoan());
+        if (u.getGioiTinh()) {
+            rdoNam.setSelected(true);
+        } else {
+            rdoNu.setSelected(true);
+        }
+
+        if (u.getTrangThai() == false) {
+            ckbTrangThai.setSelected(true);
+        } else {
+            ckbTrangThai.setSelected(false);
+        }
+        if (u.getIdCV() == 1) {
+            cbbChucVu.setSelectedItem("Quản Lý");
+        } else {
+            cbbChucVu.setSelectedItem("Nhân Viên");
+        }
     }
 
+    private TaiKhoan getDataAdd() {
+        String ten = txtTen.getText();
+        String ngaySinhString = txtNgaySinh.getText();
+        String sdt = TxtSDT.getText();
+        String taiKhoan = txtTaiKhoan.getText();
+        String matKhau = txtMatKhau.getText();
+        String email = txtEmail.getText();
+
+        if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đủ trường");
+            return null;
+        }
+
+        if (!sdt.matches("^0+[0-9]{9}$")) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            return null;
+        }
+
+        if (ngaySinhString.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh");
+            return null;
+        }
+
+        Date ngaySinh;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            ngaySinh = sdf.parse(ngaySinhString);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ngay Sinh chưa đúng định dạng dd/MM/yyyy !");
+            return null;
+        }
+
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
+
+        boolean gioiTinh = rdoNam.isSelected();
+        boolean trangThai = !ckbTrangThai.isSelected();
+        String chucVuString = cbbChucVu.getSelectedItem().toString();
+        int chucVu = chucVuString.equals("Quản Lý") ? 1 : 2;
+
+        TaiKhoan u = new TaiKhoan();
+        u.setTen(ten);
+        u.setNgaySinh((java.sql.Date) sqlDate);
+        u.setSdt(sdt);
+        u.setTaiKhoan(taiKhoan);
+        u.setMatKhau(matKhau);
+        u.setEmail(email);
+        u.setGioiTinh(gioiTinh);
+        u.setIdCV(chucVu);
+        u.setTrangThai(trangThai);
+
+        boolean checkAccount = true;
+        for (int i = 0; i < us.getAllTaiKhoan().size(); i++) {
+            if (us.getAllTaiKhoan().get(i).getTaiKhoan().equals(taiKhoan)) {
+                checkAccount = false;
+                break;
+            }
+        }
+
+        if (!checkAccount) {
+            JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
+            return null;
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm thành công");
+            return u;
+        }
+    }
+
+    private TaiKhoan getDataUpdate() {
+    String ten = txtTen.getText();
+    String ngaySinhString = txtNgaySinh.getText();
+    Date ngaySinh = null;
+    
+    // Parse ngaySinhString to Date
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        ngaySinh = sdf.parse(ngaySinhString);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy !");
+        return null;
+    }
+    
+    // Convert ngaySinh to java.sql.Date
+    java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
+    
+    String sdt = TxtSDT.getText();
+    String taiKhoan = txtTaiKhoan.getText();
+    String matKhau = txtMatKhau.getText();
+    String email = txtEmail.getText();
+    
+    // Determine gioiTinh based on radio button selection
+    boolean gioiTinh = rdoNam.isSelected();
+    
+    // Determine trangThai based on checkbox selection
+    boolean trangThai = !ckbTrangThai.isSelected();
+    
+    // Determine chucVu based on combo box selection
+    String chucVuString = cbbChucVu.getSelectedItem().toString();
+    int chucVu = chucVuString.equals("Quản Lý") ? 1 : 2;
+    
+    TaiKhoan u = new TaiKhoan();
+    u.setTen(ten);
+    u.setNgaySinh(sqlDate);
+    u.setSdt(sdt);
+    u.setTaiKhoan(taiKhoan);
+    u.setMatKhau(matKhau);
+    u.setEmail(email);
+    u.setGioiTinh(gioiTinh);
+    u.setIdCV(chucVu);
+    u.setTrangThai(trangThai);
+    
+    // Validation
+    if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ trường");
+        return null;
+    } else if (!sdt.matches("^0+[0-9]{9}$")) {
+        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+        return null;
+    } else {
+        JOptionPane.showMessageDialog(this, "Sửa thành công");
+        return u;
+    }
+}
+  
+
+    public void clear() {
+        TxtSDT.setText("");
+        txtEmail.setText("");
+        txtMatKhau.setText("");
+        txtNgaySinh.setText("");
+        txtTaiKhoan.setText("");
+        txtTen.setText("");
+        cbbChucVu.setSelectedIndex(0);
+        rdoNam.setSelected(true);
+        ckbTrangThai.setSelected(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,6 +253,7 @@ public class NhanVien extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         ckbTrangThai = new javax.swing.JCheckBox();
         txtMatKhau = new javax.swing.JPasswordField();
+        btnClear = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -119,6 +326,13 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        btnClear.setText("Clear form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -145,8 +359,10 @@ public class NhanVien extends javax.swing.JPanel {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(66, 66, 66)
                                         .addComponent(btnThem)
-                                        .addGap(82, 82, 82)
-                                        .addComponent(btnSua))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnSua)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(btnClear))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(68, 68, 68)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +437,8 @@ public class NhanVien extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnThem)
-                            .addComponent(btnSua))
+                            .addComponent(btnSua)
+                            .addComponent(btnClear))
                         .addGap(34, 34, 34))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(214, 214, 214)
@@ -252,15 +469,25 @@ public class NhanVien extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-
+        us.them(getDataAdd());
+        showData();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-  
+        int row = tbl.getSelectedRow();
+        if(row<0){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn người muốn sửa");
+        }else{
+            Integer id = us.getAllTaiKhoan().get(row).getId();
+        us.sua(getDataUpdate(), id);
+        showData();
+        }
+        
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMouseClicked
-
+        int row = tbl.getSelectedRow();
+        fillData(row);
     }//GEN-LAST:event_tblMouseClicked
 
     private void rdoNuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNuActionPerformed
@@ -271,9 +498,14 @@ public class NhanVien extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_ckbTrangThaiActionPerformed
 
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clear();
+    }//GEN-LAST:event_btnClearActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TxtSDT;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JComboBox<String> cbbChucVu;
