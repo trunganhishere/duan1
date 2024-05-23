@@ -3,15 +3,92 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view;
-
+import Interface.ThongKeInterface;
+import repository.ThongKeService;
+import java.awt.Color;
+import java.sql.Connection;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import model.HoaDon;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ThongKe extends javax.swing.JPanel {
+    Connection con = JDBCUtil.ConenctionProvider.getConnection();
+    DefaultTableModel mol = new DefaultTableModel();
+    ThongKeService tksv = new ThongKeService();
+    DecimalFormat df = new DecimalFormat("#,###");
+    SimpleDateFormat date1 = new SimpleDateFormat("dd-MM-yyyy");
 
     /**
      * Creates new form ThongKe
      */
     public ThongKe() {
         initComponents();
+         loaddt();
+        loadhd();
+        mol = (DefaultTableModel) tbl_Bang.getModel();
+        txt_Thang.setVisible(false);
+        txt_Nam.setVisible(false);
+        loadData();
+    }
+     void loaddt() {
+        lbl_dt.setText(df.format(tksv.getdt()));
+    }
+
+    void loadhd() {
+        lbl_hd.setText(String.valueOf(tksv.getHoadon()));
+    }
+
+    void loadData() {
+        mol = (DefaultTableModel) tbl_Bang.getModel();
+        mol.setRowCount(0);
+        for (HoaDon hd : tksv.getAll()) {
+            Object dataRow[] = new Object[4];
+            dataRow[0] = hd.getId();
+            dataRow[1] = date1.format(hd.getNgayTao());
+            dataRow[2] = date1.format(hd.getNgayThanhToan());
+            dataRow[3] = hd.getTongTien();
+            mol.addRow(dataRow);
+        }
+    }
+
+    void searchNam(String str) {
+        mol.setRowCount(0);
+        for (HoaDon hd : tksv.gethdyear(str)) {
+            Object dataRow[] = new Object[4];
+            dataRow[0] = hd.getId();
+            dataRow[1] = date1.format(hd.getNgayTao());
+            dataRow[2] = date1.format(hd.getNgayThanhToan());
+            dataRow[3] = hd.getTongTien();
+            mol.addRow(dataRow);
+        }
+    }
+
+    void searchThang(String str) {
+        mol.setRowCount(0);
+        for (HoaDon hd : tksv.gethdmonth(str)) {
+            Object dataRow[] = new Object[4];
+            dataRow[0] = hd.getId();
+            dataRow[1] = date1.format(hd.getNgayTao());
+            dataRow[2] = date1.format(hd.getNgayThanhToan());
+            dataRow[3] = hd.getTongTien();
+            mol.addRow(dataRow);
+        }
+    }
+    void Thang(String str){ 
+    lbl_dt.setText(df.format(tksv.getdtThang(str)));
+    lbl_hd.setText(String.valueOf(tksv.gethdThang(str)));
+    }
+    void Nam(String str){
+    lbl_dt.setText(df.format(tksv.getdtNam(str)));
+    lbl_hd.setText(String.valueOf(tksv.gethdNam(str)));
     }
 
     /**
@@ -159,14 +236,40 @@ public class ThongKe extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(tksv.getmonth1(), "VND", "1");
+        dataset.addValue(tksv.getmonth2(), "VND", "2");
+        dataset.addValue(tksv.getmonth3(), "VND", "3");
+        dataset.addValue(tksv.getmonth4(), "VND", "4");
+        dataset.addValue(tksv.getmonth5(), "VND", "5");
+        dataset.addValue(tksv.getmonth6(), "VND", "6");
+        dataset.addValue(tksv.getmonth7(), "VND", "7");
+        dataset.addValue(tksv.getmonth8(), "VND", "8");
+        dataset.addValue(tksv.getmonth9(), "VND", "9");
+        dataset.addValue(tksv.getmonth10(), "VND", "10");
+        dataset.addValue(tksv.getmonth11(), "VND", "11");
+        dataset.addValue(tksv.getmonth12(), "VND", "12");
+        JFreeChart barChart = ChartFactory.createBarChart(
+            "Biểu đồ doanh thu", "Tháng", "VND", dataset, PlotOrientation.VERTICAL,
+            false, true, false);
+        CategoryPlot categoryPlot = new CategoryPlot();
+        categoryPlot.setRangeGridlinePaint(Color.BLACK);
+        ChartFrame chartFrame = new ChartFrame("Biều đồ", barChart);
+        chartFrame.setVisible(true);
+        chartFrame.setSize(1000, 500);
+        chartFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void rdo_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_ThangActionPerformed
         // TODO add your handling code here:
+        txt_Thang.setVisible(true);
+        txt_Nam.setVisible(false);
     }//GEN-LAST:event_rdo_ThangActionPerformed
 
     private void rdo_NamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_NamActionPerformed
         // TODO add your handling code here:
+        txt_Thang.setVisible(false);
+        txt_Nam.setVisible(true);
     }//GEN-LAST:event_rdo_NamActionPerformed
 
     private void txt_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ThangActionPerformed
