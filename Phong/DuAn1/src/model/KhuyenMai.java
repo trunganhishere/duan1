@@ -22,6 +22,7 @@ import lombok.Setter;
  * @author ADMIN
  */
 public class KhuyenMai {
+
     private int id;
     private String tenKhuyenMai;
     private String hinhThucKM;
@@ -52,7 +53,7 @@ public class KhuyenMai {
     public void setHinhThucKM(String hinhThucKM) {
         this.hinhThucKM = hinhThucKM;
     }
-    
+
     public String getGiaTriGiam() {
         return giaTriGiam;
     }
@@ -69,7 +70,13 @@ public class KhuyenMai {
         this.soLuong = soLuong;
     }
 
-   
+    public KhuyenMai(String tenKhuyenMai, String hinhThucKM, String giaTriGiam, int soLuong, String codeKhuyenMai) {
+        this.tenKhuyenMai = tenKhuyenMai;
+        this.hinhThucKM = hinhThucKM;
+        this.giaTriGiam = giaTriGiam;
+        this.soLuong = soLuong;
+        this.codeKhuyenMai = codeKhuyenMai;
+    }
 
     public class KMData {
 
@@ -81,5 +88,5 @@ public class KhuyenMai {
             return data;
         }
     }
-    
+
 }

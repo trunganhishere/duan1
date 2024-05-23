@@ -4,13 +4,45 @@
  */
 package view;
 
-public class KhuyenMai extends javax.swing.JPanel {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.swing.table.DefaultTableModel;
+import model.KhuyenMai;
+import repository.KhuyenMaiService;
+import java.util.UUID;
+import javax.swing.JOptionPane;
+
+public class ViewKhuyenMai extends javax.swing.JPanel {
+
+    private KhuyenMaiService khuyenMaiService = new KhuyenMaiService();
 
     /**
      * Creates new form KhuyenMai
      */
-    public KhuyenMai() {
+    public ViewKhuyenMai() {
         initComponents();
+        this.loadtb();
+    }
+
+    private void loadtb() {
+        List<KhuyenMai> list = khuyenMaiService.getAll();
+        DefaultTableModel model = (DefaultTableModel) tbl_Bang.getModel();
+        model.setRowCount(0);
+
+        for (int i = 0; i < list.size(); i++) {
+            KhuyenMai km = list.get(i);
+
+            model.addRow(new Object[]{
+                km.getId(),
+                km.getTenKhuyenMai(),
+                km.getHinhThucKM(),
+                km.getGiaTriGiam(),
+                km.getSoLuong(),
+                km.getCodeKhuyenMai()
+            });
+
+        }
     }
 
     /**
@@ -36,8 +68,11 @@ public class KhuyenMai extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         txt_Ten = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        txt_id = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setToolTipText("%");
         jPanel1.setMaximumSize(new java.awt.Dimension(940, 580));
         jPanel1.setMinimumSize(new java.awt.Dimension(940, 580));
         jPanel1.setPreferredSize(new java.awt.Dimension(940, 580));
@@ -45,26 +80,28 @@ public class KhuyenMai extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Tên khuyến mại");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 100, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Số lượng");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 100, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 100, -1));
 
         txt_giatrigiam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_giatrigiamActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_giatrigiam, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 110, 30));
-        jPanel1.add(txt_soluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 150, 30));
+        jPanel1.add(txt_giatrigiam, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 110, 30));
+        jPanel1.add(txt_soluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 150, 30));
 
+        cbo_hinhthuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "%" }));
+        cbo_hinhthuc.setToolTipText("");
         cbo_hinhthuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbo_hinhthucActionPerformed(evt);
             }
         });
-        jPanel1.add(cbo_hinhthuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 60, 30));
+        jPanel1.add(cbo_hinhthuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 60, 30));
 
         btn_update.setBackground(new java.awt.Color(125, 224, 237));
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/floppy-disk.png"))); // NOI18N
@@ -79,6 +116,11 @@ public class KhuyenMai extends javax.swing.JPanel {
         btn_add.setBackground(new java.awt.Color(125, 224, 237));
         btn_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btn_add.setText("Add");
+        btn_add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_addMouseClicked(evt);
+            }
+        });
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addActionPerformed(evt);
@@ -89,6 +131,11 @@ public class KhuyenMai extends javax.swing.JPanel {
         btn_reset.setBackground(new java.awt.Color(125, 224, 237));
         btn_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         btn_reset.setText("Refresh");
+        btn_reset.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_resetMouseClicked(evt);
+            }
+        });
         btn_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_resetActionPerformed(evt);
@@ -124,11 +171,18 @@ public class KhuyenMai extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Bảng khuyến mãi");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 160, 30));
-        jPanel1.add(txt_Ten, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 150, 30));
+        jPanel1.add(txt_Ten, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 150, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Giá trị giảm");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 100, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 100, -1));
+
+        txt_id.setEditable(false);
+        jPanel1.add(txt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 150, 30));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("Mã khuyến mãi");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -162,24 +216,130 @@ public class KhuyenMai extends javax.swing.JPanel {
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
+
+        if (this.txt_id.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "hãy chọn khuyến mãi cần sửa");
+            return;
+        }
+        KhuyenMai km = this.getFormData(1);
+        this.khuyenMaiService.update(km);
+        this.loadtb();
+        this.resert();
+        JOptionPane.showMessageDialog(this, "sửa thành công");
+
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
+        KhuyenMai km = this.getFormData(0);
+        this.khuyenMaiService.add(km);
+        JOptionPane.showMessageDialog(this, "Thêm thành công");
+        this.loadtb();
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
         // TODO add your handling code here:
+        this.resert();
     }//GEN-LAST:event_btn_resetActionPerformed
 
     private void tbl_BangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_BangMouseClicked
         // TODO add your handling code here:
+        int vitri = this.tbl_Bang.getSelectedRow();
+        if (vitri == -1) {
+            return;
+        }
+
+        KhuyenMai km = this.getTableData(vitri);
+
+        this.txt_id.setText(Integer.toString(km.getId()));
+        this.txt_Ten.setText(km.getTenKhuyenMai());
+        this.txt_giatrigiam.setText(km.getGiaTriGiam());
+        this.txt_soluong.setText(Integer.toString(km.getSoLuong()));
+        this.cbo_hinhthuc.setSelectedItem(km.getHinhThucKM());
+
     }//GEN-LAST:event_tbl_BangMouseClicked
 
     private void tbl_BangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_BangKeyPressed
 
     }//GEN-LAST:event_tbl_BangKeyPressed
 
+    private void btn_resetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_resetMouseClicked
+        // TODO add your handling code here:
+        this.resert();
+    }//GEN-LAST:event_btn_resetMouseClicked
+
+    private void btn_addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btn_addMouseClicked
+    public KhuyenMai getTableData(int vitri) {
+
+        String id = this.tbl_Bang.getValueAt(vitri, 0).toString();
+        String tenKm = this.tbl_Bang.getValueAt(vitri, 1).toString();
+        String hinhThucKm = this.tbl_Bang.getValueAt(vitri, 2).toString();
+        String giaTriGiam = this.tbl_Bang.getValueAt(vitri, 3).toString();
+        String soLuong = this.tbl_Bang.getValueAt(vitri, 4).toString();
+        String codeKm = this.tbl_Bang.getValueAt(vitri, 5).toString();
+        KhuyenMai km = new KhuyenMai(Integer.parseInt(id), tenKm, hinhThucKm, giaTriGiam, Integer.parseInt(soLuong), codeKm);
+        return km;
+    }
+
+    public KhuyenMai getFormData(int so) {
+        List<String> result = new ArrayList<>();
+
+        //random
+        Random generator = new Random();
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+        String alphaUpperCase = alpha.toUpperCase();
+        String digits = "0123456789";
+        String ALPHA_NUMERIC = alpha + alphaUpperCase + digits;
+
+        //getformData
+        try {
+            int id = Integer.parseInt(this.txt_id.getText());
+            String ten = this.txt_Ten.getText();
+            String hinhThucKm = this.cbo_hinhthuc.getSelectedItem().toString();
+            String giaTriGiam = this.txt_giatrigiam.getText();
+            String soL = (this.txt_soluong.getText());
+
+            int soLuong = Integer.parseInt(soL);
+            if (so == 0) {
+
+                for (int i = 0; i < 20; i++) {
+                    int number = generator.nextInt(ALPHA_NUMERIC.length());
+                    char ch = (ALPHA_NUMERIC.charAt(number));
+                    String code = "" + ch;
+                    result.add(code);
+                }
+
+                this.random(result);
+                KhuyenMai km = new KhuyenMai(ten, hinhThucKm, giaTriGiam, soLuong, this.random(result));
+                return km;
+            }
+            KhuyenMai km = new KhuyenMai(id, ten, hinhThucKm, giaTriGiam, soLuong, null);
+            return km;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "số lượng và giá trị giảm phải là số");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String random(List<String> result) {
+        String code = "";
+        for (String string : result) {
+            code = code + string;
+        }
+        return code;
+    }
+
+    public void resert() {
+        this.txt_id.setText("");
+        this.txt_Ten.setText("");
+        this.txt_giatrigiam.setText("");
+        this.txt_soluong.setText("");
+        this.cbo_hinhthuc.setSelectedIndex(0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;
@@ -190,11 +350,13 @@ public class KhuyenMai extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tbl_Bang;
     private javax.swing.JTextField txt_Ten;
     private javax.swing.JTextField txt_giatrigiam;
+    private javax.swing.JTextField txt_id;
     private javax.swing.JTextField txt_soluong;
     // End of variables declaration//GEN-END:variables
 }

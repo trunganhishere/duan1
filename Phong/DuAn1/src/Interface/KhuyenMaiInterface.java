@@ -12,6 +12,10 @@ import model.KhuyenMai;
  * @author Luu Huynh
  */
 public interface KhuyenMaiInterface {
-   public List<KhuyenMai> getAll();
- 
+
+    public List<KhuyenMai> getAll();
+
+    public void add(KhuyenMai km);
+
+    public void update(KhuyenMai km);
 }

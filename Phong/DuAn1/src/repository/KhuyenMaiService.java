@@ -7,6 +7,7 @@ package repository;
 import Interface.KhuyenMaiInterface;
 import JDBCUtil.ConenctionProvider;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ import model.KhuyenMai;
  *
  * @author duong
  */
-public class KhuyenMaiService implements KhuyenMaiInterface{
-     Connection con = ConenctionProvider.getConnection();
+public class KhuyenMaiService implements KhuyenMaiInterface {
+
+    Connection con = ConenctionProvider.getConnection();
 
     @Override
     public List<KhuyenMai> getAll() {
@@ -44,4 +46,37 @@ public class KhuyenMaiService implements KhuyenMaiInterface{
         }
 
     }
+
+    @Override
+    public void add(KhuyenMai km) {
+        try {
+            String sql = "insert into  KhuyenMai(Ten,HinhthucKM,Giatrigiam,SOLUONG,MaCode) values(?,?,?,?,?); ";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, km.getTenKhuyenMai());
+            stmt.setString(2, km.getHinhThucKM());
+            stmt.setString(3, km.getGiaTriGiam());
+            stmt.setInt(4, km.getSoLuong());
+            stmt.setString(5, km.getCodeKhuyenMai());
+            stmt.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(KhuyenMai km) {
+        try {
+            String sql = "update KhuyenMai set Ten=?, HinhthucKM=?,Giatrigiam=?,SOLUONG=? where Id=?  ; ";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, km.getTenKhuyenMai());
+            stmt.setString(2, km.getHinhThucKM());
+            stmt.setString(3, km.getGiaTriGiam());
+            stmt.setInt(4, km.getSoLuong());
+            stmt.setInt(5, km.getId());
+            stmt.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
