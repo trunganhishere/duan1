@@ -9,8 +9,7 @@ import model.SanPham;
 
 public interface SanPhamInterface {
     public java.util.List<SanPham> getAll();
-    
+    public int add(SanPham sp);
+    public int update(SanPham sp, int index);
   
-
-
 }

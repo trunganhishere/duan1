@@ -4,14 +4,58 @@
  */
 package view;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import repository.SanPhamService;
+
 
 public class SanPham extends javax.swing.JPanel {
+    SanPhamService service = new SanPhamService();
+    DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form SanPham
      */
     public SanPham() {
         initComponents();
+        loadTableSp();
+    }
+     private boolean checkFrmSP() {
+        if (txtTen.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "vui lòng điền tên sản phẩm");
+            return false;
+        } else {
+            return true;
+        }
+    }
+     private model.SanPham getFormSanPham() {
+        model.SanPham s = new model.SanPham();
+        s.setTen(txtTen.getText());
+        return s;
+    }
+     public void loadTableSp() {
+        model = (DefaultTableModel) tblSanPham.getModel();
+
+        model.setRowCount(0);
+
+        List<model.SanPham> list = service.getAll();
+
+        int stt = 1;
+
+        for (model.SanPham sp : list) {
+            model.addRow(new Object[]{
+                stt,
+                sp.getTen(),
+                sp.getNgayTao(),
+                sp.getNgaySua()
+            });
+            stt++;
+        }
+
+    }
+     private void showSP(int row){
+        txtTen.setText(tblSanPham.getValueAt(row, 1).toString());
     }
 
     /**
@@ -365,17 +409,15 @@ public class SanPham extends javax.swing.JPanel {
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rdoChatlieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoSize12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(94, 94, 94)
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rdoSize12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addComponent(rdoThuonghieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rdoNSX12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGap(212, 212, 212)
-                        .addComponent(rdoMausac12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(rdoChatlieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(80, 80, 80)
+                        .addComponent(rdoThuonghieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(116, 116, 116)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdoNSX12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rdoMausac12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
         );
         jPanel13Layout.setVerticalGroup(
@@ -384,11 +426,11 @@ public class SanPham extends javax.swing.JPanel {
                 .addGap(43, 43, 43)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoChatlieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoMausac12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rdoMausac12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rdoThuonghieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoSize12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoThuonghieu12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rdoNSX12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40))
         );
@@ -518,7 +560,12 @@ public class SanPham extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
-        // TODO add your handling code here:
+try {
+            int row = -1;
+            row = tblSanPham.getSelectedRow();
+            this.showSP(row);
+        } catch (Exception e) {
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     private void txtTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenActionPerformed
@@ -526,11 +573,38 @@ public class SanPham extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTenActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+if (checkFrmSP() == true) {
+            model.SanPham s = getFormSanPham();
+            if (service.add(s) != 0) {
+                JOptionPane.showMessageDialog(this, "them thanh cong");
+                loadTableSp();
+            } else {
+                JOptionPane.showMessageDialog(this, "them that bai");
+            }
+            
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:        
+         try {
+            int row = -1;
+            row = tblSanPham.getSelectedRow();
+            String maSP = tblSanPham.getValueAt(row, 0).toString();
+            int hoi = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa sản phẩm này không?");
+            if (hoi != JOptionPane.YES_OPTION) {
+                return;
+            }
+            model.SanPham s = this.getFormSanPham();
+            if (service.update(s, Integer.valueOf(maSP)) != 0) {
+                JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thành công");
+                loadTableSp();
+            } else {
+                JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thất bại");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng dữ liệu cần sửa");
+        }    
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

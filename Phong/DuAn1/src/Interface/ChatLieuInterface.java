@@ -10,8 +10,7 @@ import model.ChatLieu;
 
 public interface ChatLieuInterface {
     public List<ChatLieu> getAll();
-    
- 
-    
-    
+    public boolean add(ChatLieu ChatLieu);
+    public boolean update (ChatLieu cl, int id);
+   
 }

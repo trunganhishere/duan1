@@ -10,6 +10,8 @@ import model.ThuongHieu;
 
 public interface ThuongHieuInterface {
     public List<ThuongHieu> getAll();
-    
+     public boolean add(ThuongHieu ThuongHieu);
+    public boolean update (ThuongHieu cl, int id);
+   
 
 }

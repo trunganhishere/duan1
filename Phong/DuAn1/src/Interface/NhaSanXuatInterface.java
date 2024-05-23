@@ -7,9 +7,12 @@ package Interface;
 import java.util.List;
 import model.NSX;
 
-
 public interface NhaSanXuatInterface {
+
     public List<NSX> getAll();
-    
-  
+
+    public boolean add(NSX NSX);
+
+    public boolean update(NSX nsx, int id);
+
 }
