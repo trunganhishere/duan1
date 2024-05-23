@@ -38,7 +38,7 @@ public class TaiKhoanService {
                 ps.setString(1, "%" + searchKey + "%");
                 ps.setString(2, "%" + searchKey + "%");
                 ps.setString(3, "%" + searchKey + "%");
-                ps.execute();
+                ps.executeQuery();
             }
             try (ResultSet rs = ps.executeQuery();) {
                 ArrayList<TaiKhoan> ls = new ArrayList<>();

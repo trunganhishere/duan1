@@ -489,16 +489,16 @@ public class BanHang extends javax.swing.JPanel {
         jPanel4.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 160, 40));
 
         jLabel11.setText("SĐT");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 40, -1));
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 121, 40, 20));
 
         jLabel12.setText("Tên khách hàng");
         jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         jLabel13.setText("Giảm giá voucher");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, 20));
+        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, -1, 20));
 
         jLabel15.setText("Tổng tiền");
-        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
         lbl_tenKH1.setText("...");
         jPanel4.add(lbl_tenKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 120, -1));
@@ -507,16 +507,16 @@ public class BanHang extends javax.swing.JPanel {
         jPanel4.add(lbl_sdtKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 160, -1));
 
         lbTongTien1.setText("...");
-        jPanel4.add(lbTongTien1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 130, -1));
+        jPanel4.add(lbTongTien1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 130, -1));
 
         jLabel18.setText("Tiền phải trả:");
         jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, -1, 20));
 
         lbl_giamVoucher1.setText("...");
-        jPanel4.add(lbl_giamVoucher1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 110, 30));
+        jPanel4.add(lbl_giamVoucher1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 110, 20));
 
         jLabel20.setText("Chọn Khuyến Mãi:");
-        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
+        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
 
         lbl_tienPhaitra1.setText("...");
         jPanel4.add(lbl_tienPhaitra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 130, 20));
@@ -538,7 +538,7 @@ public class BanHang extends javax.swing.JPanel {
                 cbx_khuyenMai1ActionPerformed(evt);
             }
         });
-        jPanel4.add(cbx_khuyenMai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 170, 30));
+        jPanel4.add(cbx_khuyenMai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 170, 30));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 0, 260, 570));
 
