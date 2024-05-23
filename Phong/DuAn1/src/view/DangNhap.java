@@ -14,7 +14,9 @@ import repository.TaiKhoanService;
  * @author duong
  */
 public class DangNhap extends javax.swing.JFrame {
-        DangNhapService dnsv = new DangNhapService();
+
+    DangNhapService dnsv = new DangNhapService();
+
     /**
      * Creates new form DangNhap
      */
@@ -22,7 +24,6 @@ public class DangNhap extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,31 +176,31 @@ public class DangNhap extends javax.swing.JFrame {
         String password = txtPassword.getText();
         TaiKhoan tk = dnsv.login(username, password);
         try {
-            if(username.trim().isEmpty() || password.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đủ thông tin!");
-        }else{
-            if(tk.getTrangThai()==true){
-                if(tk.getIdCV()==1){
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-                    dnsv.setUsername(username);
-                    dnsv.setPassword(password);
-                    this.setVisible(false);
-                    new ViewQuanLy().setVisible(true);
-                }else{
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-                    dnsv.setUsername(username);
-                    dnsv.setPassword(password);
-                    this.setVisible(false);
-                    new ViewNhanVien().setVisible(true);
+            if (username.trim().isEmpty() || password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đủ thông tin!");
+            } else {
+                if (tk.getTrangThai() == true) {
+                    if (tk.getIdCV() == 1) {
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                        dnsv.setUsername(username);
+                        dnsv.setPassword(password);
+                        this.setVisible(false);
+                        new ViewQuanLy().setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                        dnsv.setUsername(username);
+                        dnsv.setPassword(password);
+                        this.setVisible(false);
+                        new ViewNhanVien().setVisible(true);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Tài khoản, mật khẩu không hợp lệ");
                 }
-            }else{
-                JOptionPane.showMessageDialog(this, "Tài khoản, mật khẩu không hợp lệ");
             }
-        }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Tài khoản, mật khẩu không hợp lệ");
         }
-        
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
