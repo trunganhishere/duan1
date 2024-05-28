@@ -22,9 +22,6 @@ import repository.SanPhamCTService;
 import repository.ThuongHieuService;
 
 import Interface.hoaDonInterface;
-
-import Interface.hoaDonInterface;
-
 public class BanHang extends javax.swing.JPanel {
 
     private hoaDonInterface hoadonService = new HoaDonService();

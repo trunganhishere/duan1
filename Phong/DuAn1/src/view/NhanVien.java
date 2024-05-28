@@ -662,7 +662,7 @@ public class NhanVien extends javax.swing.JPanel {
             cell.setCellValue(tk.getTrangThai()?"Làm việc":"Không làm việc");
                 
             }
-            String f = "C:\\File Excel\\danhsachnhanvien";
+            String f = "C:\\Users\\duong\\Downloads\\DanhSachNhanVien\\danhsachnhanvien";
             String filePath = f + ".xlsx";
             int fileIndex = 1;
             while(new File(filePath).exists()){
