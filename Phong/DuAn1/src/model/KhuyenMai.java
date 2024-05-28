@@ -29,6 +29,14 @@ public class KhuyenMai {
     private int soLuong;
     private String codeKhuyenMai;
 
+    public KhuyenMai( String tenKhuyenMai, String hinhThucKM, String giaTriGiam, int soLuong, String codeKhuyenMai) {
+        this.tenKhuyenMai = tenKhuyenMai;
+        this.hinhThucKM = hinhThucKM;
+        this.giaTriGiam = giaTriGiam;
+        this.soLuong = soLuong;
+        this.codeKhuyenMai = codeKhuyenMai;
+    }
+
     public int getId() {
         return id;
     }

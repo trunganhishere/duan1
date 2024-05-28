@@ -8,7 +8,7 @@ public class ConenctionProvider {
     private static String DB_SERVERNAME = "localhost";
     private static String DB_DATABASENAME = "DuAn1";
     private static String DB_USERNAME = "sa";
-    private static String DB_PASSWORD = "12345678";
+    private static String DB_PASSWORD = "1";
    
     public static Connection getConnection () {
         if (conn!=null) {

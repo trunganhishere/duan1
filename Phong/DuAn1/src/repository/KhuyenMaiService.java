@@ -7,6 +7,7 @@ package repository;
 import Interface.KhuyenMaiInterface;
 import JDBCUtil.ConenctionProvider;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ import model.KhuyenMai;
  *
  * @author duong
  */
-public class KhuyenMaiService implements KhuyenMaiInterface{
-     Connection con = ConenctionProvider.getConnection();
+public class KhuyenMaiService implements KhuyenMaiInterface {
+
+    Connection con = ConenctionProvider.getConnection();
 
     @Override
     public List<KhuyenMai> getAll() {
@@ -43,5 +45,44 @@ public class KhuyenMaiService implements KhuyenMaiInterface{
             return null;
         }
 
+    }
+
+    @Override
+    public void add(KhuyenMai km) {
+        try {
+            String sql = "insert into KhuyenMai(ten,hinhthuckm,giatrigiam,soluong,MaCode) values(?,?,?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, km.getTenKhuyenMai());
+            stmt.setString(2, km.getHinhThucKM());
+            stmt.setString(3, km.getGiaTriGiam());
+            stmt.setInt(4, km.getSoLuong());
+            stmt.setString(5, km.getGiaTriGiam());
+
+            stmt.execute();
+            return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    @Override
+    public void update(KhuyenMai km) {
+        try {
+            String sql = "UPDATE KhuyenMai set ten=?,hinhthuckm=?,giatrigiam=?,soluong=? where id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, km.getTenKhuyenMai());
+            stmt.setString(2, km.getHinhThucKM());
+            stmt.setString(3, km.getGiaTriGiam());
+            stmt.setInt(4, km.getSoLuong());
+            stmt.setInt(5, km.getId());
+            stmt.execute();
+            return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 }
