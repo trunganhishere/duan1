@@ -34,7 +34,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
                 hd.setId(rs.getInt("IDHD"));
                 hdct.setHoaDon(hd);
                 hdct.setSanPham(spct);
-                hdct.setDonGia(rs.getDouble("DonGia"));
+                hdct.setDonGia(rs.getDouble("Dongia"));
                 hdct.setSoluong(rs.getInt("soLuong"));
                 list.add(hdct);
             }
