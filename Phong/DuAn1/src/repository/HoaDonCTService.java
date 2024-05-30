@@ -109,4 +109,22 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             return false;
         }
     }
+    @Override
+    public boolean deleteAllHDCT( int idHD){
+        int check;
+        String sql = """
+                     DELETE FROM [dbo].[HoaDonChiTiet]
+                           WHERE IdHD = ?
+                     """;
+        
+        try(Connection con = ConenctionProvider.getConnection();
+                PreparedStatement ps = con.prepareCall(sql)) {
+            ps.setObject(1, idHD);
+            check = ps.executeUpdate();
+            return check > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

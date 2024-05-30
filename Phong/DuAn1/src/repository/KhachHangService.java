@@ -52,6 +52,45 @@ public class KhachHangService implements KhachHangInterface {
             return null;
         }
     }
+     @Override
+    public boolean add(KhachHang khachHang) {
+        String sql = "INSERT INTO KhachHang(Ten, NgaySinh, Gioitinh, Sdt, Email) VALUES(?,?,?,?,?)";
+
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+
+            stm.setString(1, khachHang.getTen());
+            stm.setDate(2, new java.sql.Date(khachHang.getNgaysinh().getTime()));
+            stm.setBoolean(3, khachHang.isGioitinh());
+            stm.setString(4, khachHang.getSdt());
+            stm.setString(5, khachHang.getEmail());
+            stm.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+            return false;
+        }
+    }
+
+    @Override
+    public void update(KhachHang khachHang , int index) {
+        String sql = "UPDATE KhachHang SET Ten = ?, NgaySinh = ?, GioiTinh = ?, Sdt = ?, Email = ? WHERE Id = ?";
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, khachHang.getTen());
+            stm.setDate(2, new java.sql.Date(khachHang.getNgaysinh().getTime()));
+            stm.setBoolean(3, khachHang.isGioitinh());
+            stm.setString(4, khachHang.getSdt());
+            stm.setString(5, khachHang.getEmail());
+            stm.setString(6, index+"");
+//            stm.executeUpdate();
+            stm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
   
 
@@ -59,6 +98,11 @@ public class KhachHangService implements KhachHangInterface {
 
     @Override
     public void find(String khachHang) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete(int khachHang) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

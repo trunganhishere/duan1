@@ -4,7 +4,6 @@
  */
 package repository;
 
-import Interface.MauSacServices;
 import JDBCUtil.ConenctionProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +12,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.MauSac;
+import Interface.MauSacInterface;
 
 
-public class MauSacService implements MauSacServices{
+public class MauSacService implements MauSacInterface{
     private Connection con = ConenctionProvider.getConnection();    
     @Override
     public List<MauSac> getAll() {

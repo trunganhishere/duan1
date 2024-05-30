@@ -40,7 +40,7 @@ public class HoaDonService implements hoaDonInterface {
                 list.add(hd);
 
             }
-            Collections.reverse(list); 
+//            Collections.reverse(list); 
             return list;
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,6 +90,35 @@ public class HoaDonService implements hoaDonInterface {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setDouble(1, tongTien);
             stmt.setInt(2, idHD);
+            stmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+     @Override
+    public boolean updateThanhToan(int idHD) {
+        
+        try {
+            String sql = "UPDATE HoaDon SET TinhTrang = 1,NgayThanhToan = GetDate() WHERE ID = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setDouble(1, idHD);
+            stmt.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
+    public boolean updateSoLuongSP(int id, int soLuong) {
+        try {
+            String sql = "UPDATE ChitietSP set soLuongTon = ? where id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, soLuong);
+            stmt.setInt(2, id);
             stmt.execute();
             return true;
         } catch (Exception e) {
