@@ -7,7 +7,7 @@ package Interface;
 import model.MauSac;
 import java.util.List;
 
-public interface MauSacServices {
+public interface MauSacInterface {
 
     public List<MauSac> getAll();
 

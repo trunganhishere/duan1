@@ -18,11 +18,11 @@ public class HoaDonChiTiet {
     public HoaDonChiTiet() {
     }
 
-    public HoaDonChiTiet(int Soluong, Double DonGia, Double DonKhiGiam, HoaDon hoaDon, SanPhamChiTiet sanPham) {
+    public HoaDonChiTiet(Integer idHoaDon, Integer idCTSP, int Soluong, Double DonGia, Double DonKhiGiam, HoaDon haoDon, SanPhamChiTiet sanPham) {
         this.Soluong = Soluong;
         this.DonGia = DonGia;
         this.DonKhiGiam = DonKhiGiam;
-        this.hoaDon = hoaDon;
+        this.hoaDon = haoDon;
         this.sanPham = sanPham;
     }
 
@@ -50,12 +50,12 @@ public class HoaDonChiTiet {
         this.DonKhiGiam = DonKhiGiam;
     }
 
-    public HoaDon getHoaDon() {
+    public HoaDon getHaoDon() {
         return hoaDon;
     }
 
-    public void setHoaDon(HoaDon hoaDon) {
-        this.hoaDon = hoaDon;
+    public void setHaoDon(HoaDon haoDon) {
+        this.hoaDon = haoDon;
     }
 
     public SanPhamChiTiet getSanPham() {
@@ -65,6 +65,5 @@ public class HoaDonChiTiet {
     public void setSanPham(SanPhamChiTiet sanPham) {
         this.sanPham = sanPham;
     }
-
 
 }

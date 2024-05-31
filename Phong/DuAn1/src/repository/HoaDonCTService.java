@@ -32,7 +32,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
                 HoaDon hd = new HoaDon();
                 spct.setId(rs.getString("IDCTSP"));
                 hd.setId(rs.getInt("IDHD"));
-                hdct.setHoaDon(hd);
+                hdct.setHaoDon(hd);
                 hdct.setSanPham(spct);
                 hdct.setDonGia(rs.getDouble("Dongia"));
                 hdct.setSoluong(rs.getInt("soLuong"));
@@ -45,7 +45,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             return null;
         }
     }
-    
+
     @Override
     public boolean updateSoLuongSPHoaDonCT(int IDHD, int IDSPCT, int soLuong) {
         try {
@@ -80,14 +80,14 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
     
     
     @Override
-    public boolean addHDCT(HoaDon hoaDon, SanPhamChiTiet sanPhamChiTiet, int soLuong, double DonGia) {
+    public boolean addHDCT(HoaDon hoaDon, SanPhamChiTiet sanPhamChiTiet, int soLuong, double Dongia) {
         try {
-            String sql = "insert into HoaDonChiTiet(IdHD,IdCTSP,SoLuong,DonGia) values(?,?,?,?)";
+            String sql = "insert into HoaDonChiTiet(IdHD,IdCTSP,SoLuong,Dongia) values(?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, hoaDon.getId());
             stmt.setInt(2, Integer.parseInt(sanPhamChiTiet.getId()));
             stmt.setInt(3, soLuong);
-            stmt.setDouble(4, DonGia);
+            stmt.setDouble(4, Dongia);
             stmt.execute();
             return true;
         } catch (Exception e) {
@@ -109,7 +109,6 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             return false;
         }
     }
-    
     @Override
     public boolean deleteAllHDCT( int idHD){
         int check;

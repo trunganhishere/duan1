@@ -11,7 +11,7 @@ import java.util.Date;
  * @author duong
  */
 public class TaiKhoan {
-    private Integer id;
+     private Integer id;
     private String ten;
     private Date ngaySinh;
     private Boolean gioiTinh;

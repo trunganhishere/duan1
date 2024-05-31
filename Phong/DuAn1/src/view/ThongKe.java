@@ -100,6 +100,8 @@ public class ThongKe extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -175,6 +177,7 @@ public class ThongKe extends javax.swing.JPanel {
         jLabel6.setText("Doanh thu ở");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
 
+        buttonGroup1.add(rdo_Thang);
         rdo_Thang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Thang.setText("Tháng:");
         rdo_Thang.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +187,7 @@ public class ThongKe extends javax.swing.JPanel {
         });
         jPanel1.add(rdo_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
+        buttonGroup1.add(rdo_Nam);
         rdo_Nam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Nam.setText("Năm:");
         rdo_Nam.addActionListener(new java.awt.event.ActionListener() {
@@ -286,6 +290,8 @@ public class ThongKe extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

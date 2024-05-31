@@ -6,7 +6,6 @@ package repository;
 
 import Interface.SanPhamChiTietInterface;
 import JDBCUtil.ConenctionProvider;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -124,14 +123,75 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
             return false;
         }
     }
-    
+     @Override
+    public int add(model.SanPhamChiTiet spct) {
+        String sql = """
+                    INSERT INTO dbo.ChitietSP
+                    	(
+                    	    IdNsx,
+                    	    IdMauSac,
+                    	    IdKC,
+                    	    IdCL,
+                    	    IdTH,
+                    	    MoTa,
+                    	    SoLuongTon,
+                    	    GiaNhap,
+                    	    GiaBan,
+                    	    IdSP
+                    	)
+                    	VALUES
+                    	(   ?,?,?,?,?,?,?,?,?,?
+                    	    )""";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setObject(1, spct.getNhaSx().getId());
+            ps.setObject(2, spct.getMauSac().getId());
+            ps.setObject(3, spct.getKichCo().getId());
+            ps.setObject(4, spct.getChatLieu().getId());
+            ps.setObject(5, spct.getThuongHieu().getId());
+            ps.setObject(6, spct.getMoTa());
+            ps.setObject(7, spct.getSoLuongTon());
+            ps.setObject(8, spct.getGiaNhap());
+            ps.setObject(9, spct.getGiaBan());
+            ps.setObject(10, spct.getId());
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public int update(model.SanPhamChiTiet sp, String id) {
+        String sql = "update chitietSP set idSP = ?,idNsx=?,idMausac=?,idkc=?,idcl=?,idth=?,mota=?,soluongton=?,gianhap=?,giaban=? where id=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setObject(1, sp.getId());
+            ps.setObject(2, sp.getNhaSx().getId());
+            ps.setObject(3, sp.getMauSac().getId());
+            ps.setObject(4, sp.getKichCo().getId());
+            ps.setObject(5, sp.getChatLieu().getId());
+            ps.setObject(6, sp.getThuongHieu().getId());
+            ps.setObject(7, sp.getMoTa());
+            ps.setObject(8, sp.getSoLuongTon());
+            ps.setObject(9, sp.getGiaNhap());
+            ps.setObject(10, sp.getGiaBan());
+            ps.setObject(11, id);
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
     @Override
     public boolean updateSoLuongSPCT(int soLuong, int idSP){
         int check = 0;
         String sql = """
                      UPDATE [dbo].[ChitietSP]
                         SET[SoLuongTon] = ?
-                      WHERE idSP = ?
+                      WHERE Id = ?
                      """;
         
         try(PreparedStatement ps = con.prepareCall(sql)) {
@@ -144,4 +204,5 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         }
         return false;
     }
+    
 }

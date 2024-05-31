@@ -13,5 +13,7 @@ public interface hoaDonInterface {
     public boolean addHoaDon(HoaDon hd);
     public boolean updateMaKHforHoaDon(int idKh,int idHD);
     public boolean updateTongTien(int idHD,double tongTien);
-
+    public boolean updateSoLuongSP(int id, int soLuong);
+    public List<HoaDon> getAllHDChuaTT();
+    public boolean updateThanhToan(int idHD);
 }

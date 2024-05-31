@@ -16,8 +16,7 @@ import model.TaiKhoan;
  * @author duong
  */
 public class TaiKhoanService {
-
-    public ArrayList<TaiKhoan> search(String searchKey) {
+     public ArrayList<TaiKhoan> search(String searchKey) {
         String sql = """
                      SELECT [Id]
                            ,[Ten]
