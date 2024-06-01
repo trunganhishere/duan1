@@ -24,11 +24,11 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import repository.TaiKhoanService;
 
-
-
 public class NhanVien extends javax.swing.JPanel {
-     ArrayList<String> ls = new ArrayList<>();
-     TaiKhoanService us = new TaiKhoanService();
+
+    ArrayList<String> ls = new ArrayList<>();
+    TaiKhoanService us = new TaiKhoanService();
+
     /**
      * Creates new form NhanVien
      */
@@ -42,18 +42,18 @@ public class NhanVien extends javax.swing.JPanel {
         dcb.addAll(ls);
         dcb.setSelectedItem("Nhân Viên");
     }
-    
+
     private String fomatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String newDate = sdf.format(date);
         return newDate;
     }
-    
+
     private void showData() {
         ArrayList<TaiKhoan> lstk = new ArrayList<>();
-        if(txtSearch.getText().trim().length() == 0){
+        if (txtSearch.getText().trim().length() == 0) {
             lstk = us.getAllTaiKhoan();
-        }else{
+        } else {
             lstk = us.search(txtSearch.getText().trim());
         }
         DefaultTableModel dtm = (DefaultTableModel) tbl.getModel();
@@ -67,19 +67,19 @@ public class NhanVien extends javax.swing.JPanel {
                 u.getTaiKhoan(),
                 u.getIdCV() == 1 ? "Quản Lý" : "Nhân Viên",
                 u.getEmail(),
-                u.getTrangThai() == false ? "Không làm việc":"Làm Việc",
+                u.getTrangThai() == false ? "Không làm việc" : "Làm Việc",
                 fomatDate(u.getNgayTao()),
                 fomatDate(u.getNgaySua())
             };
             dtm.addRow(rowData);
         }
     }
-    
+
     private void fillData(int row) {
         ArrayList<TaiKhoan> lstk = new ArrayList<>();
-        if(txtSearch.getText().trim().length() == 0){
+        if (txtSearch.getText().trim().length() == 0) {
             lstk = us.getAllTaiKhoan();
-        }else{
+        } else {
             lstk = us.search(txtSearch.getText().trim());
         }
         TaiKhoan u = lstk.get(row);
@@ -176,57 +176,65 @@ public class NhanVien extends javax.swing.JPanel {
     }
 
     private TaiKhoan getDataUpdate() {
-    String ten = txtTen.getText();
-    String ngaySinhString = txtNgaySinh.getText();
-    Date ngaySinh = null;
-    
-    // Parse ngaySinhString to Date
-    try {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        ngaySinh = sdf.parse(ngaySinhString);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy !");
-        return null;
+        String ten = txtTen.getText();
+        String ngaySinhString = txtNgaySinh.getText();
+        Date ngaySinh = null;
+
+        // Parse ngaySinhString to Date
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            ngaySinh = sdf.parse(ngaySinhString);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy !");
+            return null;
+        }
+
+        java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
+
+        String sdt = TxtSDT.getText();
+        String taiKhoan = txtTaiKhoan.getText();
+        String matKhau = txtMatKhau.getText();
+        String email = txtEmail.getText();
+
+        boolean gioiTinh = rdoNam.isSelected();
+
+        boolean trangThai = ckbTrangThai.isSelected();
+
+        String chucVuString = cbbChucVu.getSelectedItem().toString();
+        int chucVu = chucVuString.equals("Quản Lý") ? 1 : 2;
+
+        TaiKhoan u = new TaiKhoan();
+        u.setTen(ten);
+        u.setNgaySinh(sqlDate);
+        u.setSdt(sdt);
+        u.setTaiKhoan(taiKhoan);
+        u.setMatKhau(matKhau);
+        u.setEmail(email);
+        u.setGioiTinh(gioiTinh);
+        u.setIdCV(chucVu);
+        u.setTrangThai(trangThai);
+
+        // Validation
+        boolean checkAccount = true;
+        for (int i = 0; i < us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(i).getTaiKhoan()).size(); i++) {
+            if (us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(i).getTaiKhoan()).get(i).getTaiKhoan().equals(taiKhoan)) {
+                checkAccount = false;
+                break;
+            }
+        }if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ trường");
+            return null;
+        } else if (!sdt.matches("^0+[0-9]{9}$")) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
+            return null;
+        }else if(!checkAccount) {
+            JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
+            return null;
+        }else {
+            JOptionPane.showMessageDialog(this, "Sửa thành công");
+            return u;
+        }
     }
-    
-    java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
-    
-    String sdt = TxtSDT.getText();
-    String taiKhoan = txtTaiKhoan.getText();
-    String matKhau = txtMatKhau.getText();
-    String email = txtEmail.getText();
-    
-    boolean gioiTinh = rdoNam.isSelected();
-    
-    boolean trangThai = ckbTrangThai.isSelected();
-    
-    String chucVuString = cbbChucVu.getSelectedItem().toString();
-    int chucVu = chucVuString.equals("Quản Lý") ? 1 : 2;
-    
-    TaiKhoan u = new TaiKhoan();
-    u.setTen(ten);
-    u.setNgaySinh(sqlDate);
-    u.setSdt(sdt);
-    u.setTaiKhoan(taiKhoan);
-    u.setMatKhau(matKhau);
-    u.setEmail(email);
-    u.setGioiTinh(gioiTinh);
-    u.setIdCV(chucVu);
-    u.setTrangThai(trangThai);
-    
-    // Validation
-    if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ trường");
-        return null;
-    } else if (!sdt.matches("^0+[0-9]{9}$")) {
-        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
-        return null;
-    } else {
-        JOptionPane.showMessageDialog(this, "Sửa thành công");
-        return u;
-    }
-}
-  
 
     public void clear() {
         TxtSDT.setText("");
@@ -241,7 +249,7 @@ public class NhanVien extends javax.swing.JPanel {
         ckbTrangThai.setSelected(false);
         tbl.clearSelection();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -539,20 +547,20 @@ public class NhanVien extends javax.swing.JPanel {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         int row = tbl.getSelectedRow();
-        if(row<0){
+        if (row < 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn người muốn sửa");
-        }else{
+        } else {
             ArrayList<TaiKhoan> lstk = new ArrayList<>();
-        if(txtSearch.getText().trim().length() == 0){
-            lstk = us.getAllTaiKhoan();
-        }else{
-            lstk = us.search(txtSearch.getText().trim());
-        }
+            if (txtSearch.getText().trim().length() == 0) {
+                lstk = us.getAllTaiKhoan();
+            } else {
+                lstk = us.search(txtSearch.getText().trim());
+            }
             Integer id = lstk.get(row).getId();
-        us.sua(getDataUpdate(), id);
-        showData();
+            us.sua(getDataUpdate(), id);
+            showData();
         }
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMouseClicked
@@ -578,9 +586,9 @@ public class NhanVien extends javax.swing.JPanel {
 
     private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
         ArrayList<TaiKhoan> lstk = new ArrayList<>();
-        if(txtSearch.getText().trim().length() == 0){
+        if (txtSearch.getText().trim().length() == 0) {
             lstk = us.getAllTaiKhoan();
-        }else{
+        } else {
             lstk = us.search(txtSearch.getText().trim());
         }
         try {
@@ -589,93 +597,93 @@ public class NhanVien extends javax.swing.JPanel {
             CellStyle style = workbook.createCellStyle();
             style.setFillForegroundColor(IndexedColors.BRIGHT_GREEN.getIndex());
             style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            
-            XSSFRow row= null;
-            XSSFCell cell= null;
+
+            XSSFRow row = null;
+            XSSFCell cell = null;
             row = sheet.createRow(1);
-            
-            cell = row.createCell(0,CellType.STRING);
+
+            cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("STT");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(1,CellType.STRING);
+
+            cell = row.createCell(1, CellType.STRING);
             cell.setCellValue("Họ và tên");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(2,CellType.STRING);
+
+            cell = row.createCell(2, CellType.STRING);
             cell.setCellValue("Tài khoản");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(3,CellType.STRING);
+
+            cell = row.createCell(3, CellType.STRING);
             cell.setCellValue("Số điện thoại");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(4,CellType.STRING);
+
+            cell = row.createCell(4, CellType.STRING);
             cell.setCellValue("Email");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(5,CellType.STRING);
+
+            cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Giới tính");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(6,CellType.STRING);
+
+            cell = row.createCell(6, CellType.STRING);
             cell.setCellValue("Chức vụ");
             cell.setCellStyle(style);
-            
-            cell = row.createCell(7,CellType.STRING);
+
+            cell = row.createCell(7, CellType.STRING);
             cell.setCellValue("Trạng thái");
             cell.setCellStyle(style);
-            
-            for(int i = 0 ; i < lstk.size() ; i ++){
+
+            for (int i = 0; i < lstk.size(); i++) {
                 TaiKhoan tk = lstk.get(i);
-                row = sheet.createRow(2+i);
-                
-            cell = row.createCell(0,CellType.STRING);
-            cell.setCellValue(i+1);
-            
-            cell = row.createCell(1,CellType.STRING);
-            cell.setCellValue(tk.getTen());
-            
-            cell = row.createCell(2,CellType.STRING);
-            cell.setCellValue(tk.getTaiKhoan());
-            
-            cell = row.createCell(3,CellType.STRING);
-            cell.setCellValue(tk.getSdt());
-            
-            cell = row.createCell(4,CellType.STRING);
-            cell.setCellValue(tk.getEmail());
-            
-            cell = row.createCell(5,CellType.STRING);
-            cell.setCellValue(tk.getGioiTinh()?"Nam":"Nữ");
-            
-            cell = row.createCell(6,CellType.STRING);
-            cell.setCellValue(tk.getIdCV()==1?"Quản lý":"Nhân viên");
-            
-            cell = row.createCell(7,CellType.STRING);
-            cell.setCellValue(tk.getTrangThai()?"Làm việc":"Không làm việc");
-                
+                row = sheet.createRow(2 + i);
+
+                cell = row.createCell(0, CellType.STRING);
+                cell.setCellValue(i + 1);
+
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(tk.getTen());
+
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(tk.getTaiKhoan());
+
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(tk.getSdt());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(tk.getEmail());
+
+                cell = row.createCell(5, CellType.STRING);
+                cell.setCellValue(tk.getGioiTinh() ? "Nam" : "Nữ");
+
+                cell = row.createCell(6, CellType.STRING);
+                cell.setCellValue(tk.getIdCV() == 1 ? "Quản lý" : "Nhân viên");
+
+                cell = row.createCell(7, CellType.STRING);
+                cell.setCellValue(tk.getTrangThai() ? "Làm việc" : "Không làm việc");
+
             }
             String f = "C:\\Users\\duong\\Downloads\\DanhSachNhanVien\\danhsachnhanvien";
             String filePath = f + ".xlsx";
             int fileIndex = 1;
-            while(new File(filePath).exists()){
-                filePath = f + "(" + fileIndex++ +").xlsx";
+            while (new File(filePath).exists()) {
+                filePath = f + "(" + fileIndex++ + ").xlsx";
             }
-            try{
-            FileOutputStream fos = new FileOutputStream(filePath);
-            workbook.write(fos);
-            JOptionPane.showMessageDialog(this, "In thành công");
+            try {
+                FileOutputStream fos = new FileOutputStream(filePath);
+                workbook.write(fos);
+                JOptionPane.showMessageDialog(this, "In thành công");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnXuatExcelActionPerformed
 
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
-                showData();
+        showData();
     }//GEN-LAST:event_txtSearchKeyPressed
 
 

@@ -195,4 +195,48 @@ public class TaiKhoanService {
         }
         return true;
     }
+    
+    public ArrayList<TaiKhoan> getAllTaiKhoanUpdate(String username) {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users] where TaiKhoan <> ?
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            ps.setObject(1, username);
+            ArrayList<TaiKhoan> ls = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TaiKhoan tk = new TaiKhoan();
+                tk.setId(rs.getInt(1));
+                tk.setTen(rs.getString(2));
+                tk.setNgaySinh(rs.getDate(3));
+                tk.setGioiTinh(rs.getBoolean(4));
+                tk.setSdt(rs.getString(5));
+                tk.setIdCV(rs.getInt(6));
+                tk.setTaiKhoan(rs.getString(7));
+                tk.setMatKhau(rs.getString(8));
+                tk.setEmail(rs.getString(9));
+                tk.setTrangThai(rs.getBoolean(10));
+                tk.setNgayTao(rs.getDate(11));
+                tk.setNgaySua(rs.getDate(12));
+                ls.add(tk);
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
