@@ -37,6 +37,10 @@ public class BanHang extends javax.swing.JPanel {
     private List<model.KhuyenMai> listKhuyenMai = khuyenMaiService.getAll();
     DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
+    /**
+     * Creates new form BanHang
+     */
+    // trung anh ăn cứt 
     public BanHang() {
         initComponents();
         loadHoaDon();
@@ -193,12 +197,8 @@ public class BanHang extends javax.swing.JPanel {
             HoaDon hoaDon = list.get(i);
             if (hoaDon.getTinhTrang() == 0) {
                 model.addRow(new Object[]{
-                    hoaDon.getId(),
-                    hoaDon.getMa(),
-                    hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
-                    hoaDon.getTongTien(),
-                    hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán",
-                    hoaDon.getNgayTao()
+                    hoaDon.getId(), hoaDon.getMa(), hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
+                    hoaDon.getTongTien(), hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán", hoaDon.getNgayTao()
                 });
             }
         }
@@ -433,6 +433,49 @@ public class BanHang extends javax.swing.JPanel {
         }
         hoadonService.updateTongTien(idHD, tongTien);
         loadHoaDon();
+    }
+
+    private void applyKhuyenMai() {
+        double giaTienGiam = 0;
+        try {
+            double tongTien = Double.parseDouble(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 3).toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hóa đơn áp dụng voucher !");
+            return;
+        }
+        boolean isAvaliable = true;
+        double tongTien = Double.parseDouble(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 3).toString());
+        String inputKhuyenMai = cbx_khuyenMai1.getSelectedItem() + "";
+        for (model.KhuyenMai khuyenMai : listKhuyenMai) {
+
+            if (khuyenMai.getTenKhuyenMai().equals(inputKhuyenMai)) {
+
+                if (khuyenMai.getSoLuong() <= 0) {
+                    isAvaliable = false;
+                } else {
+                    if (khuyenMai.getHinhThucKM().equals("VND")) {
+                        giaTienGiam = Double.parseDouble(khuyenMai.getGiaTriGiam());
+                        lbl_giamVoucher1.setText(decimalFormat.format(giaTienGiam));
+                        lbl_tienPhaitra1.setText(decimalFormat.format((tongTien - giaTienGiam)));
+                        isAvaliable = true;
+                        return;
+                    } else if (khuyenMai.getHinhThucKM().equals("%")) {
+                        giaTienGiam = tongTien * (Double.parseDouble(khuyenMai.getGiaTriGiam())) / 100;
+                        lbl_giamVoucher1.setText(decimalFormat.format(giaTienGiam));
+                        lbl_tienPhaitra1.setText(decimalFormat.format((tongTien - giaTienGiam)));
+                        isAvaliable = true;
+                        return;
+                    }
+                }
+
+            } else {
+                isAvaliable = false;
+            }
+        }
+        if (!isAvaliable) {
+            JOptionPane.showMessageDialog(this, "Khuyến mãi không chính xác hoặc đã hết!");
+            return;
+        }
     }
 
     /**
@@ -840,6 +883,8 @@ public class BanHang extends javax.swing.JPanel {
         int idHD = Integer.parseInt(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 0) + "");
         loadLableThongTin();
         loadGioHangByIDHD(idHD);
+        lblTienThua1.setText("");
+        txtTienKhachTra1.setText("");
         try {
             Double.parseDouble(txtTienKhachTra1.getText() + "");
         } catch (Exception e) {
@@ -968,8 +1013,11 @@ public class BanHang extends javax.swing.JPanel {
         }
         tienPhaiTra = tongTien - tienGiam;
         Double tienThua = tienKhachTra - tienPhaiTra;
+
         if (tienThua >= 0) {
             lblTienThua1.setText(tienThua + "");
+        } else {
+            lblTienThua1.setText("Chưa Đủ");
         }
     }//GEN-LAST:event_txtTienKhachTra1KeyReleased
 
@@ -978,7 +1026,18 @@ public class BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTienKhachTra1KeyTyped
 
     private void cbx_khuyenMai1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbx_khuyenMai1ItemStateChanged
-
+        if (!(cbx_khuyenMai1.getSelectedItem() + "").equalsIgnoreCase("Chọn khuyến mãi")) {
+            applyKhuyenMai();
+        } else {
+            lbl_giamVoucher1.setText("");
+            try {
+                double tongTien = Double.parseDouble(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 3).toString());
+            } catch (Exception e) {
+                return;
+            }
+            double tongTien = Double.parseDouble(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 3).toString());
+            lbl_tienPhaitra1.setText(decimalFormat.format(tongTien) + "");
+        }
     }//GEN-LAST:event_cbx_khuyenMai1ItemStateChanged
 
     private void cbx_khuyenMai1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_khuyenMai1ActionPerformed
@@ -1068,7 +1127,6 @@ public class BanHang extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm trong giỏ cần sửa");
             return;
-
         }
 
         int idSP = Integer.parseInt(tbl_gioHang1.getValueAt(tbl_gioHang1.getSelectedRow(), 0) + "");
@@ -1081,18 +1139,35 @@ public class BanHang extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "số lượng nhập vào không hợp lệ");
             return;
         }
+
         int soLuongChenhLech = soLuong - soLuongUpdate;
 
+        SanPhamChiTiet selectedSPCT = null;
         List<SanPhamChiTiet> listSPCT = chiTietSpService.getAll();
         for (SanPhamChiTiet sanPhamChiTiet : listSPCT) {
             if (Integer.parseInt(sanPhamChiTiet.getId()) == idSP) {
-                int soLuongMoi = sanPhamChiTiet.getSoLuongTon() + soLuongChenhLech;
-                hoaDonCTService.updateSoLuongSPHoaDonCT(idHD, idSP, soLuongUpdate);
-                chiTietSpService.phucHoiSoLuong(idSP, soLuongMoi);
-                reFreshListHDCT();
-                loadTableSpCt();
+                selectedSPCT = sanPhamChiTiet;
+                break;
             }
         }
+
+        if (selectedSPCT == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm chi tiết");
+            return;
+        }
+
+// Validate if soLuongUpdate exceeds soLuongTon
+        if (soLuongUpdate > selectedSPCT.getSoLuongTon()) {
+            JOptionPane.showMessageDialog(this, "Số lượng nhập vào không hợp lệ, không được lớn hơn số lượng còn trong sản phẩm chi tiết");
+            return;
+        }
+
+        int soLuongMoi = selectedSPCT.getSoLuongTon() + soLuongChenhLech;
+        hoaDonCTService.updateSoLuongSPHoaDonCT(idHD, idSP, soLuongUpdate);
+        chiTietSpService.phucHoiSoLuong(idSP, soLuongMoi);
+
+        reFreshListHDCT();
+        loadTableSpCt();
 
         JOptionPane.showMessageDialog(this, "Sửa Thành Công");
         reFreshListHDCT();
@@ -1102,6 +1177,7 @@ public class BanHang extends javax.swing.JPanel {
         if (selectedRow != -1 && selectedRow < tbl_hoadon1.getRowCount()) {
             tbl_hoadon1.setRowSelectionInterval(selectedRow, selectedRow);
         }
+
         loadLableThongTin();
     }//GEN-LAST:event_jButton12ActionPerformed
 
@@ -1182,6 +1258,7 @@ public class BanHang extends javax.swing.JPanel {
         }else{
             JOptionPane.showMessageDialog(this, "Xóa thát bại");
         }
+
     }//GEN-LAST:event_jButton13ActionPerformed
 
 

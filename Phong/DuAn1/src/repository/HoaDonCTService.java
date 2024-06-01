@@ -80,14 +80,14 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
     
     
     @Override
-    public boolean addHDCT(HoaDon hoaDon, SanPhamChiTiet sanPhamChiTiet, int soLuong, double Dongia) {
+    public boolean addHDCT(HoaDon hoaDon, SanPhamChiTiet sanPhamChiTiet, int soLuong, double DonGia) {
         try {
             String sql = "insert into HoaDonChiTiet(IdHD,IdCTSP,SoLuong,Dongia) values(?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, hoaDon.getId());
             stmt.setInt(2, Integer.parseInt(sanPhamChiTiet.getId()));
             stmt.setInt(3, soLuong);
-            stmt.setDouble(4, Dongia);
+            stmt.setDouble(4, DonGia);
             stmt.execute();
             return true;
         } catch (Exception e) {

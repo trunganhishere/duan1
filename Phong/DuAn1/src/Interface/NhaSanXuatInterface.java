@@ -14,5 +14,5 @@ public interface NhaSanXuatInterface {
     public boolean add(NSX NSX);
 
     public boolean update(NSX nsx, int id);
-
+ boolean existsByName(String name); 
 }

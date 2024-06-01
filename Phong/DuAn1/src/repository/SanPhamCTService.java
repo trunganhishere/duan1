@@ -191,7 +191,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         String sql = """
                      UPDATE [dbo].[ChitietSP]
                         SET[SoLuongTon] = ?
-                      WHERE Id = ?
+                      WHERE idSP = ?
                      """;
         
         try(PreparedStatement ps = con.prepareCall(sql)) {

@@ -14,5 +14,7 @@ public interface MauSacInterface {
     public boolean add(MauSac MauSac);
 
     public boolean update(MauSac cl, int id);
+    
+    boolean existsByName(String name);
 
 }

@@ -68,4 +68,19 @@ public class MauSacService implements MauSacInterface{
             return false;
         }
     }
+      @Override
+    public boolean existsByName(String name) {
+        String SQL = "SELECT COUNT(*) FROM MauSac WHERE Ten = ?";
+        try {
+            PreparedStatement pstm = con.prepareStatement(SQL);
+            pstm.setString(1, name);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

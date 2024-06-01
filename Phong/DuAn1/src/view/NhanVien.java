@@ -118,14 +118,13 @@ public class NhanVien extends javax.swing.JPanel {
         if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng điền đủ trường");
             return null;
-        }
-
-        if (!sdt.matches("^0+[0-9]{9}$")) {
+        }else if (!ten.matches("[\\p{L} ]+")) {
+            JOptionPane.showMessageDialog(this, "Tên không hợp lệ");
+            return null;
+        } else if (!sdt.matches("^0+[0-9]{9}$")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
             return null;
-        }
-
-        if (ngaySinhString.isEmpty()) {
+        }else if (ngaySinhString.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh");
             return null;
         }
@@ -165,17 +164,28 @@ public class NhanVien extends javax.swing.JPanel {
                 break;
             }
         }
+        
+        boolean checkEmail = true;
+        for (int i = 0; i < us.getAllTaiKhoan().size(); i++) {
+            if (us.getAllTaiKhoan().get(i).getEmail().equals(email)) {
+                checkEmail = false;
+                break;
+            }
+        }
 
         if (!checkAccount) {
             JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
             return null;
-        } else {
+        }else if(!checkEmail){
+            JOptionPane.showMessageDialog(this, "Email đã tồn tại");
+            return null;
+        }else {
             JOptionPane.showMessageDialog(this, "Thêm thành công");
             return u;
         }
     }
 
-    private TaiKhoan getDataUpdate() {
+    private TaiKhoan getDataUpdate(int row) {
         String ten = txtTen.getText();
         String ngaySinhString = txtNgaySinh.getText();
         Date ngaySinh = null;
@@ -216,19 +226,35 @@ public class NhanVien extends javax.swing.JPanel {
 
         // Validation
         boolean checkAccount = true;
-        for (int i = 0; i < us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(i).getTaiKhoan()).size(); i++) {
-            if (us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(i).getTaiKhoan()).get(i).getTaiKhoan().equals(taiKhoan)) {
-                checkAccount = false;
-                break;
-            }
-        }if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
+            for(int z = 0 ; z < us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(row).getTaiKhoan()).size(); z ++){
+                if(taiKhoan.equals(us.getAllTaiKhoanUpdate(us.getAllTaiKhoan().get(row).getTaiKhoan()).get(z).getTaiKhoan())){
+                    checkAccount = false;
+                    break;
+                }
+        }
+        
+        boolean checkEmail = true;
+        for(int z = 0 ; z < us.getAllEmailUpdate(us.getAllTaiKhoan().get(row).getEmail()).size(); z ++){
+                if(email.equals(us.getAllEmailUpdate(us.getAllTaiKhoan().get(row).getEmail()).get(z).getEmail())){
+                    checkEmail = false;
+                    break;
+                }
+        }
+        
+        if (ten.isEmpty() || sdt.isEmpty() || taiKhoan.isEmpty() || matKhau.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ trường");
+            return null;
+        }else if (!ten.matches("[\\p{L} ]+")) {
+            JOptionPane.showMessageDialog(this, "Tên không hợp lệ");
             return null;
         } else if (!sdt.matches("^0+[0-9]{9}$")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ");
             return null;
         }else if(!checkAccount) {
             JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
+            return null;
+        }else if(!checkEmail){
+            JOptionPane.showMessageDialog(this, "Email đã tồn tại");
             return null;
         }else {
             JOptionPane.showMessageDialog(this, "Sửa thành công");
@@ -521,9 +547,9 @@ public class NhanVien extends javax.swing.JPanel {
                     .addComponent(btnSua)
                     .addComponent(btnSua1)
                     .addComponent(btnXuatExcel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -535,7 +561,7 @@ public class NhanVien extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -557,7 +583,7 @@ public class NhanVien extends javax.swing.JPanel {
                 lstk = us.search(txtSearch.getText().trim());
             }
             Integer id = lstk.get(row).getId();
-            us.sua(getDataUpdate(), id);
+            us.sua(getDataUpdate(row), id);
             showData();
         }
 

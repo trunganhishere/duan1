@@ -14,5 +14,6 @@ public interface KichCoInterface {
     public boolean add(KichCo kichCo);
 
     public boolean update(KichCo cl, int id);
+      boolean existsByName(String name);
 
 }

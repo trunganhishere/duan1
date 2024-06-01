@@ -69,5 +69,22 @@ public class ChatLieuService implements ChatLieuInterface{
         }
     }
 
+    @Override
+     public boolean existsByName(String name) {
+        String SQL = "SELECT COUNT(*) FROM ChatLieu WHERE Ten = ?";
+        try {
+            PreparedStatement pstm = con.prepareStatement(SQL);
+            pstm.setString(1, name);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
    
 }
