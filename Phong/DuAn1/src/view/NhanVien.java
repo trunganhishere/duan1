@@ -68,8 +68,7 @@ public class NhanVien extends javax.swing.JPanel {
                 u.getIdCV() == 1 ? "Quản Lý" : "Nhân Viên",
                 u.getEmail(),
                 u.getTrangThai() == false ? "Không làm việc" : "Làm Việc",
-                fomatDate(u.getNgayTao()),
-                fomatDate(u.getNgaySua())
+                fomatDate(u.getNgayTao())
             };
             dtm.addRow(rowData);
         }
@@ -339,13 +338,13 @@ public class NhanVien extends javax.swing.JPanel {
 
         tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tên", "Ngày Sinh", "Giới Tính", "SĐT", "Tài Khoản", "Chức vụ", "Email", "Trạng Thái", "Ngày Tạo", "Ngày Sửa"
+                "Tên", "Ngày Sinh", "Giới Tính", "SĐT", "Tài Khoản", "Chức vụ", "Email", "Trạng Thái", "Ngày Tạo"
             }
         ));
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {

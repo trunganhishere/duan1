@@ -18,11 +18,13 @@ import javax.swing.table.DefaultTableModel;
 import model.HoaDon;
 import model.SanPhamChiTiet;
 import model.ThuongHieu;
+import repository.DangNhapService;
 import repository.HoaDonCTService;
 import repository.HoaDonService;
 import repository.KhachHangService;
 import repository.KhuyenMaiService;
 import repository.SanPhamCTService;
+import repository.TaiKhoanService;
 import repository.ThuongHieuService;
 
 public class BanHang extends javax.swing.JPanel {
@@ -36,6 +38,8 @@ public class BanHang extends javax.swing.JPanel {
     List<HoaDonChiTiet> listHDCT = hoaDonCTService.getAllHDCT();
     private List<model.KhuyenMai> listKhuyenMai = khuyenMaiService.getAll();
     DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private DangNhapService dnsv = new DangNhapService();
+    TaiKhoanService tksv = new TaiKhoanService();
 
     /**
      * Creates new form BanHang
@@ -197,8 +201,13 @@ public class BanHang extends javax.swing.JPanel {
             HoaDon hoaDon = list.get(i);
             if (hoaDon.getTinhTrang() == 0) {
                 model.addRow(new Object[]{
-                    hoaDon.getId(), hoaDon.getMa(), hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
-                    hoaDon.getTongTien(), hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán", hoaDon.getNgayTao()
+                    hoaDon.getId(), 
+                    hoaDon.getMa(), 
+                    hoaDon.getIDKhachHang() == 0 ? "Trống" : getTenKH(hoaDon.getIDKhachHang()),
+                    hoaDon.getTongTien(), 
+                    hoaDon.getTinhTrang() == 0 ? "Chưa Thanh Toán" : "Đã Thanh Toán", 
+                    tksv.findUserByID(hoaDon.getIdUser()).getTen(),
+                    hoaDon.getNgayTao()
                 });
             }
         }
@@ -235,8 +244,7 @@ public class BanHang extends javax.swing.JPanel {
         int randomNumber = random.nextInt(899999) + 100000;
         String ma = "HD-" + randomNumber;
         HoaDon hd = new HoaDon();
-        hd.setMa(ma);
-        if (hoadonService.addHoaDon(hd)) {
+        if (hoadonService.addHoaDon(ma,dnsv.login(dnsv.getUsername(), dnsv.getPassword()).getId())) {
             JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công");
         } else {
             JOptionPane.showMessageDialog(this, "Tạo hóa đơn thất bại");
@@ -337,7 +345,7 @@ public class BanHang extends javax.swing.JPanel {
         lbTongTien1.setText(decimalFormat.format(tongTien));
         lb_idHD1.setText(tbl_hoadon1.getValueAt(tbl_hoadon1.getSelectedRow(), 0) + "");
         lbl_tienPhaitra1.setText(decimalFormat.format(tongTien));
-
+        lbl_nguoiTao.setText(tksv.findUserByID(hoadonService.getAllHDChuaTT().get(tbl_hoadon1.getSelectedRow()).getIdUser()).getTen());
     }
 
     private boolean themSpVaoHD() {
@@ -498,7 +506,6 @@ public class BanHang extends javax.swing.JPanel {
         tbl_sanPham = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         btnTaoHoaDon1 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
@@ -519,6 +526,8 @@ public class BanHang extends javax.swing.JPanel {
         jLabel25 = new javax.swing.JLabel();
         lb_idHD1 = new javax.swing.JLabel();
         cbx_khuyenMai1 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        lbl_nguoiTao = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         txtSpSearch1 = new javax.swing.JTextField();
         jButton10 = new javax.swing.JButton();
@@ -567,17 +576,17 @@ public class BanHang extends javax.swing.JPanel {
 
         tbl_hoadon1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "MaHD", "Khách Hàng", "Tổng tiền", "Tình trạng", "Ngày tạo"
+                "ID", "MaHD", "Khách Hàng", "Tổng tiền", "Tình trạng", "Người tạo", "Ngày tạo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -639,18 +648,7 @@ public class BanHang extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, -1, 34));
-
-        jButton4.setBackground(new java.awt.Color(0, 153, 51));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Làm mới");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 460, 90, 35));
+        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, -1, 34));
 
         btnTaoHoaDon1.setBackground(new java.awt.Color(0, 153, 51));
         btnTaoHoaDon1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -661,7 +659,7 @@ public class BanHang extends javax.swing.JPanel {
                 btnTaoHoaDon1ActionPerformed(evt);
             }
         });
-        jPanel4.add(btnTaoHoaDon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, -1, 35));
+        jPanel4.add(btnTaoHoaDon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 35));
 
         jButton9.setBackground(new java.awt.Color(0, 153, 51));
         jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -675,46 +673,46 @@ public class BanHang extends javax.swing.JPanel {
         jPanel4.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 160, 40));
 
         jLabel11.setText("SĐT");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 40, -1));
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 40, -1));
 
         jLabel12.setText("Tên khách hàng");
-        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
         jLabel13.setText("Giảm giá voucher");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, 20));
+        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, 20));
 
         jLabel15.setText("Tổng tiền");
-        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
         lblTienThua1.setText("...");
-        jPanel4.add(lblTienThua1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 130, -1));
+        jPanel4.add(lblTienThua1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, 130, -1));
 
         lbl_tenKH1.setText("...");
-        jPanel4.add(lbl_tenKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 160, -1));
+        jPanel4.add(lbl_tenKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 160, -1));
 
         lbl_sdtKH1.setText("...");
-        jPanel4.add(lbl_sdtKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 160, -1));
+        jPanel4.add(lbl_sdtKH1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 160, -1));
 
         lbTongTien1.setText("...");
-        jPanel4.add(lbTongTien1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 130, -1));
+        jPanel4.add(lbTongTien1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, 130, -1));
 
         jLabel18.setText("Tiền phải trả:");
-        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, -1, 20));
+        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, -1, 20));
 
         lbl_giamVoucher1.setText("...");
-        jPanel4.add(lbl_giamVoucher1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 130, -1));
+        jPanel4.add(lbl_giamVoucher1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, 130, -1));
 
         jLabel20.setText("Chọn Khuyến Mãi:");
-        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, -1));
 
         jLabel23.setText("Tiền Khách Đưa");
-        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, -1, -1));
+        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, -1, -1));
 
         lbl_tienPhaitra1.setText("...");
-        jPanel4.add(lbl_tienPhaitra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 130, 20));
+        jPanel4.add(lbl_tienPhaitra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 380, 130, 20));
 
         jLabel24.setText("Tiền trả lại khách");
-        jPanel4.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, -1, -1));
+        jPanel4.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, -1, -1));
 
         txtTienKhachTra1.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
@@ -739,13 +737,13 @@ public class BanHang extends javax.swing.JPanel {
                 txtTienKhachTra1KeyTyped(evt);
             }
         });
-        jPanel4.add(txtTienKhachTra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 130, 30));
+        jPanel4.add(txtTienKhachTra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 130, 30));
 
         jLabel25.setText("ID hóa đơn:");
-        jPanel4.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+        jPanel4.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
         lb_idHD1.setText("...");
-        jPanel4.add(lb_idHD1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 90, 20));
+        jPanel4.add(lb_idHD1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 90, 20));
 
         cbx_khuyenMai1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn khuyến mãi" }));
         cbx_khuyenMai1.addItemListener(new java.awt.event.ItemListener() {
@@ -758,7 +756,13 @@ public class BanHang extends javax.swing.JPanel {
                 cbx_khuyenMai1ActionPerformed(evt);
             }
         });
-        jPanel4.add(cbx_khuyenMai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 170, 30));
+        jPanel4.add(cbx_khuyenMai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 170, 30));
+
+        jLabel1.setText("Người tạo:");
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        lbl_nguoiTao.setText("...");
+        jPanel4.add(lbl_nguoiTao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 140, -1));
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 0, 260, 570));
 
@@ -931,10 +935,6 @@ public class BanHang extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void btnTaoHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoHoaDon1ActionPerformed
         int newHD = JOptionPane.showConfirmDialog(this, "Tạo 1 hóa đơn mới ?");
         if (newHD == 0) {
@@ -959,6 +959,7 @@ public class BanHang extends javax.swing.JPanel {
             lb_idHD1.setText("");
             cbx_khuyenMai1.setSelectedIndex(0);
             txtTienKhachTra1.setText("");
+            lbl_nguoiTao.setText("");
             DefaultTableModel giohangModel = (DefaultTableModel) tbl_gioHang1.getModel();
             giohangModel.setRowCount(0);
 
@@ -1225,11 +1226,11 @@ public class BanHang extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn");
         } else {
             try {
-                for (int i = 1; i < hoaDonCTService.getAllHDCT().size(); i++) {
+                for (int i = 0; i < hoaDonCTService.getAllHDCTByIdHD(idHD).size(); i++) {
                 for(int z = 0 ; z < chiTietSpService.getAll().size() ; z ++){
-                    if(hoaDonCTService.getAllHDCT().get(i).getHaoDon().getId().equals(idHD)){
+                    if(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getHaoDon().getId().equals(idHD)){
                         if(chiTietSpService.getAll().get(z).getId().equals(hoaDonCTService.getAllHDCT().get(i).getSanPham().getId())){
-                        int soLuongMoi = hoaDonCTService.getAllHDCT().get(i).getSoluong() + chiTietSpService.getAll().get(z).getSoLuongTon();
+                        int soLuongMoi = hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSoluong() + chiTietSpService.getAll().get(z).getSoLuongTon();
                         chiTietSpService.updateSoLuongSPCT(soLuongMoi, Integer.valueOf(hoaDonCTService.getAllHDCT().get(i).getSanPham().getId()));
                         check = true;
                         }
@@ -1255,6 +1256,8 @@ public class BanHang extends javax.swing.JPanel {
             lbl_tenKH1.setText("...");
             lblTienThua1.setText("...");
             lb_idHD1.setText("...");
+            lbl_tienPhaitra1.setText("");
+            lbl_nguoiTao.setText("");
         }else{
             JOptionPane.showMessageDialog(this, "Xóa thát bại");
         }
@@ -1272,8 +1275,8 @@ public class BanHang extends javax.swing.JPanel {
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1297,6 +1300,7 @@ public class BanHang extends javax.swing.JPanel {
     private javax.swing.JLabel lb_idHD1;
     private javax.swing.JLabel lblTienThua1;
     private javax.swing.JLabel lbl_giamVoucher1;
+    private javax.swing.JLabel lbl_nguoiTao;
     private javax.swing.JLabel lbl_sdtKH1;
     private javax.swing.JLabel lbl_tenKH1;
     private javax.swing.JLabel lbl_tienPhaitra1;

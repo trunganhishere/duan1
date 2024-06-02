@@ -64,17 +64,20 @@ public class HoaDonService implements hoaDonInterface {
     }
 
     @Override
-    public boolean addHoaDon(HoaDon hd) {
+    public boolean addHoaDon(String maHD,int idNV) {
         try {
-            String sql = "INSERT INTO [dbo].[HoaDon]\n" +
-"                                ([Ma]\n" +
-"                                ,[IdKH]\n" +
-"                                ,[IdNV]\n" +
-"                                ,[TinhTrang])\n" +
-"                          VALUES\n" +
-"                                (?,1,1,0)";
+            String sql = """
+                         INSERT INTO [dbo].[HoaDon]
+                                    ([IdKH]
+                                    ,[IdNV]
+                                    ,[Ma]
+                                    ,[TinhTrang])
+                              VALUES
+                                    (1,?,?,0)
+                         """;
             PreparedStatement stm = con.prepareStatement(sql);
-            stm.setString(1, hd.getMa());
+            stm.setInt(1, idNV);
+            stm.setString(2, maHD);
             stm.execute();
             return true;
         } catch (Exception e) {

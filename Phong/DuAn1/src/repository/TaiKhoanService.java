@@ -306,4 +306,46 @@ public class TaiKhoanService {
         }
         return null;
     }
+    
+    public TaiKhoan findUserByID(int idUser) {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users] where Id = ?
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            ps.setObject(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            TaiKhoan tk = new TaiKhoan();
+            if (rs.next()) {
+                tk.setId(rs.getInt(1));
+                tk.setTen(rs.getString(2));
+                tk.setNgaySinh(rs.getDate(3));
+                tk.setGioiTinh(rs.getBoolean(4));
+                tk.setSdt(rs.getString(5));
+                tk.setIdCV(rs.getInt(6));
+                tk.setTaiKhoan(rs.getString(7));
+                tk.setMatKhau(rs.getString(8));
+                tk.setEmail(rs.getString(9));
+                tk.setTrangThai(rs.getBoolean(10));
+                tk.setNgayTao(rs.getDate(11));
+                tk.setNgaySua(rs.getDate(12));
+            }
+            return tk;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

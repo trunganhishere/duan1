@@ -18,6 +18,7 @@ import model.MauSac;
 import model.NSX;
 import model.ThuongHieu;
 import model.SanPham;
+import model.KhuyenMai;
 
 
 public class SanPhamCTService implements SanPhamChiTietInterface{
@@ -102,7 +103,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
                 list.add(sp);
 
             }
-            Collections.reverse(list);
+//            Collections.reverse(list);
             return list;
         } catch (Exception e) {
             return null;
@@ -191,7 +192,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         String sql = """
                      UPDATE [dbo].[ChitietSP]
                         SET[SoLuongTon] = ?
-                      WHERE idSP = ?
+                      WHERE id = ?
                      """;
         
         try(PreparedStatement ps = con.prepareCall(sql)) {
@@ -203,6 +204,58 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
             e.printStackTrace();
         }
         return false;
+    }
+    
+    @Override
+    public List<SanPhamChiTiet> getAll2() {
+        List<model.SanPhamChiTiet> list = new ArrayList<>();
+        String sql = """
+                     	SELECT [Id]
+                              ,[IdNsx]
+                              ,[IdMauSac]
+                              ,[IdKC]
+                              ,[IdCL]
+                              ,[IdTH]
+                              ,[MoTa]
+                              ,[SoLuongTon]
+                              ,[GiaNhap]
+                              ,[GiaBan]
+                              ,[IdSP]
+                              ,[idkm]
+                          FROM [dbo].[ChitietSP]
+                     """;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SanPhamChiTiet spct = new SanPhamChiTiet();
+                MauSac ms = new MauSac();
+                NSX nsx = new NSX();
+                KichCo kc = new KichCo();
+                ChatLieu cl = new ChatLieu();
+                ThuongHieu th = new ThuongHieu();
+                SanPham sp = new SanPham();
+                KhuyenMai km = new KhuyenMai();
+                
+                spct.setId(rs.getString(1));
+                nsx.setId(rs.getInt(2));
+                ms.setId(rs.getInt(3));
+                kc.setId(rs.getInt(4));
+                cl.setId(rs.getInt(5));
+                th.setId(rs.getInt(6));
+                spct.setMoTa(rs.getString(7));
+                spct.setSoLuongTon(rs.getInt(8));
+                spct.setGiaNhap(rs.getInt(9));
+                spct.setGiaBan(rs.getInt(10));
+                sp.setId(rs.getString(11));
+                km.setId(rs.getInt(12));
+                list.add(spct);
+            }
+            return list;
+//            Collections.reverse(list);
+        } catch (Exception e) {
+            return null;
+        }
     }
     
 }

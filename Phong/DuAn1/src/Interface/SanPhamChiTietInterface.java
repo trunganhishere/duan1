@@ -15,4 +15,5 @@ public interface SanPhamChiTietInterface {
     public int add(SanPhamChiTiet spct);
     public int update(SanPhamChiTiet sp,String id);
     public boolean updateSoLuongSPCT(int soLuong, int idSP);
+    public List<SanPhamChiTiet> getAll2();
 }

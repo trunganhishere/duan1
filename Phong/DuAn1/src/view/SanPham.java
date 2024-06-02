@@ -508,35 +508,35 @@ public class SanPham extends javax.swing.JPanel {
         String selectedKichCo = cboSize.getSelectedItem().toString();
         String selectedMauSac = cboMauSac.getSelectedItem().toString();
 
-        if (chatLieuExists(selectedChatLieu)) {
-            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
-            cboChatLieu.requestFocus();
-            return false;
-        }
-
-        if (thuongHieuExists(selectedThuongHieu)) {
-            JOptionPane.showMessageDialog(this, "Thương hiệu đã tồn tại.");
-            cboThuonghieu.requestFocus();
-            return false;
-        }
-
-        if (NSXExists(selectedNSX)) {
-            JOptionPane.showMessageDialog(this, "NSX đã tồn tại.");
-            cboNSX.requestFocus();
-            return false;
-        }
-
-        if (kichCoExists(selectedKichCo)) {
-            JOptionPane.showMessageDialog(this, "Kích cỡ đã tồn tại.");
-            cboSize.requestFocus();
-            return false;
-        }
-
-        if (mauSacExists(selectedMauSac)) {
-            JOptionPane.showMessageDialog(this, "Màu sắc đã tồn tại.");
-            cboMauSac.requestFocus();
-            return false;
-        }
+//        if (chatLieuExists(selectedChatLieu)) {
+//            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
+//            cboChatLieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (thuongHieuExists(selectedThuongHieu)) {
+//            JOptionPane.showMessageDialog(this, "Thương hiệu đã tồn tại.");
+//            cboThuonghieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (NSXExists(selectedNSX)) {
+//            JOptionPane.showMessageDialog(this, "NSX đã tồn tại.");
+//            cboNSX.requestFocus();
+//            return false;
+//        }
+//
+//        if (kichCoExists(selectedKichCo)) {
+//            JOptionPane.showMessageDialog(this, "Kích cỡ đã tồn tại.");
+//            cboSize.requestFocus();
+//            return false;
+//        }
+//
+//        if (mauSacExists(selectedMauSac)) {
+//            JOptionPane.showMessageDialog(this, "Màu sắc đã tồn tại.");
+//            cboMauSac.requestFocus();
+//            return false;
+//        }
         return true;
     }
 

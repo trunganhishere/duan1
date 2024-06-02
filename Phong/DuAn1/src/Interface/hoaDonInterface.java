@@ -10,7 +10,7 @@ import model.HoaDon;
 
 public interface hoaDonInterface {
     public List<HoaDon> getAll();
-    public boolean addHoaDon(HoaDon hd);
+    public boolean addHoaDon(String maHD,int idNV);
     public boolean updateMaKHforHoaDon(int idKh,int idHD);
     public boolean updateTongTien(int idHD,double tongTien);
     public boolean updateSoLuongSP(int id, int soLuong);
