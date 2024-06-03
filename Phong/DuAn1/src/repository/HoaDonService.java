@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.HoaDon;
+import model.HoaDonChiTiet;
+import model.SanPhamChiTiet;
 
 
 public class HoaDonService implements hoaDonInterface {
@@ -157,6 +159,49 @@ public class HoaDonService implements hoaDonInterface {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+     @Override
+    public List<HoaDonChiTiet> getById(int idHD) {
+        List<HoaDonChiTiet> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM HoaDonChiTiet where IDHD=" + idHD;
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                SanPhamChiTiet spct = new SanPhamChiTiet();
+                HoaDon hd = new HoaDon();
+                spct.setId(rs.getString("IDCTSP"));
+                hd.setId(rs.getInt("IDHD"));
+                hdct.setHaoDon(hd);
+                hdct.setSanPham(spct);
+                hdct.setDonGia(rs.getDouble("Dongia"));
+                hdct.setSoluong(rs.getInt("soLuong"));
+                list.add(hdct);
+            }
+            Collections.reverse(list);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+      @Override
+    public boolean deleteById(int idHD) {
+        try {
+            String sql1 = "DELETE FROM HoaDonChiTiet WHERE IdHD = ?";
+            PreparedStatement stmt1 = con.prepareStatement(sql1);
+            stmt1.setInt(1, idHD);
+            String sql = "delete from HOADON where Id=" + idHD;
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt1.execute();
+            stmt.execute();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

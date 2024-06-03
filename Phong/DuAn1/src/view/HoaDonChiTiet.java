@@ -42,6 +42,7 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
         DefaultTableModel giohangModel = (DefaultTableModel) tblHoaDonChiTiet.getModel();
     }
 
+
     private void loadHoaDonChiTietByIDHD(int idHD) {
         List<SanPhamChiTiet> listSPCTLoad = new ArrayList<>();
         List<Integer> listSoLuong = new ArrayList<>();
@@ -96,7 +97,8 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
         }
         return null;
     }
-     private void showData(List<HoaDon> ls) {
+
+    private void showData(List<HoaDon> ls) {
         DefaultTableModel dtm = (DefaultTableModel) tblHoaDon.getModel();
         dtm.setRowCount(0);
         for (HoaDon h : ls) {
@@ -112,7 +114,8 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
             dtm.addRow(rowData);
         }
     }
-       private String getKHbyID(int id) {
+
+    private String getKHbyID(int id) {
         List<model.KhachHang> list = khachHangService.getAll();
         for (model.KhachHang khachHang : list) {
             if (khachHang.getId() == id) {
@@ -283,7 +286,7 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void cbbTinhTrangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbTinhTrangItemStateChanged
-  String trangThai = cbbTinhTrang.getSelectedItem().toString();
+        String trangThai = cbbTinhTrang.getSelectedItem().toString();
         List<HoaDon> list = hoaDonService.getAll();
         if (trangThai.equalsIgnoreCase("All")) {
             showData(list);

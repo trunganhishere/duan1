@@ -6,6 +6,7 @@ package Interface;
 
 import java.util.List;
 import model.HoaDon;
+import model.HoaDonChiTiet;
 
 
 public interface hoaDonInterface {
@@ -16,4 +17,6 @@ public interface hoaDonInterface {
     public boolean updateSoLuongSP(int id, int soLuong);
     public List<HoaDon> getAllHDChuaTT();
     public boolean updateThanhToan(int idHD);
+     public List<HoaDonChiTiet> getById(int idHD);
+      public boolean deleteById(int idHD);
 }

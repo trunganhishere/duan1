@@ -157,6 +157,7 @@ public class BanHang extends javax.swing.JPanel {
 
                 if (hoadonService.updateThanhToan(idHD)) {
                     JOptionPane.showMessageDialog(this, "Thanh Toán Thành Công");
+                    hoadonService.updateTongTien(idHD,tienPhaiTra);
                     updateSoLuongVoucher();
                 } else {
                     JOptionPane.showMessageDialog(this, "Thanh Toán Thất bại (1 lí do gì đó)");
@@ -218,7 +219,14 @@ public class BanHang extends javax.swing.JPanel {
 
         model.setRowCount(0);
 
-        List<SanPhamChiTiet> list = chiTietSpService.getAll();
+        List<SanPhamChiTiet> list = new ArrayList<>();
+        
+        if(txtSpSearch1.getText().trim().isEmpty()){
+            list = chiTietSpService.getAll();
+        }else{
+            String tenSearch = txtSpSearch1.getText();
+            list = chiTietSpService.Search(tenSearch);
+        }
 
         int stt = 1;
 
@@ -538,6 +546,7 @@ public class BanHang extends javax.swing.JPanel {
         btnThemSpVaoHD1 = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
 
         jPanel3.setBackground(new java.awt.Color(204, 255, 255));
         jPanel3.setMaximumSize(new java.awt.Dimension(940, 580));
@@ -648,7 +657,7 @@ public class BanHang extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, -1, 34));
+        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, 34));
 
         btnTaoHoaDon1.setBackground(new java.awt.Color(0, 153, 51));
         btnTaoHoaDon1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -670,7 +679,7 @@ public class BanHang extends javax.swing.JPanel {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 160, 40));
+        jPanel4.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 160, 40));
 
         jLabel11.setText("SĐT");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 40, -1));
@@ -737,7 +746,7 @@ public class BanHang extends javax.swing.JPanel {
                 txtTienKhachTra1KeyTyped(evt);
             }
         });
-        jPanel4.add(txtTienKhachTra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 130, 30));
+        jPanel4.add(txtTienKhachTra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, 130, 30));
 
         jLabel25.setText("ID hóa đơn:");
         jPanel4.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
@@ -855,6 +864,15 @@ public class BanHang extends javax.swing.JPanel {
             }
         });
         jPanel3.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 240, 100, 30));
+
+        jButton14.setBackground(new java.awt.Color(0, 204, 0));
+        jButton14.setText("Hủy hóa đơn");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 190, 100, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -1051,11 +1069,38 @@ public class BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSpSearch1ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-
+        loadTableSpCt();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void cbo_filterThuongHieu1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_filterThuongHieu1ItemStateChanged
+  String tenThuongHieu = cbo_filterThuongHieu1.getSelectedItem().toString();
+        if (tenThuongHieu.equals("All")) {
+            List<SanPhamChiTiet> sanPham = chiTietSpService.getAll();
+            sanPham.clear();
+            loadTableSpCt();
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) tbl_sanPham.getModel();
+        model.setRowCount(0);
+        List<SanPhamChiTiet> listSpCT = chiTietSpService.getAll();
+        List<SanPhamChiTiet> listLoc = new ArrayList<>();
+        for (SanPhamChiTiet sanPhamChiTiet : listSpCT) {
+            if (sanPhamChiTiet.getThuongHieu().getTen().equalsIgnoreCase(tenThuongHieu)) {
+                listLoc.add(sanPhamChiTiet);
+            }
+        }
+        for (SanPhamChiTiet sp : listLoc) {
+            model.addRow(new Object[]{
+                sp.getId(),
+                sp.getTenSp().getTen(),
+                sp.getChatLieu(),
+                sp.getKichCo(),
+                sp.getMauSac(),
+                sp.getThuongHieu(),
+                sp.getSoLuongTon(),
+                sp.getGiaBan(),});
 
+        }
     }//GEN-LAST:event_cbo_filterThuongHieu1ItemStateChanged
 
     private void cbo_filterThuongHieu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbo_filterThuongHieu1MouseClicked
@@ -1229,9 +1274,21 @@ public class BanHang extends javax.swing.JPanel {
                 for (int i = 0; i < hoaDonCTService.getAllHDCTByIdHD(idHD).size(); i++) {
                 for(int z = 0 ; z < chiTietSpService.getAll().size() ; z ++){
                     if(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getHaoDon().getId().equals(idHD)){
-                        if(chiTietSpService.getAll().get(z).getId().equals(hoaDonCTService.getAllHDCT().get(i).getSanPham().getId())){
+//                            System.out.println(chiTietSpService.getAll().get(z).getId());
+//                            System.out.println(hoaDonCTService.getAllHDCT().get(i).getSanPham().getId());
+                        if(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSanPham().getId().equals(chiTietSpService.getAll().get(z).getId())){
+//                            System.out.println("-----");
+//                            System.out.println(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSanPham().getId());
+//                            System.out.println("-----");
                         int soLuongMoi = hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSoluong() + chiTietSpService.getAll().get(z).getSoLuongTon();
-                        chiTietSpService.updateSoLuongSPCT(soLuongMoi, Integer.valueOf(hoaDonCTService.getAllHDCT().get(i).getSanPham().getId()));
+                        chiTietSpService.updateSoLuongSPCT(soLuongMoi, Integer.valueOf(chiTietSpService.getAll2().get(z).getId()));
+                            
+//                            System.out.println(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSanPham().getId());
+//                            System.out.println(chiTietSpService.getAll2().get(z).getId()));
+//                            
+//                            System.out.println(hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getSoluong());
+//                            System.out.println(chiTietSpService.getAll2().get(z).getSoLuongTon());
+//                            System.out.println(soLuongMoi);
                         check = true;
                         }
                     }
@@ -1258,11 +1315,58 @@ public class BanHang extends javax.swing.JPanel {
             lb_idHD1.setText("...");
             lbl_tienPhaitra1.setText("");
             lbl_nguoiTao.setText("");
+            lblTienThua1.setText("");
         }else{
-            JOptionPane.showMessageDialog(this, "Xóa thát bại");
+            JOptionPane.showMessageDialog(this, "Xóa thất bại");
         }
 
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+        int rowHD = tbl_hoadon1.getSelectedRow();
+        if (rowHD < 0) {
+            JOptionPane.showMessageDialog(this, "chọn hoá đơn bạn muốn hủy ");
+            return;
+        }
+        int chon = JOptionPane.showConfirmDialog(this, "bạn có muốn hủy không");
+        if (chon != 0) {
+            JOptionPane.showMessageDialog(this, "hủy hóa đơn thất bại");
+            return;
+        }
+        boolean check = false;
+        List<HoaDonChiTiet> list = this.hoadonService.getById(Integer.parseInt(this.tbl_hoadon1.getValueAt(rowHD, 0).toString()));
+        List<SanPhamChiTiet> listspct = chiTietSpService.getAll();
+        for (HoaDonChiTiet hdct : list) {
+            for (SanPhamChiTiet sp : listspct) {
+                if (sp.getId().equals(hdct.getSanPham().getId())) {
+                    check = this.hoaDonCTService.updateSoLuongSP(Integer.parseInt(hdct.getSanPham().getId()), hdct.getSoluong() + sp.getSoLuongTon());
+                }
+
+            }
+
+        }
+
+        check = this.hoadonService.deleteById(Integer.parseInt(this.tbl_hoadon1.getValueAt(rowHD, 0).toString()));
+        if (check == false) {
+            JOptionPane.showMessageDialog(this, "hủy hóa đơn thất bại ");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "hủy hóa đơn thành công ");
+        }
+        tbl_gioHang1.removeAll();
+        lbl_giamVoucher1.setText("");
+            lbl_sdtKH1.setText("");
+            lbl_tenKH1.setText("");
+            lbTongTien1.setText("");
+            lbl_tienPhaitra1.setText("");
+            lb_idHD1.setText("");
+            cbx_khuyenMai1.setSelectedIndex(0);
+            txtTienKhachTra1.setText("");
+            lbl_nguoiTao.setText("");
+        loadHoaDon();
+        loadTableSpCt();
+    }//GEN-LAST:event_jButton14ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1274,6 +1378,7 @@ public class BanHang extends javax.swing.JPanel {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;

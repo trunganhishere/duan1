@@ -182,7 +182,6 @@ public class ThongKe extends javax.swing.JPanel {
         jLabel6.setText("Doanh thu ở");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
 
-        buttonGroup1.add(rdo_Thang);
         rdo_Thang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Thang.setText("Tháng:");
         rdo_Thang.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +191,6 @@ public class ThongKe extends javax.swing.JPanel {
         });
         jPanel1.add(rdo_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
-        buttonGroup1.add(rdo_Nam);
         rdo_Nam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Nam.setText("Năm:");
         rdo_Nam.addActionListener(new java.awt.event.ActionListener() {
@@ -271,14 +269,22 @@ public class ThongKe extends javax.swing.JPanel {
 
     private void rdo_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_ThangActionPerformed
         // TODO add your handling code here:
-        txt_Thang.setVisible(true);
-        txt_Nam.setVisible(false);
+        
+        if(rdo_Thang.isSelected()){
+            txt_Thang.setVisible(true);
+        }else{
+            txt_Thang.setVisible(false);
+        }
     }//GEN-LAST:event_rdo_ThangActionPerformed
 
     private void rdo_NamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_NamActionPerformed
         // TODO add your handling code here:
-        txt_Thang.setVisible(false);
-        txt_Nam.setVisible(true);
+        
+        if(rdo_Nam.isSelected()){
+            txt_Nam.setVisible(true);
+        }else{
+            txt_Nam.setVisible(false);
+        }
     }//GEN-LAST:event_rdo_NamActionPerformed
 
     private void txt_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ThangActionPerformed

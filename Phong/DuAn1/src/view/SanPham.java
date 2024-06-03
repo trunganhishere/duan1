@@ -408,11 +408,11 @@ public class SanPham extends javax.swing.JPanel {
             model.addRow(new Object[]{
                 sp.getId(),
                 sp.getTenSp().getTen(),
-                sp.getChatLieu(),
-                sp.getKichCo(),
-                sp.getMauSac(),
-                sp.getNhaSx(),
-                sp.getThuongHieu(),
+                sp.getNhaSx().getTen(),
+                sp.getMauSac().getTen(),
+                sp.getKichCo().getTen(),
+                sp.getChatLieu().getTen(),
+                sp.getThuongHieu().getTen(),
                 sp.getSoLuongTon(),
                 sp.getGiaNhap(),
                 sp.getGiaBan(),
@@ -507,7 +507,23 @@ public class SanPham extends javax.swing.JPanel {
         String selectedNSX = cboNSX.getSelectedItem().toString();
         String selectedKichCo = cboSize.getSelectedItem().toString();
         String selectedMauSac = cboMauSac.getSelectedItem().toString();
-
+        
+        boolean check = true;
+        for(int i = 0 ; i < serviceCt.getAll().size() ; i ++){
+            if(selectedChatLieu.equals(serviceCt.getAll().get(i).getChatLieu().getTen())
+                    && selectedThuongHieu.equals(serviceCt.getAll().get(i).getThuongHieu().getTen())
+                    && selectedNSX.equals(serviceCt.getAll().get(i).getNhaSx().getTen())
+                    && selectedKichCo.equals(serviceCt.getAll().get(i).getKichCo().getTen())
+                    && selectedMauSac.equals(serviceCt.getAll().get(i).getMauSac().getTen())
+                    ){
+                check = false;
+            }
+        }
+        
+        if(!check){
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã tồn tại");
+            return false;
+        }
 //        if (chatLieuExists(selectedChatLieu)) {
 //            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
 //            cboChatLieu.requestFocus();
@@ -1108,7 +1124,7 @@ public class SanPham extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "them thanh cong");
                 loadTableSp();
             } else {
-                JOptionPane.showMessageDialog(this, "them that bai");
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm đã tồn tại");
             }
 
         }        // TODO add your handling code here:
@@ -1149,7 +1165,8 @@ public class SanPham extends javax.swing.JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "them sản phẩm thất bại");
             }
-        }        // TODO add your handling code here:
+        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
