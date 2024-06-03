@@ -1140,13 +1140,22 @@ public class SanPham extends javax.swing.JPanel {
                 return;
             }
             model.SanPham s = this.getFormSanPham();
-            if (service.update(s, Integer.valueOf(maSP)) != 0) {
+            boolean check = true;
+            for( int i = 0 ; i < service.getAll().size() ; i ++){
+                if(txtTen.getText().trim().equals(service.getAll().get(i).getTen())){
+                    check = false;
+                }
+            }
+            if(!check){
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm đã tồn tại");
+            }else{
+                if (service.update(s, Integer.valueOf(maSP)) != 0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thành công");
                 loadTableSp();
             } else {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thất bại");
             }
-
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng dữ liệu cần sửa");
         }
