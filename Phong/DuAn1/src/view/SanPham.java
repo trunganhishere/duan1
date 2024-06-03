@@ -502,19 +502,146 @@ public class SanPham extends javax.swing.JPanel {
                 return false;
             }
         }
+        String selectedTenSanPham = cboTenSp.getSelectedItem().toString();
         String selectedChatLieu = cboChatLieu.getSelectedItem().toString();
         String selectedThuongHieu = cboThuonghieu.getSelectedItem().toString();
         String selectedNSX = cboNSX.getSelectedItem().toString();
         String selectedKichCo = cboSize.getSelectedItem().toString();
         String selectedMauSac = cboMauSac.getSelectedItem().toString();
+        String soLuong = txtSoLuongTon.getText().trim();
+        String giaNhap = txtGiaNhap.getText().trim();
+        String giaBan = txtGiaBan.getText().trim();
         
         boolean check = true;
         for(int i = 0 ; i < serviceCt.getAll().size() ; i ++){
-            if(selectedChatLieu.equals(serviceCt.getAll().get(i).getChatLieu().getTen())
+            if(selectedTenSanPham.equals(serviceCt.getAll().get(i).getTenSp().getTen())
+                    &&selectedChatLieu.equals(serviceCt.getAll().get(i).getChatLieu().getTen())
                     && selectedThuongHieu.equals(serviceCt.getAll().get(i).getThuongHieu().getTen())
                     && selectedNSX.equals(serviceCt.getAll().get(i).getNhaSx().getTen())
                     && selectedKichCo.equals(serviceCt.getAll().get(i).getKichCo().getTen())
                     && selectedMauSac.equals(serviceCt.getAll().get(i).getMauSac().getTen())
+//                    && soLuong.equals(serviceCt.getAll().get(i).getSoLuongTon())
+//                    && giaNhap.equals(serviceCt.getAll().get(i).getGiaNhap())
+//                    && giaBan.equals(serviceCt.getAll().get(i).getGiaBan())
+                    ){
+                check = false;
+            }
+        }
+        
+        if(!check){
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã tồn tại");
+            return false;
+        }
+//        if (chatLieuExists(selectedChatLieu)) {
+//            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
+//            cboChatLieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (thuongHieuExists(selectedThuongHieu)) {
+//            JOptionPane.showMessageDialog(this, "Thương hiệu đã tồn tại.");
+//            cboThuonghieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (NSXExists(selectedNSX)) {
+//            JOptionPane.showMessageDialog(this, "NSX đã tồn tại.");
+//            cboNSX.requestFocus();
+//            return false;
+//        }
+//
+//        if (kichCoExists(selectedKichCo)) {
+//            JOptionPane.showMessageDialog(this, "Kích cỡ đã tồn tại.");
+//            cboSize.requestFocus();
+//            return false;
+//        }
+//
+//        if (mauSacExists(selectedMauSac)) {
+//            JOptionPane.showMessageDialog(this, "Màu sắc đã tồn tại.");
+//            cboMauSac.requestFocus();
+//            return false;
+//        }
+        return true;
+    }
+    
+    private boolean checkFrmSPCT2(int idSPCT) {
+
+        if (txtGiaNhap.getText().trim().isEmpty() || txtGiaBan.getText().trim().isEmpty() || txtSoLuongTon.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đủ trường");
+            return false;
+        }
+
+        if (txtGiaNhap.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Giá nhập không được để trống");
+            txtGiaNhap.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Float.parseFloat(txtGiaNhap.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Giá nhập phải lớn hơn 0");
+                    txtGiaNhap.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Giá nhập phải là số");
+                txtGiaNhap.requestFocus();
+                return false;
+            }
+        }
+
+        if (txtGiaBan.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Giá bán không được để trống");
+            txtGiaBan.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Float.parseFloat(txtGiaBan.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Giá bán phải lớn hơn 0");
+                    txtGiaBan.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Giá bán phải là số");
+                txtGiaBan.requestFocus();
+                return false;
+            }
+        }
+
+        if (txtSoLuongTon.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Số lượng không được để trống");
+            txtSoLuongTon.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Integer.parseInt(txtSoLuongTon.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0");
+                    txtSoLuongTon.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là số");
+                txtSoLuongTon.requestFocus();
+                return false;
+            }
+        }
+        String selectedTenSanPham = cboTenSp.getSelectedItem().toString();
+        String selectedChatLieu = cboChatLieu.getSelectedItem().toString();
+        String selectedThuongHieu = cboThuonghieu.getSelectedItem().toString();
+        String selectedNSX = cboNSX.getSelectedItem().toString();
+        String selectedKichCo = cboSize.getSelectedItem().toString();
+        String selectedMauSac = cboMauSac.getSelectedItem().toString();
+        String soLuong = txtSoLuongTon.getText().trim();
+        String giaNhap = txtGiaNhap.getText().trim();
+        String giaBan = txtGiaBan.getText().trim();
+        
+        boolean check = true;
+        for(int i = 0 ; i < serviceCt.getAllForUpdate(idSPCT).size() ; i ++){
+            if(     selectedTenSanPham.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getTenSp().getTen())
+                    && selectedChatLieu.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getChatLieu().getTen())
+                    && selectedThuongHieu.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getThuongHieu().getTen())
+                    && selectedNSX.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getNhaSx().getTen())
+                    && selectedKichCo.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getKichCo().getTen())
+                    && selectedMauSac.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getMauSac().getTen())
                     ){
                 check = false;
             }
@@ -1187,7 +1314,7 @@ public class SanPham extends javax.swing.JPanel {
             if (hoi != JOptionPane.YES_OPTION) {
                 return;
             }
-            if (checkFrmSPCT()) {
+            if (checkFrmSPCT2(Integer.valueOf(id))) {
                 SanPhamChiTiet spct = this.getFrmSanPhamChiTiet();
                 if (serviceCt.update(spct, id) != 0) {
                     JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thành công");

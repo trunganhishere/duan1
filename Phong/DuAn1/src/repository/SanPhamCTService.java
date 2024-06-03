@@ -20,8 +20,7 @@ import model.ThuongHieu;
 import model.SanPham;
 import model.KhuyenMai;
 
-
-public class SanPhamCTService implements SanPhamChiTietInterface{
+public class SanPhamCTService implements SanPhamChiTietInterface {
 
     private java.sql.Connection con = ConenctionProvider.getConnection();
 
@@ -110,9 +109,10 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         }
 
     }
+
     @Override
     public boolean phucHoiSoLuong(int maSP, int soLuongMoi) {
-      String sql = "update chiTietSP set soLuongTon = ? where id = ?";
+        String sql = "update chiTietSP set soLuongTon = ? where id = ?";
         try {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, soLuongMoi);
@@ -124,7 +124,8 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
             return false;
         }
     }
-     @Override
+
+    @Override
     public int add(model.SanPhamChiTiet spct) {
         String sql = """
                     INSERT INTO dbo.ChitietSP
@@ -186,16 +187,17 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
             return 0;
         }
     }
+
     @Override
-    public boolean updateSoLuongSPCT(int soLuong, int idSP){
+    public boolean updateSoLuongSPCT(int soLuong, int idSP) {
         int check = 0;
         String sql = """
                      UPDATE [dbo].[ChitietSP]
                         SET[SoLuongTon] = ?
                       WHERE id = ?
                      """;
-        
-        try(PreparedStatement ps = con.prepareCall(sql)) {
+
+        try (PreparedStatement ps = con.prepareCall(sql)) {
             ps.setObject(1, soLuong);
             ps.setObject(2, idSP);
             check = ps.executeUpdate();
@@ -205,7 +207,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         }
         return false;
     }
-    
+
     @Override
     public List<SanPhamChiTiet> getAll2() {
         List<model.SanPhamChiTiet> list = new ArrayList<>();
@@ -236,7 +238,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
                 ThuongHieu th = new ThuongHieu();
                 SanPham sp = new SanPham();
                 KhuyenMai km = new KhuyenMai();
-                
+
                 spct.setId(rs.getString(1));
                 nsx.setId(rs.getInt(2));
                 ms.setId(rs.getInt(3));
@@ -257,7 +259,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
             return null;
         }
     }
-    
+
     @Override
     public List<SanPhamChiTiet> Search(String ten) {
         List<model.SanPhamChiTiet> list = new ArrayList<>();
@@ -296,7 +298,7 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
                      """;
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setObject(1, "%"+ten+"%");
+            ps.setObject(1, "%" + ten + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SanPhamChiTiet sp = new SanPhamChiTiet();
@@ -344,5 +346,91 @@ public class SanPhamCTService implements SanPhamChiTietInterface{
         }
 
     }
-    
+
+    @Override
+    public List<model.SanPhamChiTiet> getAllForUpdate(int idSPCT) {
+        List<model.SanPhamChiTiet> list = new ArrayList<>();
+        String sql = """
+                     	SELECT 
+                         CT.Id,
+                         SP.id As idSP,
+                     	SP.TenSanPham AS TenSanPham,
+                         NSX.Ten AS TenNSX,
+                         MS.Ten AS TenMauSac,
+                         KC.Ten AS TenKichCo,
+                         CL.Ten AS TenChatLieu,
+                         TH.Ten AS TenThuongHieu,
+                         KM.Ten AS TenKhuyenMai,
+                         CT.MoTa,
+                         CT.SoLuongTon,
+                         CT.GiaNhap,
+                         CT.GiaBan,
+                         CT.QrCode
+                     FROM 
+                         dbo.ChitietSP AS CT
+                     LEFT JOIN 
+                         dbo.NSX AS NSX ON CT.IdNsx = NSX.Id
+                     LEFT JOIN 
+                         dbo.MauSac AS MS ON CT.IdMauSac = MS.Id
+                     LEFT JOIN 
+                         dbo.KichCo AS KC ON CT.IdKC = KC.Id
+                     LEFT JOIN 
+                         dbo.ChatLieu AS CL ON CT.IdCL = CL.Id
+                     LEFT JOIN 
+                         dbo.ThuongHieu AS TH ON CT.IdTH = TH.Id
+                     LEFT JOIN 
+                         dbo.KhuyenMai AS KM ON CT.IdKM = KM.Id
+                     LEFT JOIN
+                         dbo.SanPham AS SP ON CT.IdSP = SP.ID
+                     where CT.Id <> ?
+                     """;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setObject(1, idSPCT);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SanPhamChiTiet sp = new SanPhamChiTiet();
+                sp.setId(rs.getString("Id"));
+
+                ChatLieu cl = new ChatLieu();
+                cl.setTen(rs.getString("TenChatLieu"));
+                sp.setChatLieu(cl);
+
+                sp.setGiaBan(rs.getDouble("GiaBan"));
+                sp.setGiaNhap(rs.getDouble("GiaNhap"));
+
+                KichCo kc = new KichCo();
+                kc.setTen(rs.getString("TenKichCo"));
+                sp.setKichCo(kc);
+
+                MauSac ms = new MauSac();
+                ms.setTen(rs.getString("TenMauSac"));
+                sp.setMauSac(ms);
+
+                NSX nsx = new NSX();
+                nsx.setTen(rs.getString("TenNSX"));
+                sp.setNhaSx(nsx);
+
+                sp.setSoLuongTon(rs.getInt("SoLuongTon"));
+
+                SanPham sp1 = new SanPham();
+                sp1.setTen(rs.getString("TenSanPham"));
+                sp1.setId(rs.getString("idSP"));
+                sp.setTenSp(sp1);
+
+                ThuongHieu th = new ThuongHieu();
+                th.setTen(rs.getString("TenThuongHieu"));
+                sp.setThuongHieu(th);
+
+                sp.setKhuyenMai(rs.getString("TenKhuyenMai"));
+                sp.setMoTa(rs.getString("MoTa"));
+                list.add(sp);
+
+            }
+//            Collections.reverse(list);
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
