@@ -6,21 +6,129 @@ package view;
 
 import Interface.HoaDonChiTietInterface;
 import Interface.KhachHangInterface;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import model.HoaDon;
+import model.SanPhamChiTiet;
+import repository.HoaDonCTService;
 import repository.HoaDonService;
-
+import repository.KhachHangService;
+import repository.SanPhamCTService;
 
 public class HoaDonChiTiet extends javax.swing.JPanel {
-     HoaDonService hoaDonService = new HoaDonService();
+
+    HoaDonService hoaDonService = new HoaDonService();
     List<model.HoaDonChiTiet> listHDCT;
-//    private HoaDonChiTietInterface hoaDonChiTietService = new HoaDonChiTietInterface();
-//    private KhachHangInterface khachHangService = new KhachHangServiceImpl();
+    private SanPhamCTService chiTietSpService = new SanPhamCTService();
+    private KhachHangInterface khachHangService = new KhachHangService();
+    private HoaDonChiTietInterface hoaDonChiTietService = new HoaDonCTService();
 
     /**
      * Creates new form HoaDonChiTiet
      */
     public HoaDonChiTiet() {
         initComponents();
+        DefaultComboBoxModel dcm = (DefaultComboBoxModel) cbbTinhTrang.getModel();
+        List<String> ls = new ArrayList<>();
+        ls.add("All");
+        ls.add("Chưa thanh toán");
+        ls.add("Đã thanh toán");
+        dcm.addAll(ls);
+        dcm.setSelectedItem("All");
+        showData(hoaDonService.getAll());
+        reFreshListHDCT();
+        DefaultTableModel giohangModel = (DefaultTableModel) tblHoaDonChiTiet.getModel();
+    }
+
+
+    private void loadHoaDonChiTietByIDHD(int idHD) {
+        List<SanPhamChiTiet> listSPCTLoad = new ArrayList<>();
+        List<Integer> listSoLuong = new ArrayList<>();
+        for (model.HoaDonChiTiet hoaDonChiTiet : listHDCT) {
+            if (hoaDonChiTiet.getHaoDon().getId() == idHD) {
+                listSPCTLoad.add(getSPCTbyIDSP(hoaDonChiTiet.getSanPham().getId()));
+                listSoLuong.add(hoaDonChiTiet.getSoluong());
+            }
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
+        model.setRowCount(0);
+
+        for (int i = 0; i < listSPCTLoad.size(); i++) {
+            SanPhamChiTiet sanPhamChiTiet = listSPCTLoad.get(i);
+            int soLuong = listSoLuong.get(i); // Retrieve the corresponding quantity
+            model.addRow(new Object[]{
+                sanPhamChiTiet.getId(),
+                sanPhamChiTiet.getTenSp().getTen(),
+                sanPhamChiTiet.getChatLieu(),
+                sanPhamChiTiet.getMauSac(),
+                sanPhamChiTiet.getKichCo(),
+                sanPhamChiTiet.getGiaBan(),
+                soLuong, // Display the quantity in the table column
+                sanPhamChiTiet.getGiaBan() * soLuong
+            });
+
+        }
+
+    }
+
+    private SanPhamChiTiet getSPCTbyIDSP(String id) {
+        List<SanPhamChiTiet> listSPCT = chiTietSpService.getAll();
+        for (SanPhamChiTiet sanPhamChiTiet : listSPCT) {
+            if (sanPhamChiTiet.getId().equalsIgnoreCase(id)) {
+                SanPhamChiTiet spct = new SanPhamChiTiet();
+                spct.setId(sanPhamChiTiet.getId());
+                spct.setTenSp(sanPhamChiTiet.getTenSp());
+                spct.setSoLuongTon(sanPhamChiTiet.getSoLuongTon());
+                spct.setGiaBan(sanPhamChiTiet.getGiaBan());
+                spct.setGiaNhap(sanPhamChiTiet.getGiaNhap());
+                spct.setNhaSx(sanPhamChiTiet.getNhaSx());
+                spct.setChatLieu(sanPhamChiTiet.getChatLieu());
+                spct.setKhuyenMai(sanPhamChiTiet.getKhuyenMai());
+                spct.setMauSac(sanPhamChiTiet.getMauSac());
+                spct.setThuongHieu(sanPhamChiTiet.getThuongHieu());
+                spct.setMoTa(sanPhamChiTiet.getMoTa());
+                spct.setKichCo(sanPhamChiTiet.getKichCo());
+                return spct;
+            }
+
+        }
+        return null;
+    }
+
+    private void showData(List<HoaDon> ls) {
+        DefaultTableModel dtm = (DefaultTableModel) tblHoaDon.getModel();
+        dtm.setRowCount(0);
+        for (HoaDon h : ls) {
+            Object[] rowData = {
+                h.getId(),
+                getKHbyID(h.getIDKhachHang()),
+                h.getMa(),
+                h.getTinhTrang() == 0 ? "Chưa thanh toán" : "Đã thanh toán",
+                h.getNgayThanhToan(),
+                h.getTongTien(),
+                h.getGhichu()
+            };
+            dtm.addRow(rowData);
+        }
+    }
+
+    private String getKHbyID(int id) {
+        List<model.KhachHang> list = khachHangService.getAll();
+        for (model.KhachHang khachHang : list) {
+            if (khachHang.getId() == id) {
+                return khachHang.getTen();
+
+            }
+        }
+        return "";
+    }
+
+    private void reFreshListHDCT() {
+        listHDCT = hoaDonChiTietService.getAllHDCT();
+
     }
 
     /**
@@ -173,11 +281,32 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
-        
+        int idHD = Integer.parseInt(tblHoaDon.getValueAt(tblHoaDon.getSelectedRow(), 0) + "");
+        loadHoaDonChiTietByIDHD(idHD);
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void cbbTinhTrangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbTinhTrangItemStateChanged
-        
+        String trangThai = cbbTinhTrang.getSelectedItem().toString();
+        List<HoaDon> list = hoaDonService.getAll();
+        if (trangThai.equalsIgnoreCase("All")) {
+            showData(list);
+        } else if (trangThai.equalsIgnoreCase("Chưa thanh toán")) {
+            List<HoaDon> list2 = new ArrayList<>();
+            for (HoaDon hoaDon : list) {
+                if (hoaDon.getTinhTrang() == 0) {
+                    list2.add(hoaDon);
+                }
+            }
+            showData(list2);
+        } else if (trangThai.equalsIgnoreCase("Đã thanh toán")) {
+            List<HoaDon> list2 = new ArrayList<>();
+            for (HoaDon hoaDon : list) {
+                if (hoaDon.getTinhTrang() == 1) {
+                    list2.add(hoaDon);
+                }
+            }
+            showData(list2);
+        }
     }//GEN-LAST:event_cbbTinhTrangItemStateChanged
 
     private void cbbTinhTrangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbbTinhTrangMouseClicked
@@ -185,11 +314,30 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
     }//GEN-LAST:event_cbbTinhTrangMouseClicked
 
     private void cbbTinhTrangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbTinhTrangActionPerformed
-    
+
     }//GEN-LAST:event_cbbTinhTrangActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-    
+        String nameSearch = txtSearch.getText();
+        List<HoaDon> listHD = hoaDonService.getAll();
+        DefaultTableModel dtm = (DefaultTableModel) tblHoaDon.getModel();
+        dtm.setRowCount(0);
+        for (HoaDon hoaDon : listHD) {
+            if (getKHbyID(hoaDon.getIDKhachHang()).contains(nameSearch)) {
+                Object[] rowData = {
+                hoaDon.getId(),
+                getKHbyID(hoaDon.getIDKhachHang()),
+                hoaDon.getMa(),
+                hoaDon.getTinhTrang() == 0 ? "Chưa thanh toán" : "Đã thanh toán",
+                hoaDon.getNgayThanhToan(),
+                hoaDon.getTongTien(),
+                hoaDon.getGhichu()
+            };
+            dtm.addRow(rowData);
+       
+                
+            }
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
@@ -209,5 +357,4 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
-    
 }

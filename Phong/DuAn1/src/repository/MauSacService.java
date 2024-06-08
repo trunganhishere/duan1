@@ -4,7 +4,6 @@
  */
 package repository;
 
-import Interface.MauSacServices;
 import JDBCUtil.ConenctionProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +12,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.MauSac;
+import Interface.MauSacInterface;
 
 
-public class MauSacService implements MauSacServices{
+public class MauSacService implements MauSacInterface{
     private Connection con = ConenctionProvider.getConnection();    
     @Override
     public List<MauSac> getAll() {
@@ -67,5 +67,20 @@ public class MauSacService implements MauSacServices{
             e.printStackTrace();
             return false;
         }
+    }
+      @Override
+    public boolean existsByName(String name) {
+        String SQL = "SELECT COUNT(*) FROM MauSac WHERE Ten = ?";
+        try {
+            PreparedStatement pstm = con.prepareStatement(SQL);
+            pstm.setString(1, name);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -68,6 +68,57 @@ public class khachhangdialog extends javax.swing.JFrame {
         txtEmail.setText("");
         txtSdt.setText("");
     }
+      private void addKhachHang() {
+        model.KhachHang kh = new model.KhachHang();
+
+        String tenKh = txtTen1.getText().trim();
+        if (tenKh.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập Tên khách hàng.");
+            return;
+        }
+
+        String ngaySinhKh = txtNgaySinh.getText().trim();
+        if (ngaySinhKh.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập Ngày sinh khách hàng.");
+            return;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date ngaySinh;
+        try {
+            ngaySinh = sdf.parse(ngaySinhKh);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy.");
+            return;
+        }
+
+        String sdt = txtSdt.getText().trim();
+        if (sdt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập Số điện thoại khách hàng.");
+            return;
+        }
+
+        String email = txtEmail.getText().trim();
+        if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập Email khách hàng.");
+            return;
+        }
+
+        boolean gt = rdoNam.isSelected();
+
+        kh.setTen(tenKh);
+        kh.setNgaysinh(ngaySinh);
+        kh.setGioitinh(gt);
+        kh.setSdt(sdt);
+        kh.setEmail(email);
+
+        boolean addResult = khachHangServiceImpl.add(kh);
+        if (addResult) {
+            JOptionPane.showMessageDialog(this, "Add khách hàng thành công.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Add khách hàng không thành công.");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,6 +199,11 @@ public class khachhangdialog extends javax.swing.JFrame {
         });
 
         btnLammoi.setText("Làm mới");
+        btnLammoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLammoiActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Giới Tính");
 
@@ -308,6 +364,7 @@ public class khachhangdialog extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        addKhachHang();
         filltable();
     }//GEN-LAST:event_btnThemActionPerformed
 
@@ -349,6 +406,10 @@ public class khachhangdialog extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtSearchKhachHangKeyReleased
+
+    private void btnLammoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLammoiActionPerformed
 
 //    /**
 ////     * @param args the command line arguments

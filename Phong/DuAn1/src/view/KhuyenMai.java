@@ -4,13 +4,195 @@
  */
 package view;
 
+import Interface.KhuyenMaiInterface;
+import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import repository.KhuyenMaiService;
+
 public class KhuyenMai extends javax.swing.JPanel {
+
+    DefaultTableModel mol = new DefaultTableModel();
+    KhuyenMaiInterface kmsv = new KhuyenMaiService();
 
     /**
      * Creates new form KhuyenMai
      */
     public KhuyenMai() {
         initComponents();
+        showCombodata();
+        loadData();
+    }
+    private void showCombodata() {
+        List<String> data = model.KhuyenMai.KMData.getdata();
+        for (String s : data) {
+            cbo_hinhthuc.addItem(s);
+        }
+    }
+
+    void loadData() {
+        mol = (DefaultTableModel) tbl_Bang.getModel();
+        mol.setRowCount(0);
+        for (model.KhuyenMai km : kmsv.getAll()) {
+            mol.addRow(new Object[]{
+                km.getId(),
+                km.getTenKhuyenMai(),
+                km.getHinhThucKM(),
+                km.getGiaTriGiam(),
+                km.getSoLuong(),
+                km.getCodeKhuyenMai()
+            });
+        }
+    }
+
+    void add() {
+        Random random = new Random();
+        String ten = txt_Ten.getText();
+        String giaTri = txt_giatrigiam.getText();
+        String soLuongStr = txt_soluong.getText();
+        String hinhThuc = cbo_hinhthuc.getSelectedItem().toString();
+        String codeKhuyenMai = "KM" + (100000 + random.nextInt(900000));
+
+        if (ten.isEmpty() || giaTri.isEmpty() || soLuongStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin.");
+            return;
+        }
+
+        double giaTriGiam;
+        try {
+            giaTriGiam = Double.parseDouble(giaTri);
+            if (giaTriGiam < 0) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không thể là số âm.");
+                return;
+            }
+
+            if (hinhThuc.equalsIgnoreCase("%") && giaTriGiam > 90) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không được nhập quá 90%.");
+                return;
+            }
+            if (hinhThuc.equalsIgnoreCase("VND") && giaTriGiam < 10000) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không được ít hơn 10,000 VND.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Giá trị giảm phải là một số.");
+            return;
+        }
+
+        int soLuong;
+        try {
+            soLuong = Integer.parseInt(soLuongStr);
+            if (soLuong <= 0) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên dương.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên.");
+            return;
+        }
+
+        for (model.KhuyenMai existingKm : kmsv.Getbyten(ten)) {
+            if (existingKm.getTenKhuyenMai().equals(ten)) {
+                JOptionPane.showMessageDialog(this, "Tên khuyến mãi đã tồn tại.");
+                return;
+            }
+        }
+        model.KhuyenMai km = new model.KhuyenMai();
+        km.setTenKhuyenMai(ten);
+        km.setGiaTriGiam(giaTri);
+        km.setSoLuong(soLuong);
+        km.setHinhThucKM(hinhThuc);
+        km.setCodeKhuyenMai(codeKhuyenMai);
+        boolean addResult = kmsv.add(km);
+        if (addResult) {
+            JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thành công.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm khuyến mãi không thành công.");
+        }
+    }
+
+    void showDT(int index) {
+        List<model.KhuyenMai> List = kmsv.getAll();
+        model.KhuyenMai km = List.get(index);
+        txt_Ten.setText(km.getTenKhuyenMai());
+        txt_giatrigiam.setText(km.getGiaTriGiam());
+        txt_soluong.setText(String.valueOf(km.getSoLuong()));
+        cbo_hinhthuc.setSelectedItem(String.valueOf(km.getHinhThucKM()));
+    }
+
+    void update() {
+
+        int selectedRow = tbl_Bang.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khuyến mãi để cập nhật.");
+            return;
+        }
+
+        int id = Integer.parseInt(tbl_Bang.getValueAt(selectedRow, 0) + "");
+
+        String ten = txt_Ten.getText();
+        String giaTri = txt_giatrigiam.getText();
+        String soLuongStr = txt_soluong.getText();
+        String hinhThuc = cbo_hinhthuc.getSelectedItem().toString();
+
+        if (ten.isEmpty() || giaTri.isEmpty() || soLuongStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin.");
+            return;
+        }
+
+        double giaTriGiam;
+        try {
+            giaTriGiam = Double.parseDouble(giaTri);
+            if (giaTriGiam < 0) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không thể là số âm.");
+                return;
+            }
+
+            if (hinhThuc.equalsIgnoreCase("%") && giaTriGiam > 90) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không được nhập quá 90%.");
+                return;
+            }
+            if (hinhThuc.equalsIgnoreCase("VND") && giaTriGiam < 10000) {
+                JOptionPane.showMessageDialog(this, "Giá trị giảm không được ít hơn 10,000 VND.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Giá trị giảm phải là một số.");
+            return;
+        }
+
+        int soLuong;
+        try {
+            soLuong = Integer.parseInt(soLuongStr);
+            if (soLuong <= 0) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên dương.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên.");
+            return;
+        }
+
+        for (model.KhuyenMai existingKm : kmsv.Getbyten(ten)) {
+            if (existingKm.getTenKhuyenMai().equals(ten) && existingKm.getId() != id) {
+                JOptionPane.showMessageDialog(this, "Tên khuyến mãi đã tồn tại.");
+                return;
+            }
+        }
+
+        model.KhuyenMai km = new model.KhuyenMai();
+        km.setId(id);
+        km.setTenKhuyenMai(ten);
+        km.setGiaTriGiam(giaTri);
+        km.setSoLuong(soLuong);
+        km.setHinhThucKM(hinhThuc);
+
+        if (kmsv.Update(km, id)) {
+            JOptionPane.showMessageDialog(this, "Cập nhật khuyến mãi thành công.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật khuyến mãi không thành công.");
+        }
     }
 
     /**
@@ -162,18 +344,31 @@ public class KhuyenMai extends javax.swing.JPanel {
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
+          update();
+        loadData();
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
+        add();
+        loadData();
+
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
         // TODO add your handling code here:
+         txt_Ten.setText("");
+        txt_giatrigiam.setText("");
+        txt_soluong.setText("");
+        cbo_hinhthuc.setSelectedIndex(0);
     }//GEN-LAST:event_btn_resetActionPerformed
 
     private void tbl_BangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_BangMouseClicked
         // TODO add your handling code here:
+        int selectedIndex = tbl_Bang.getSelectedRow();
+        if (selectedIndex >= 0) {
+            this.showDT(selectedIndex);
+        }
     }//GEN-LAST:event_tbl_BangMouseClicked
 
     private void tbl_BangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_BangKeyPressed
