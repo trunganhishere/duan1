@@ -4,6 +4,7 @@
  */
 package view;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -698,6 +699,8 @@ public class NhanVien extends javax.swing.JPanel {
                 FileOutputStream fos = new FileOutputStream(filePath);
                 workbook.write(fos);
                 JOptionPane.showMessageDialog(this, "In thành công");
+                File file = new File(filePath);
+                Desktop.getDesktop().open(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }

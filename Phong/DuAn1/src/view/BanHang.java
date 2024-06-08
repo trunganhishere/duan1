@@ -8,6 +8,7 @@ package view;
 import model.HoaDonChiTiet;
 import Interface.hoaDonInterface;
 import Interface.HoaDonChiTietInterface;
+import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import model.HoaDon;
 import model.SanPhamChiTiet;
 import model.ThuongHieu;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import repository.DangNhapService;
 import repository.HoaDonCTService;
 import repository.HoaDonService;
@@ -159,6 +161,8 @@ public class BanHang extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Thanh Toán Thành Công");
                     hoadonService.updateTongTien(idHD,tienPhaiTra);
                     updateSoLuongVoucher();
+                    String filePDF = "C:\\Users\\duong\\Downloads\\HoaDon\\hoaDon.pdf";
+                    
                 } else {
                     JOptionPane.showMessageDialog(this, "Thanh Toán Thất bại (1 lí do gì đó)");
                     return false;
@@ -471,10 +475,17 @@ public class BanHang extends javax.swing.JPanel {
                 } else {
                     if (khuyenMai.getHinhThucKM().equals("VND")) {
                         giaTienGiam = Double.parseDouble(khuyenMai.getGiaTriGiam());
+                        if(giaTienGiam > tongTien){
+                            JOptionPane.showMessageDialog(this, "Giá trị giảm không được vượt quá giá trị đơn hàng");
+                            cbx_khuyenMai1.setSelectedIndex(0);
+                            return;
+                        }else{
                         lbl_giamVoucher1.setText(decimalFormat.format(giaTienGiam));
                         lbl_tienPhaitra1.setText(decimalFormat.format((tongTien - giaTienGiam)));
                         isAvaliable = true;
                         return;
+                        }
+                        
                     } else if (khuyenMai.getHinhThucKM().equals("%")) {
                         giaTienGiam = tongTien * (Double.parseDouble(khuyenMai.getGiaTriGiam())) / 100;
                         lbl_giamVoucher1.setText(decimalFormat.format(giaTienGiam));
@@ -1354,7 +1365,7 @@ public class BanHang extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "hủy hóa đơn thành công ");
         }
-        tbl_gioHang1.removeAll();
+        
         lbl_giamVoucher1.setText("");
             lbl_sdtKH1.setText("");
             lbl_tenKH1.setText("");
@@ -1364,8 +1375,11 @@ public class BanHang extends javax.swing.JPanel {
             cbx_khuyenMai1.setSelectedIndex(0);
             txtTienKhachTra1.setText("");
             lbl_nguoiTao.setText("");
-        loadHoaDon();
-        loadTableSpCt();
+            
+            loadHoaDon();
+            loadTableSpCt();
+            DefaultTableModel giohangModel = (DefaultTableModel) tbl_gioHang1.getModel();
+            giohangModel.setRowCount(0);
     }//GEN-LAST:event_jButton14ActionPerformed
 
 

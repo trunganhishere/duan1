@@ -318,7 +318,26 @@ public class HoaDonChiTiet extends javax.swing.JPanel {
     }//GEN-LAST:event_cbbTinhTrangActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String nameSearch = txtSearch.getText();
+        List<HoaDon> listHD = hoaDonService.getAll();
+        DefaultTableModel dtm = (DefaultTableModel) tblHoaDon.getModel();
+        dtm.setRowCount(0);
+        for (HoaDon hoaDon : listHD) {
+            if (getKHbyID(hoaDon.getIDKhachHang()).contains(nameSearch)) {
+                Object[] rowData = {
+                hoaDon.getId(),
+                getKHbyID(hoaDon.getIDKhachHang()),
+                hoaDon.getMa(),
+                hoaDon.getTinhTrang() == 0 ? "Chưa thanh toán" : "Đã thanh toán",
+                hoaDon.getNgayThanhToan(),
+                hoaDon.getTongTien(),
+                hoaDon.getGhichu()
+            };
+            dtm.addRow(rowData);
+       
+                
+            }
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
