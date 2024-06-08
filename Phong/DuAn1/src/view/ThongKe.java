@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view;
+
 import Interface.ThongKeInterface;
 import repository.ThongKeService;
 import java.awt.Color;
@@ -20,6 +21,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ThongKe extends javax.swing.JPanel {
+
     Connection con = JDBCUtil.ConenctionProvider.getConnection();
     DefaultTableModel mol = new DefaultTableModel();
     ThongKeService tksv = new ThongKeService();
@@ -31,14 +33,15 @@ public class ThongKe extends javax.swing.JPanel {
      */
     public ThongKe() {
         initComponents();
-         loaddt();
+        loaddt();
         loadhd();
         mol = (DefaultTableModel) tbl_Bang.getModel();
         txt_Thang.setVisible(false);
         txt_Nam.setVisible(false);
         loadData();
     }
-     void loaddt() {
+
+    void loaddt() {
         lbl_dt.setText(df.format(tksv.getdt()));
     }
 
@@ -82,13 +85,15 @@ public class ThongKe extends javax.swing.JPanel {
             mol.addRow(dataRow);
         }
     }
-    void Thang(String str){ 
-    lbl_dt.setText(df.format(tksv.getdtThang(str)));
-    lbl_hd.setText(String.valueOf(tksv.gethdThang(str)));
+
+    void Thang(String str) {
+        lbl_dt.setText(df.format(tksv.getdtThang(str)));
+        lbl_hd.setText(String.valueOf(tksv.gethdThang(str)));
     }
-    void Nam(String str){
-    lbl_dt.setText(df.format(tksv.getdtNam(str)));
-    lbl_hd.setText(String.valueOf(tksv.gethdNam(str)));
+
+    void Nam(String str) {
+        lbl_dt.setText(df.format(tksv.getdtNam(str)));
+        lbl_hd.setText(String.valueOf(tksv.gethdNam(str)));
     }
 
     /**
@@ -177,7 +182,6 @@ public class ThongKe extends javax.swing.JPanel {
         jLabel6.setText("Doanh thu ở");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
 
-        buttonGroup1.add(rdo_Thang);
         rdo_Thang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Thang.setText("Tháng:");
         rdo_Thang.addActionListener(new java.awt.event.ActionListener() {
@@ -187,7 +191,6 @@ public class ThongKe extends javax.swing.JPanel {
         });
         jPanel1.add(rdo_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
-        buttonGroup1.add(rdo_Nam);
         rdo_Nam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Nam.setText("Năm:");
         rdo_Nam.addActionListener(new java.awt.event.ActionListener() {
@@ -240,7 +243,7 @@ public class ThongKe extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(tksv.getmonth1(), "VND", "1");
         dataset.addValue(tksv.getmonth2(), "VND", "2");
         dataset.addValue(tksv.getmonth3(), "VND", "3");
@@ -254,8 +257,8 @@ public class ThongKe extends javax.swing.JPanel {
         dataset.addValue(tksv.getmonth11(), "VND", "11");
         dataset.addValue(tksv.getmonth12(), "VND", "12");
         JFreeChart barChart = ChartFactory.createBarChart(
-            "Biểu đồ doanh thu", "Tháng", "VND", dataset, PlotOrientation.VERTICAL,
-            false, true, false);
+                "Biểu đồ doanh thu", "Tháng", "VND", dataset, PlotOrientation.VERTICAL,
+                false, true, false);
         CategoryPlot categoryPlot = new CategoryPlot();
         categoryPlot.setRangeGridlinePaint(Color.BLACK);
         ChartFrame chartFrame = new ChartFrame("Biều đồ", barChart);
@@ -266,14 +269,22 @@ public class ThongKe extends javax.swing.JPanel {
 
     private void rdo_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_ThangActionPerformed
         // TODO add your handling code here:
-        txt_Thang.setVisible(true);
-        txt_Nam.setVisible(false);
+        
+        if(rdo_Thang.isSelected()){
+            txt_Thang.setVisible(true);
+        }else{
+            txt_Thang.setVisible(false);
+        }
     }//GEN-LAST:event_rdo_ThangActionPerformed
 
     private void rdo_NamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdo_NamActionPerformed
         // TODO add your handling code here:
-        txt_Thang.setVisible(false);
-        txt_Nam.setVisible(true);
+        
+        if(rdo_Nam.isSelected()){
+            txt_Nam.setVisible(true);
+        }else{
+            txt_Nam.setVisible(false);
+        }
     }//GEN-LAST:event_rdo_NamActionPerformed
 
     private void txt_ThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ThangActionPerformed
@@ -281,11 +292,16 @@ public class ThongKe extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_ThangActionPerformed
 
     private void txt_ThangKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ThangKeyReleased
-        // TODO add your handling code here:
+        String searchThang = txt_Thang.getText();
+        searchThang(searchThang);
+        Thang(searchThang);
     }//GEN-LAST:event_txt_ThangKeyReleased
 
     private void txt_NamKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_NamKeyReleased
         // TODO add your handling code here:
+        String searchNam = txt_Nam.getText();
+        searchNam(searchNam);
+        Nam(searchNam);
     }//GEN-LAST:event_txt_NamKeyReleased
 
 

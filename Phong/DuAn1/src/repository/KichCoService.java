@@ -69,5 +69,20 @@ public class KichCoService implements KichCoInterface{
         }
     
     }
+     @Override
+    public boolean existsByName(String name) {
+        String SQL = "SELECT COUNT(*) FROM KichCo WHERE Ten = ?";
+        try {
+            PreparedStatement pstm = con.prepareStatement(SQL);
+            pstm.setString(1, name);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
 }

@@ -34,7 +34,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
                 hd.setId(rs.getInt("IDHD"));
                 hdct.setHaoDon(hd);
                 hdct.setSanPham(spct);
-                hdct.setDonGia(rs.getDouble("DonGia"));
+                hdct.setDonGia(rs.getDouble("Dongia"));
                 hdct.setSoluong(rs.getInt("soLuong"));
                 list.add(hdct);
             }
@@ -82,7 +82,7 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
     @Override
     public boolean addHDCT(HoaDon hoaDon, SanPhamChiTiet sanPhamChiTiet, int soLuong, double DonGia) {
         try {
-            String sql = "insert into HoaDonChiTiet(IdHD,IdCTSP,SoLuong,DonGia) values(?,?,?,?)";
+            String sql = "insert into HoaDonChiTiet(IdHD,IdCTSP,SoLuong,Dongia) values(?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, hoaDon.getId());
             stmt.setInt(2, Integer.parseInt(sanPhamChiTiet.getId()));
@@ -126,5 +126,32 @@ public class HoaDonCTService implements HoaDonChiTietInterface{
             e.printStackTrace();
         }
         return false;
+    }
+    @Override
+    public List<HoaDonChiTiet> getAllHDCTByIdHD(int idHD) {
+        List<HoaDonChiTiet> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM HoaDonChiTiet where IdHD = ?";
+            PreparedStatement ps = conn.prepareCall(sql);
+            ps.setObject(1, idHD);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                SanPhamChiTiet spct = new SanPhamChiTiet();
+                HoaDon hd = new HoaDon();
+                spct.setId(rs.getString("IDCTSP"));
+                hd.setId(rs.getInt("IDHD"));
+                hdct.setHaoDon(hd);
+                hdct.setSanPham(spct);
+                hdct.setDonGia(rs.getDouble("Dongia"));
+                hdct.setSoluong(rs.getInt("soLuong"));
+                list.add(hdct);
+            }
+            Collections.reverse(list);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -48,7 +48,7 @@ public class SanPham extends javax.swing.JPanel {
     public SanPham() {
         initComponents();
         loadTableSp();
-       loadTableSpCt();
+        loadTableSpCt();
         loadForm();
         loadData("chatLieu");
     }
@@ -95,7 +95,8 @@ public class SanPham extends javax.swing.JPanel {
         s.setTen(txtTen.getText());
         return s;
     }
-     private void showDataSPCT(int row) {
+
+    private void showDataSPCT(int row) {
 
         cboTenSp.setSelectedItem(tblSanPhamChiTiet.getValueAt(row, 1));
         cboNSX.setSelectedItem(tblSanPhamChiTiet.getValueAt(row, 2));
@@ -140,8 +141,15 @@ public class SanPham extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống tên thuộc tính.");
             return;
         }
+
+        boolean exists = false;
         switch (thuocTinh.toLowerCase()) {
             case "chatlieu":
+                exists = chatLieuService.existsByName(ten);
+                if (exists) {
+                    JOptionPane.showMessageDialog(this, "Thuộc tính 'Chất liệu' đã tồn tại.");
+                    break;
+                }
                 ChatLieu chatLieu = new ChatLieu();
                 chatLieu.setTen(ten);
                 boolean addChatLieu = chatLieuService.add(chatLieu);
@@ -153,6 +161,11 @@ public class SanPham extends javax.swing.JPanel {
                 break;
 
             case "mausac":
+                exists = mauSacServices.existsByName(ten);
+                if (exists) {
+                    JOptionPane.showMessageDialog(this, "Thuộc tính 'Màu sắc' đã tồn tại.");
+                    break;
+                }
                 MauSac mauSac = new MauSac();
                 mauSac.setTen(ten);
                 boolean addMauSac = mauSacServices.add(mauSac);
@@ -162,7 +175,13 @@ public class SanPham extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Thêm thất bại.");
                 }
                 break;
+
             case "kichco":
+                exists = kichCoService.existsByName(ten);
+                if (exists) {
+                    JOptionPane.showMessageDialog(this, "Thuộc tính 'Kích cỡ' đã tồn tại.");
+                    break;
+                }
                 KichCo kichCo = new KichCo();
                 kichCo.setTen(ten);
                 boolean addKichCo = kichCoService.add(kichCo);
@@ -172,17 +191,29 @@ public class SanPham extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Thêm thất bại.");
                 }
                 break;
+
             case "thuonghieu":
-                ThuongHieu thuonghieu = new ThuongHieu();
-                thuonghieu.setTen(ten);
-                boolean addThuongHieu = thuongHieuService.add(thuonghieu);
+                exists = thuongHieuService.existsByName(ten);
+                if (exists) {
+                    JOptionPane.showMessageDialog(this, "Thuộc tính 'Thương hiệu' đã tồn tại.");
+                    break;
+                }
+                ThuongHieu thuongHieu = new ThuongHieu();
+                thuongHieu.setTen(ten);
+                boolean addThuongHieu = thuongHieuService.add(thuongHieu);
                 if (addThuongHieu) {
                     JOptionPane.showMessageDialog(this, "Thêm thành công thuộc tính 'Thương hiệu'.");
                 } else {
                     JOptionPane.showMessageDialog(this, "Thêm thất bại.");
                 }
                 break;
+
             case "nsx":
+                exists = NSXService.existsByName(ten);
+                if (exists) {
+                    JOptionPane.showMessageDialog(this, "Thuộc tính 'NSX' đã tồn tại.");
+                    break;
+                }
                 NSX nsx = new NSX();
                 nsx.setTen(ten);
                 boolean addNSX = NSXService.add(nsx);
@@ -192,6 +223,7 @@ public class SanPham extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Thêm thất bại.");
                 }
                 break;
+
             default:
                 JOptionPane.showMessageDialog(this, "Loại thuộc tính không hợp lệ.");
                 break;
@@ -199,7 +231,6 @@ public class SanPham extends javax.swing.JPanel {
 
         txtThem.setText("");
     }
-    
 
     private void loadData(String thuocTinh) {
         DefaultTableModel model = (DefaultTableModel) tbl_bang.getModel();
@@ -264,8 +295,14 @@ public class SanPham extends javax.swing.JPanel {
                 return;
             }
 
+            boolean exists = false;
             switch (thuocTinhUpdate.toLowerCase()) {
                 case "chatlieu":
+                    exists = chatLieuService.existsByName(ten);
+                    if (exists) {
+                        JOptionPane.showMessageDialog(this, "Thuộc tính 'Chất liệu' đã tồn tại.");
+                        break;
+                    }
                     ChatLieu chatlieu = new ChatLieu();
                     chatlieu.setTen(ten);
                     if (chatLieuService.update(chatlieu, idSelecting)) {
@@ -274,7 +311,13 @@ public class SanPham extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Cập nhật chất liệu không thành công.");
                     }
                     break;
+
                 case "kichco":
+                    exists = kichCoService.existsByName(ten);
+                    if (exists) {
+                        JOptionPane.showMessageDialog(this, "Thuộc tính 'Kích cỡ' đã tồn tại.");
+                        break;
+                    }
                     KichCo kichCo = new KichCo();
                     kichCo.setTen(ten);
                     if (kichCoService.update(kichCo, idSelecting)) {
@@ -283,7 +326,13 @@ public class SanPham extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Cập nhật kích cỡ không thành công.");
                     }
                     break;
+
                 case "mausac":
+                    exists = mauSacServices.existsByName(ten);
+                    if (exists) {
+                        JOptionPane.showMessageDialog(this, "Thuộc tính 'Màu sắc' đã tồn tại.");
+                        break;
+                    }
                     MauSac mausac = new MauSac();
                     mausac.setTen(ten);
                     if (mauSacServices.update(mausac, idSelecting)) {
@@ -292,7 +341,13 @@ public class SanPham extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Cập nhật màu sắc không thành công.");
                     }
                     break;
+
                 case "nsx":
+                    exists = NSXService.existsByName(ten);
+                    if (exists) {
+                        JOptionPane.showMessageDialog(this, "Thuộc tính 'NSX' đã tồn tại.");
+                        break;
+                    }
                     NSX nsx = new NSX();
                     nsx.setTen(ten);
                     if (NSXService.update(nsx, idSelecting)) {
@@ -301,7 +356,13 @@ public class SanPham extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Cập nhật nhà sản xuất không thành công.");
                     }
                     break;
+
                 case "thuonghieu":
+                    exists = thuongHieuService.existsByName(ten);
+                    if (exists) {
+                        JOptionPane.showMessageDialog(this, "Thuộc tính 'Thương hiệu' đã tồn tại.");
+                        break;
+                    }
                     ThuongHieu thuongHieu = new ThuongHieu();
                     thuongHieu.setTen(ten);
                     if (thuongHieuService.update(thuongHieu, idSelecting)) {
@@ -310,6 +371,7 @@ public class SanPham extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Cập nhật thương hiệu không thành công.");
                     }
                     break;
+
                 default:
                     JOptionPane.showMessageDialog(this, "Loại thuộc tính không hợp lệ.");
                     break;
@@ -317,6 +379,7 @@ public class SanPham extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn lại dòng cần cập nhật!");
         }
+        txtThem.setText("");
     }
 
     private void clearFormCTSP() {
@@ -345,11 +408,11 @@ public class SanPham extends javax.swing.JPanel {
             model.addRow(new Object[]{
                 sp.getId(),
                 sp.getTenSp().getTen(),
-                sp.getChatLieu(),
-                sp.getKichCo(),
-                sp.getMauSac(),
-                sp.getNhaSx(),
-                sp.getThuongHieu(),
+                sp.getNhaSx().getTen(),
+                sp.getMauSac().getTen(),
+                sp.getKichCo().getTen(),
+                sp.getChatLieu().getTen(),
+                sp.getThuongHieu().getTen(),
                 sp.getSoLuongTon(),
                 sp.getGiaNhap(),
                 sp.getGiaBan(),
@@ -359,45 +422,69 @@ public class SanPham extends javax.swing.JPanel {
 
     }
 
+    private boolean chatLieuExists(String name) {
+        return chatLieuService.existsByName(name);
+    }
+
+    private boolean thuongHieuExists(String name) {
+        return thuongHieuService.existsByName(name);
+    }
+
+    private boolean NSXExists(String name) {
+        return NSXService.existsByName(name);
+    }
+
+    private boolean kichCoExists(String name) {
+        return kichCoService.existsByName(name);
+    }
+
+    private boolean mauSacExists(String name) {
+        return mauSacServices.existsByName(name);
+    }
+
     private boolean checkFrmSPCT() {
+
         if (txtGiaNhap.getText().trim().isEmpty() || txtGiaBan.getText().trim().isEmpty() || txtSoLuongTon.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui long dien du truong");
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đủ trường");
             return false;
         }
+
         if (txtGiaNhap.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "gia nhap không được để trống");
+            JOptionPane.showMessageDialog(this, "Giá nhập không được để trống");
             txtGiaNhap.requestFocus();
             return false;
         } else {
             try {
                 if (Float.parseFloat(txtGiaNhap.getText().trim()) < 0) {
-                    JOptionPane.showMessageDialog(this, "gia nhap phải lớn hơn 0");
+                    JOptionPane.showMessageDialog(this, "Giá nhập phải lớn hơn 0");
                     txtGiaNhap.requestFocus();
                     return false;
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "gia nhap phải là số");
+                JOptionPane.showMessageDialog(this, "Giá nhập phải là số");
                 txtGiaNhap.requestFocus();
                 return false;
             }
         }
+
         if (txtGiaBan.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "gia ban không được để trống");
+            JOptionPane.showMessageDialog(this, "Giá bán không được để trống");
             txtGiaBan.requestFocus();
             return false;
         } else {
             try {
                 if (Float.parseFloat(txtGiaBan.getText().trim()) < 0) {
-                    JOptionPane.showMessageDialog(this, "gia ban phải lớn hơn 0");
+                    JOptionPane.showMessageDialog(this, "Giá bán phải lớn hơn 0");
                     txtGiaBan.requestFocus();
                     return false;
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "gia ban phải là số");
+                JOptionPane.showMessageDialog(this, "Giá bán phải là số");
                 txtGiaBan.requestFocus();
                 return false;
             }
         }
+
         if (txtSoLuongTon.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Số lượng không được để trống");
             txtSoLuongTon.requestFocus();
@@ -415,6 +502,184 @@ public class SanPham extends javax.swing.JPanel {
                 return false;
             }
         }
+        String selectedTenSanPham = cboTenSp.getSelectedItem().toString();
+        String selectedChatLieu = cboChatLieu.getSelectedItem().toString();
+        String selectedThuongHieu = cboThuonghieu.getSelectedItem().toString();
+        String selectedNSX = cboNSX.getSelectedItem().toString();
+        String selectedKichCo = cboSize.getSelectedItem().toString();
+        String selectedMauSac = cboMauSac.getSelectedItem().toString();
+        String soLuong = txtSoLuongTon.getText().trim();
+        String giaNhap = txtGiaNhap.getText().trim();
+        String giaBan = txtGiaBan.getText().trim();
+        
+        boolean check = true;
+        for(int i = 0 ; i < serviceCt.getAll().size() ; i ++){
+            if(selectedTenSanPham.equals(serviceCt.getAll().get(i).getTenSp().getTen())
+                    &&selectedChatLieu.equals(serviceCt.getAll().get(i).getChatLieu().getTen())
+                    && selectedThuongHieu.equals(serviceCt.getAll().get(i).getThuongHieu().getTen())
+                    && selectedNSX.equals(serviceCt.getAll().get(i).getNhaSx().getTen())
+                    && selectedKichCo.equals(serviceCt.getAll().get(i).getKichCo().getTen())
+                    && selectedMauSac.equals(serviceCt.getAll().get(i).getMauSac().getTen())
+//                    && soLuong.equals(serviceCt.getAll().get(i).getSoLuongTon())
+//                    && giaNhap.equals(serviceCt.getAll().get(i).getGiaNhap())
+//                    && giaBan.equals(serviceCt.getAll().get(i).getGiaBan())
+                    ){
+                check = false;
+            }
+        }
+        
+        if(!check){
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã tồn tại");
+            return false;
+        }
+//        if (chatLieuExists(selectedChatLieu)) {
+//            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
+//            cboChatLieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (thuongHieuExists(selectedThuongHieu)) {
+//            JOptionPane.showMessageDialog(this, "Thương hiệu đã tồn tại.");
+//            cboThuonghieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (NSXExists(selectedNSX)) {
+//            JOptionPane.showMessageDialog(this, "NSX đã tồn tại.");
+//            cboNSX.requestFocus();
+//            return false;
+//        }
+//
+//        if (kichCoExists(selectedKichCo)) {
+//            JOptionPane.showMessageDialog(this, "Kích cỡ đã tồn tại.");
+//            cboSize.requestFocus();
+//            return false;
+//        }
+//
+//        if (mauSacExists(selectedMauSac)) {
+//            JOptionPane.showMessageDialog(this, "Màu sắc đã tồn tại.");
+//            cboMauSac.requestFocus();
+//            return false;
+//        }
+        return true;
+    }
+    
+    private boolean checkFrmSPCT2(int idSPCT) {
+
+        if (txtGiaNhap.getText().trim().isEmpty() || txtGiaBan.getText().trim().isEmpty() || txtSoLuongTon.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đủ trường");
+            return false;
+        }
+
+        if (txtGiaNhap.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Giá nhập không được để trống");
+            txtGiaNhap.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Float.parseFloat(txtGiaNhap.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Giá nhập phải lớn hơn 0");
+                    txtGiaNhap.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Giá nhập phải là số");
+                txtGiaNhap.requestFocus();
+                return false;
+            }
+        }
+
+        if (txtGiaBan.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Giá bán không được để trống");
+            txtGiaBan.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Float.parseFloat(txtGiaBan.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Giá bán phải lớn hơn 0");
+                    txtGiaBan.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Giá bán phải là số");
+                txtGiaBan.requestFocus();
+                return false;
+            }
+        }
+
+        if (txtSoLuongTon.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Số lượng không được để trống");
+            txtSoLuongTon.requestFocus();
+            return false;
+        } else {
+            try {
+                if (Integer.parseInt(txtSoLuongTon.getText().trim()) < 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0");
+                    txtSoLuongTon.requestFocus();
+                    return false;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải là số");
+                txtSoLuongTon.requestFocus();
+                return false;
+            }
+        }
+        String selectedTenSanPham = cboTenSp.getSelectedItem().toString();
+        String selectedChatLieu = cboChatLieu.getSelectedItem().toString();
+        String selectedThuongHieu = cboThuonghieu.getSelectedItem().toString();
+        String selectedNSX = cboNSX.getSelectedItem().toString();
+        String selectedKichCo = cboSize.getSelectedItem().toString();
+        String selectedMauSac = cboMauSac.getSelectedItem().toString();
+        String soLuong = txtSoLuongTon.getText().trim();
+        String giaNhap = txtGiaNhap.getText().trim();
+        String giaBan = txtGiaBan.getText().trim();
+        
+        boolean check = true;
+        for(int i = 0 ; i < serviceCt.getAllForUpdate(idSPCT).size() ; i ++){
+            if(     selectedTenSanPham.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getTenSp().getTen())
+                    && selectedChatLieu.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getChatLieu().getTen())
+                    && selectedThuongHieu.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getThuongHieu().getTen())
+                    && selectedNSX.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getNhaSx().getTen())
+                    && selectedKichCo.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getKichCo().getTen())
+                    && selectedMauSac.equals(serviceCt.getAllForUpdate(idSPCT).get(i).getMauSac().getTen())
+                    ){
+                check = false;
+            }
+        }
+        
+        if(!check){
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã tồn tại");
+            return false;
+        }
+//        if (chatLieuExists(selectedChatLieu)) {
+//            JOptionPane.showMessageDialog(this, "Chất liệu đã tồn tại.");
+//            cboChatLieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (thuongHieuExists(selectedThuongHieu)) {
+//            JOptionPane.showMessageDialog(this, "Thương hiệu đã tồn tại.");
+//            cboThuonghieu.requestFocus();
+//            return false;
+//        }
+//
+//        if (NSXExists(selectedNSX)) {
+//            JOptionPane.showMessageDialog(this, "NSX đã tồn tại.");
+//            cboNSX.requestFocus();
+//            return false;
+//        }
+//
+//        if (kichCoExists(selectedKichCo)) {
+//            JOptionPane.showMessageDialog(this, "Kích cỡ đã tồn tại.");
+//            cboSize.requestFocus();
+//            return false;
+//        }
+//
+//        if (mauSacExists(selectedMauSac)) {
+//            JOptionPane.showMessageDialog(this, "Màu sắc đã tồn tại.");
+//            cboMauSac.requestFocus();
+//            return false;
+//        }
         return true;
     }
 
@@ -986,7 +1251,7 @@ public class SanPham extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "them thanh cong");
                 loadTableSp();
             } else {
-                JOptionPane.showMessageDialog(this, "them that bai");
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm đã tồn tại");
             }
 
         }        // TODO add your handling code here:
@@ -1002,13 +1267,22 @@ public class SanPham extends javax.swing.JPanel {
                 return;
             }
             model.SanPham s = this.getFormSanPham();
-            if (service.update(s, Integer.valueOf(maSP)) != 0) {
+            boolean check = true;
+            for( int i = 0 ; i < service.getAll().size() ; i ++){
+                if(txtTen.getText().trim().equals(service.getAll().get(i).getTen())){
+                    check = false;
+                }
+            }
+            if(!check){
+                JOptionPane.showMessageDialog(this, "Tên sản phẩm đã tồn tại");
+            }else{
+                if (service.update(s, Integer.valueOf(maSP)) != 0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thành công");
                 loadTableSp();
             } else {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thất bại");
             }
-
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng dữ liệu cần sửa");
         }
@@ -1027,7 +1301,8 @@ public class SanPham extends javax.swing.JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "them sản phẩm thất bại");
             }
-        }        // TODO add your handling code here:
+        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -1039,7 +1314,7 @@ public class SanPham extends javax.swing.JPanel {
             if (hoi != JOptionPane.YES_OPTION) {
                 return;
             }
-            if (checkFrmSPCT()) {
+            if (checkFrmSPCT2(Integer.valueOf(id))) {
                 SanPhamChiTiet spct = this.getFrmSanPhamChiTiet();
                 if (serviceCt.update(spct, id) != 0) {
                     JOptionPane.showMessageDialog(this, "Chỉnh sửa sản phẩm thành công");
@@ -1050,7 +1325,7 @@ public class SanPham extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng dữ liệu cần sửa");
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1065,7 +1340,7 @@ public class SanPham extends javax.swing.JPanel {
     }//GEN-LAST:event_txtGiaBanActionPerformed
 
     private void tblSanPhamChiTietMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamChiTietMouseClicked
-  try {
+        try {
             int row = -1;
             row = tblSanPhamChiTiet.getSelectedRow();
             this.showDataSPCT(row);
@@ -1135,7 +1410,7 @@ public class SanPham extends javax.swing.JPanel {
     }//GEN-LAST:event_btnsuaActionPerformed
 
     private void tbl_bangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_bangMouseClicked
-
+        txtThem.setText(tbl_bang.getValueAt(tbl_bang.getSelectedRow(), 1) + "");
     }//GEN-LAST:event_tbl_bangMouseClicked
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked

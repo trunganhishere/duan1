@@ -9,6 +9,7 @@ import JDBCUtil.ConenctionProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.SanPham;
@@ -46,18 +47,36 @@ public class SanPhamService implements SanPhamInterface {
 
     @Override
     public int add(SanPham sp) {
-        String sql = """
-                     INSERT INTO dbo.SanPham(TenSanPham)
-                     VALUES( ?  )""";
-
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setObject(1, sp.getTen());
-            return ps.executeUpdate();
-        } catch (Exception e) {
-            return 0;
-        }
+   
+    if (tenSanPhamDaTonTai(sp.getTen())) {
+        System.out.println("Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác.");
+        return 0; // Trả về 0 để biểu thị thất bại
     }
+
+    // Nếu tên sản phẩm chưa tồn tại, tiến hành thêm vào cơ sở dữ liệu
+    String sql = "INSERT INTO SanPham(TenSanPham) VALUES(?)";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, sp.getTen());
+        return ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return 0; // Trả về 0 để biểu thị thất bại
+    }
+}
+    private boolean tenSanPhamDaTonTai(String tenSanPham) {
+    String sql = "SELECT COUNT(*) FROM SanPham WHERE TenSanPham = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, tenSanPham);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            return count > 0; // Trả về true nếu tên sản phẩm đã tồn tại, ngược lại trả về false
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; // Mặc định trả về false nếu có lỗi xảy ra
+}
 
     @Override
     public int update(SanPham sp, int index) {

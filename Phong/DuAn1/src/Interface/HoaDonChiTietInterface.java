@@ -19,5 +19,5 @@ public interface HoaDonChiTietInterface  {
     public boolean addHDCT(HoaDon hoaDon,SanPhamChiTiet sanPhamChiTiet,int soLuong, double DonGia);
     public boolean deleteHDCT(int IdHD,int IdSP);
      public boolean deleteAllHDCT( int idHD);
-    
+        public List<HoaDonChiTiet> getAllHDCTByIdHD(int idHD);
 }

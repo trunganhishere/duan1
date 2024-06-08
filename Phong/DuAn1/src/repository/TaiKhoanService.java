@@ -195,4 +195,157 @@ public class TaiKhoanService {
         }
         return true;
     }
+    
+    public ArrayList<TaiKhoan> getAllTaiKhoanUpdate(String username) {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users] where TaiKhoan <> ?
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            ps.setObject(1, username);
+            ArrayList<TaiKhoan> ls = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TaiKhoan tk = new TaiKhoan();
+                tk.setId(rs.getInt(1));
+                tk.setTen(rs.getString(2));
+                tk.setNgaySinh(rs.getDate(3));
+                tk.setGioiTinh(rs.getBoolean(4));
+                tk.setSdt(rs.getString(5));
+                tk.setIdCV(rs.getInt(6));
+                tk.setTaiKhoan(rs.getString(7));
+                tk.setMatKhau(rs.getString(8));
+                tk.setEmail(rs.getString(9));
+                tk.setTrangThai(rs.getBoolean(10));
+                tk.setNgayTao(rs.getDate(11));
+                tk.setNgaySua(rs.getDate(12));
+                ls.add(tk);
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean getAllEmail(String email) {
+        ArrayList<TaiKhoan> ls = new ArrayList<>();
+        String sql = """
+                     SELECT [Email]
+                       FROM [dbo].[Users]
+                     """;
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            TaiKhoan u = new TaiKhoan();
+            while (rs.next()) {
+                u.setEmail(rs.getString(1));
+                ls.add(u);
+            }
+            if (u.getEmail().equals(email)) {
+                return false;
+            }
+
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
+        return true;
+    }
+    
+    public ArrayList<TaiKhoan> getAllEmailUpdate(String email) {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users] where Email <> ?
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            ps.setObject(1, email);
+            ArrayList<TaiKhoan> ls = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TaiKhoan tk = new TaiKhoan();
+                tk.setId(rs.getInt(1));
+                tk.setTen(rs.getString(2));
+                tk.setNgaySinh(rs.getDate(3));
+                tk.setGioiTinh(rs.getBoolean(4));
+                tk.setSdt(rs.getString(5));
+                tk.setIdCV(rs.getInt(6));
+                tk.setTaiKhoan(rs.getString(7));
+                tk.setMatKhau(rs.getString(8));
+                tk.setEmail(rs.getString(9));
+                tk.setTrangThai(rs.getBoolean(10));
+                tk.setNgayTao(rs.getDate(11));
+                tk.setNgaySua(rs.getDate(12));
+                ls.add(tk);
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public TaiKhoan findUserByID(int idUser) {
+        String sql = """
+                     SELECT [Id]
+                           ,[Ten]
+                           ,[NgaySinh]
+                           ,[Gioitinh]
+                           ,[Sdt]
+                           ,[IdCV]
+                           ,[TaiKhoan]
+                           ,[MatKhau]
+                           ,[Email]
+                           ,[TrangThai]
+                           ,[Ngaytao]
+                           ,[NgaySua]
+                       FROM [dbo].[Users] where Id = ?
+                     """;
+
+        try (Connection con = ConenctionProvider.getConnection(); PreparedStatement ps = con.prepareCall(sql);) {
+            ps.setObject(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            TaiKhoan tk = new TaiKhoan();
+            if (rs.next()) {
+                tk.setId(rs.getInt(1));
+                tk.setTen(rs.getString(2));
+                tk.setNgaySinh(rs.getDate(3));
+                tk.setGioiTinh(rs.getBoolean(4));
+                tk.setSdt(rs.getString(5));
+                tk.setIdCV(rs.getInt(6));
+                tk.setTaiKhoan(rs.getString(7));
+                tk.setMatKhau(rs.getString(8));
+                tk.setEmail(rs.getString(9));
+                tk.setTrangThai(rs.getBoolean(10));
+                tk.setNgayTao(rs.getDate(11));
+                tk.setNgaySua(rs.getDate(12));
+            }
+            return tk;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

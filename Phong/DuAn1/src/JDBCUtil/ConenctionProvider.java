@@ -47,7 +47,7 @@ public class ConenctionProvider {
     public static final String PORT = "1433";
     public static final String DBNAME = "DuAn1";
     public static final String USERNAME = "sa";
-    public static final String PASSWORD = "12345678";
+    public static final String PASSWORD = "123456";
 
     /**
      * Get connection to MSSQL Server
