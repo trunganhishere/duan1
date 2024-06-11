@@ -8,6 +8,7 @@ package view;
 import Interface.hoaDonInterface;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -24,7 +25,9 @@ public class khachhangdialog extends javax.swing.JFrame {
     private Runnable callback;
     private DefaultTableModel model = new DefaultTableModel();
     SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+    private KhachHangService khachHangService = new KhachHangService();
     private static int maHD;
+        int row;
 
     public khachhangdialog(int idHD, Runnable callback) {
         initComponents();
@@ -49,6 +52,77 @@ public class khachhangdialog extends javax.swing.JFrame {
         }
     }
 
+    private KhachHang addKhachHang() {
+    String tenKh = txtTen1.getText();
+    String ngaySinhkh = txtNgaySinh.getText();
+    String Sdt = txtSdt.getText();
+    String Email = txtEmail.getText();
+    
+    if (tenKh.isEmpty() || ngaySinhkh.isEmpty() || Sdt.isEmpty() || Email.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin.");
+        return null;
+    }
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    Date ngaySinh;
+    try {
+        ngaySinh = sdf.parse(ngaySinhkh);
+    } catch (ParseException ex) {
+        JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy.");
+        txtNgaySinh.requestFocus();
+        return null;
+    }
+    
+    if (!tenKh.matches("[\\p{L} ]+")) {
+        JOptionPane.showMessageDialog(this, "Tên chưa hợp lệ.");
+        return null;
+    }
+    
+    if (!Sdt.matches("^0+[0-9]{9}$")) {
+        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ.");
+        txtSdt.requestFocus();
+        return null;
+    }
+    
+    
+    if (!Email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        JOptionPane.showMessageDialog(this, "Email không hợp lệ.");
+        txtEmail.requestFocus();
+        return null;
+    }
+
+    model.KhachHang kh = new model.KhachHang();
+    boolean gt = rdoNam.isSelected();
+    
+    boolean checkEmail = true;
+        for(int z = 0 ; z < khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).size(); z ++){
+                if(Email.equals(khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).get(z).getEmail())){
+                    checkEmail = false;
+                    break;
+                }
+        }
+        if(!checkEmail){
+            JOptionPane.showMessageDialog(this, "Email đã tồn tại");
+            return null;
+        }
+        
+    
+    
+    kh.setTen(tenKh);
+    kh.setNgaysinh(ngaySinh);
+    kh.setGioitinh(gt);
+    kh.setSdt(Sdt);
+    kh.setEmail(Email);
+    
+    boolean addResult = khachHangService.add(kh);
+        if (addResult) {
+            JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm khách hàng không thành công.");
+        }
+        return null;
+    }
+    
     void showDT(int index) {
         List<model.KhachHang> List = khachHangServiceImpl.getAll();
         model.KhachHang kh = List.get(index);
@@ -68,57 +142,32 @@ public class khachhangdialog extends javax.swing.JFrame {
         txtEmail.setText("");
         txtSdt.setText("");
     }
-      private void addKhachHang() {
-        model.KhachHang kh = new model.KhachHang();
-
-        String tenKh = txtTen1.getText().trim();
-        if (tenKh.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Tên khách hàng.");
-            return;
-        }
-
-        String ngaySinhKh = txtNgaySinh.getText().trim();
-        if (ngaySinhKh.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Ngày sinh khách hàng.");
-            return;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date ngaySinh;
-        try {
-            ngaySinh = sdf.parse(ngaySinhKh);
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy.");
-            return;
-        }
-
-        String sdt = txtSdt.getText().trim();
-        if (sdt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Số điện thoại khách hàng.");
-            return;
-        }
-
-        String email = txtEmail.getText().trim();
-        if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Email khách hàng.");
-            return;
-        }
-
-        boolean gt = rdoNam.isSelected();
-
-        kh.setTen(tenKh);
-        kh.setNgaysinh(ngaySinh);
-        kh.setGioitinh(gt);
-        kh.setSdt(sdt);
-        kh.setEmail(email);
-
-        boolean addResult = khachHangServiceImpl.add(kh);
-        if (addResult) {
-            JOptionPane.showMessageDialog(this, "Add khách hàng thành công.");
+    
+    private void fillData(int row) {
+        ArrayList<model.KhachHang> lstk = new ArrayList<>();
+        if (txtSearchKhachHang.getText().trim().length() == 0) {
+            lstk = khachHangService.getAll();
         } else {
-            JOptionPane.showMessageDialog(this, "Add khách hàng không thành công.");
+            lstk = khachHangService.search(txtSearchKhachHang.getText().trim());
+        }
+        model.KhachHang u = lstk.get(row);
+        txtTen1.setText(u.getTen());
+        txtNgaySinh.setText(fomatDate((Date) u.getNgaysinh()));
+        txtSdt.setText(u.getSdt());
+        txtEmail.setText(u.getEmail());
+        if (u.isGioitinh()) {
+            rdoNam.setSelected(true);
+        } else {
+            rdoNu.setSelected(true);
         }
     }
+      
+    private String fomatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String newDate = sdf.format(date);
+        return newDate;
+    }
+      
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -354,7 +403,7 @@ public class khachhangdialog extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedIndex = tblThongtinkhachhang.getSelectedRow();
         if (selectedIndex >= 0) {
-            this.showDT(selectedIndex);
+            this.fillData(selectedIndex);
         }
     }//GEN-LAST:event_tblThongtinkhachhangMouseClicked
 
@@ -408,6 +457,9 @@ public class khachhangdialog extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchKhachHangKeyReleased
 
     private void btnLammoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoiActionPerformed
+        LamMoi();
+        txtSearchKhachHang.setText("");
+        filltable();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLammoiActionPerformed
 

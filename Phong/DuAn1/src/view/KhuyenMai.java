@@ -249,6 +249,7 @@ public class KhuyenMai extends javax.swing.JPanel {
         jPanel1.add(cbo_hinhthuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 60, 30));
 
         btn_update.setBackground(new java.awt.Color(125, 224, 237));
+        btn_update.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/floppy-disk.png"))); // NOI18N
         btn_update.setText("Update");
         btn_update.addActionListener(new java.awt.event.ActionListener() {
@@ -259,6 +260,7 @@ public class KhuyenMai extends javax.swing.JPanel {
         jPanel1.add(btn_update, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 100, 40));
 
         btn_add.setBackground(new java.awt.Color(125, 224, 237));
+        btn_add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btn_add.setText("Add");
         btn_add.addActionListener(new java.awt.event.ActionListener() {
@@ -269,6 +271,7 @@ public class KhuyenMai extends javax.swing.JPanel {
         jPanel1.add(btn_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 100, 40));
 
         btn_reset.setBackground(new java.awt.Color(125, 224, 237));
+        btn_reset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         btn_reset.setText("Refresh");
         btn_reset.addActionListener(new java.awt.event.ActionListener() {

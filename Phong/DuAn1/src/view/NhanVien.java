@@ -133,6 +133,10 @@ public class NhanVien extends javax.swing.JPanel {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             ngaySinh = sdf.parse(ngaySinhString);
+            if (!ngaySinhString.matches("\\d{2}/\\d{2}/\\d{4}")) {
+        JOptionPane.showMessageDialog(this,"Năm sinh phải có 4 số");
+        return null;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ngày sinh chưa đúng định dạng dd/MM/yyyy !");
             return null;
@@ -194,6 +198,10 @@ public class NhanVien extends javax.swing.JPanel {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             ngaySinh = sdf.parse(ngaySinhString);
+            if (!ngaySinhString.matches("\\d{2}/\\d{2}/\\d{4}")) {
+        JOptionPane.showMessageDialog(this,"Năm sinh phải có 4 số");
+        return null;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy !");
             return null;
@@ -323,6 +331,7 @@ public class NhanVien extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
+        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,6 +339,7 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSua.setText("Sửa");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,25 +362,36 @@ public class NhanVien extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tblMouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(tbl);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Tên");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Ngày Sinh");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("SĐT");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Tài Khoản");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Mật Khẩu");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Email");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Chức Vụ");
 
         cbbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("Giới Tính");
 
         buttonGroup1.add(rdoNam);
@@ -385,6 +406,7 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setText("Trạng thái");
 
         ckbTrangThai.setText("Làm Việc");
@@ -394,6 +416,7 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        btnSua1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSua1.setText("Clear form");
         btnSua1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,6 +424,7 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        btnXuatExcel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnXuatExcel.setText("Xuất Excel");
         btnXuatExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -408,6 +432,7 @@ public class NhanVien extends javax.swing.JPanel {
             }
         });
 
+        jPanel2.setBackground(new java.awt.Color(153, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -548,8 +573,8 @@ public class NhanVien extends javax.swing.JPanel {
                     .addComponent(btnSua1)
                     .addComponent(btnXuatExcel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -572,7 +597,9 @@ public class NhanVien extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        int row = tbl.getSelectedRow();
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn sửa người này không?");
+        if(confirm == JOptionPane.YES_OPTION){
+            int row = tbl.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn người muốn sửa");
         } else {
@@ -586,6 +613,10 @@ public class NhanVien extends javax.swing.JPanel {
             us.sua(getDataUpdate(row), id);
             showData();
         }
+        }else{
+            JOptionPane.showMessageDialog(this, "Sửa thất bại");
+        }
+        
 
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -713,6 +744,10 @@ public class NhanVien extends javax.swing.JPanel {
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
         showData();
     }//GEN-LAST:event_txtSearchKeyPressed
+
+    private void tblMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

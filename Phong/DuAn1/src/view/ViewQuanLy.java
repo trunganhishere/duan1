@@ -5,8 +5,13 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 
@@ -21,16 +26,27 @@ public class ViewQuanLy extends javax.swing.JFrame {
 
       initComponents();
         setLocationRelativeTo(null);
-        setpanel(new SanPham());
+        setpanel(new BanHang());
         color();
         JButton[] btn1= {btnBanHang,btnExit,btnHoaDon,btnKhachHang,btnNhanVien,btnThongKe,btnVoucher};
-        JButton[] btn2= {btnSanPham};
+        JButton[] btn2= {btnBanHang};
         for (JButton btn22 : btn2) {
             btn22.setBackground(new Color(103,204,255));
         }
         for (JButton btn11 : btn1) {
             btn11.setBackground(new Color(204,255,255));
         }
+        
+        ////////////////////////////////////////////////////////////////////////
+        new Timer(1000, new ActionListener() {
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss a");
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lblDongHo.setText(format.format(new Date()));
+            }
+        }).start();
+        ///////////////////////////////////////////////////////////////////////
     }
 
     
@@ -66,24 +82,25 @@ public class ViewQuanLy extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         btnExit = new javax.swing.JButton();
         btnSanPham = new javax.swing.JButton();
-        btnBanHang = new javax.swing.JButton();
         btnVoucher = new javax.swing.JButton();
         btnHoaDon = new javax.swing.JButton();
         btnThongKe = new javax.swing.JButton();
         btnKhachHang = new javax.swing.JButton();
         btnNhanVien = new javax.swing.JButton();
+        lblDongHo = new javax.swing.JLabel();
+        btnBanHang = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
 
         pnmain.setBackground(new java.awt.Color(255, 255, 255));
         pnmain.setMaximumSize(new java.awt.Dimension(940, 580));
         pnmain.setLayout(new java.awt.BorderLayout());
         jPanel2.add(pnmain);
-        pnmain.setBounds(140, 70, 940, 580);
+        pnmain.setBounds(140, 80, 940, 630);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/screenshot2.png"))); // NOI18N
         jLabel1.setText(" ");
@@ -100,11 +117,11 @@ public class ViewQuanLy extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel3);
-        jPanel3.setBounds(790, 0, 290, 70);
+        jPanel3.setBounds(790, 0, 290, 80);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -132,11 +149,11 @@ public class ViewQuanLy extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel5);
-        jPanel5.setBounds(0, 0, 250, 60);
+        jPanel5.setBounds(0, 0, 250, 80);
 
         btnExit.setText("Exit");
         btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -150,7 +167,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnExit);
-        btnExit.setBounds(0, 480, 140, 60);
+        btnExit.setBounds(0, 430, 140, 50);
 
         btnSanPham.setText("Sản Phẩm");
         btnSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -159,16 +176,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnSanPham);
-        btnSanPham.setBounds(0, 60, 140, 60);
-
-        btnBanHang.setText("Bán Hàng");
-        btnBanHang.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBanHangMouseClicked(evt);
-            }
-        });
-        jPanel2.add(btnBanHang);
-        btnBanHang.setBounds(0, 120, 140, 60);
+        btnSanPham.setBounds(0, 130, 140, 50);
 
         btnVoucher.setText("Khuyến Mãi");
         btnVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -182,7 +190,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnVoucher);
-        btnVoucher.setBounds(0, 180, 140, 60);
+        btnVoucher.setBounds(0, 180, 140, 50);
 
         btnHoaDon.setText("Hóa Đơn");
         btnHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -191,7 +199,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnHoaDon);
-        btnHoaDon.setBounds(0, 240, 140, 60);
+        btnHoaDon.setBounds(0, 230, 140, 50);
 
         btnThongKe.setText("Thống Kê");
         btnThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,7 +208,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnThongKe);
-        btnThongKe.setBounds(0, 300, 140, 60);
+        btnThongKe.setBounds(0, 280, 140, 50);
 
         btnKhachHang.setText("Khách Hàng");
         btnKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -209,7 +217,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnKhachHang);
-        btnKhachHang.setBounds(0, 360, 140, 60);
+        btnKhachHang.setBounds(0, 330, 140, 50);
 
         btnNhanVien.setText("Nhân Viên");
         btnNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -223,9 +231,25 @@ public class ViewQuanLy extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnNhanVien);
-        btnNhanVien.setBounds(0, 420, 140, 60);
+        btnNhanVien.setBounds(0, 380, 140, 50);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 640));
+        lblDongHo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblDongHo.setForeground(new java.awt.Color(255, 51, 51));
+        lblDongHo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Alarm.png"))); // NOI18N
+        lblDongHo.setText("00:00:00 PM");
+        jPanel2.add(lblDongHo);
+        lblDongHo.setBounds(10, 650, 110, 30);
+
+        btnBanHang.setText("Bán Hàng");
+        btnBanHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBanHangMouseClicked(evt);
+            }
+        });
+        jPanel2.add(btnBanHang);
+        btnBanHang.setBounds(0, 80, 140, 50);
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 710));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -397,6 +421,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblDongHo;
     private javax.swing.JPanel pnmain;
     // End of variables declaration//GEN-END:variables
 }

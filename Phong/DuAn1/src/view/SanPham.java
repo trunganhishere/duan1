@@ -788,6 +788,7 @@ public class SanPham extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 255, 255));
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTabbedPane1MouseClicked(evt);
@@ -801,7 +802,7 @@ public class SanPham extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Tên", "Ngay Tao", "Ngay Sua"
+                "STT", "Tên", "Ngày tạo", "Ngày sửa"
             }
         ));
         tblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -810,6 +811,10 @@ public class SanPham extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(tblSanPham);
+        if (tblSanPham.getColumnModel().getColumnCount() > 0) {
+            tblSanPham.getColumnModel().getColumn(0).setPreferredWidth(3);
+            tblSanPham.getColumnModel().getColumn(1).setPreferredWidth(200);
+        }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("tên sản phẩm");
@@ -821,6 +826,7 @@ public class SanPham extends javax.swing.JPanel {
         });
 
         jButton1.setBackground(new java.awt.Color(125, 224, 237));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         jButton1.setText("Add");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -830,6 +836,7 @@ public class SanPham extends javax.swing.JPanel {
         });
 
         jButton3.setBackground(new java.awt.Color(125, 224, 237));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/floppy-disk.png"))); // NOI18N
         jButton3.setText("Sua");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -1392,7 +1399,9 @@ public class SanPham extends javax.swing.JPanel {
     }//GEN-LAST:event_txtThemActionPerformed
 
     private void btnsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsuaActionPerformed
-        String thuocTinh = "";
+        int confirm = JOptionPane.showConfirmDialog(this,"Bạn có chắc muốn sửa không?");
+        if(confirm == JOptionPane.YES_OPTION){
+            String thuocTinh = "";
         if (rdoChatlieu12.isSelected()) {
             thuocTinh = "chatLieu";
 
@@ -1407,6 +1416,10 @@ public class SanPham extends javax.swing.JPanel {
         }
         updateThuocTinh(thuocTinh);
         loadData(thuocTinh);
+        }else{
+            JOptionPane.showMessageDialog(this,"Sửa thất bại");
+        }
+        
     }//GEN-LAST:event_btnsuaActionPerformed
 
     private void tbl_bangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_bangMouseClicked
