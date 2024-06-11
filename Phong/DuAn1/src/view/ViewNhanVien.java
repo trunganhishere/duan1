@@ -39,7 +39,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
     
     
     private void color(){
-        JButton[] btns = {btnBanHang,btnHoaDon,btnKhachHang};
+        JButton[] btns = {btnBanHang,btnHoaDon,btnKhachHang,btnExit};
         for (JButton btn : btns) {
             btn.setBackground(new Color(204,255,255));
         }
@@ -102,19 +102,19 @@ public class ViewNhanVien extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
 
         pnmain.setBackground(new java.awt.Color(255, 255, 255));
         pnmain.setMaximumSize(new java.awt.Dimension(940, 580));
         pnmain.setLayout(new java.awt.BorderLayout());
         jPanel2.add(pnmain);
-        pnmain.setBounds(140, 70, 940, 580);
+        pnmain.setBounds(140, 90, 940, 560);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/screenshot2.png"))); // NOI18N
         jLabel1.setText(" ");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(290, -10, 500, 80);
+        jLabel1.setBounds(290, 0, 500, 80);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -126,11 +126,11 @@ public class ViewNhanVien extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel3);
-        jPanel3.setBounds(790, 0, 290, 70);
+        jPanel3.setBounds(790, 0, 290, 80);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -158,11 +158,11 @@ public class ViewNhanVien extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel5);
-        jPanel5.setBounds(0, 0, 250, 60);
+        jPanel5.setBounds(0, 0, 250, 80);
 
         btnExit.setText("Exit");
         btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -176,7 +176,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnExit);
-        btnExit.setBounds(0, 240, 140, 60);
+        btnExit.setBounds(0, 240, 140, 50);
 
         btnBanHang.setText("Bán Hàng");
         btnBanHang.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -185,7 +185,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnBanHang);
-        btnBanHang.setBounds(0, 60, 140, 60);
+        btnBanHang.setBounds(0, 90, 140, 50);
 
         btnHoaDon.setText("Hóa Đơn");
         btnHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -199,7 +199,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnHoaDon);
-        btnHoaDon.setBounds(0, 120, 140, 60);
+        btnHoaDon.setBounds(0, 140, 140, 50);
 
         btnKhachHang.setText("Khách Hàng");
         btnKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -208,7 +208,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnKhachHang);
-        btnKhachHang.setBounds(0, 180, 140, 60);
+        btnKhachHang.setBounds(0, 190, 140, 50);
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 640));
 

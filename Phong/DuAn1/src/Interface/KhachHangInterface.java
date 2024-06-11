@@ -4,6 +4,7 @@
  */
 package Interface;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.KhachHang;
 
@@ -13,7 +14,7 @@ import model.KhachHang;
  */
 public interface KhachHangInterface {
 
-    public List<KhachHang> getAll();
+    public ArrayList<KhachHang> getAll();
 
     public void find(String khachHang);
 
@@ -22,5 +23,13 @@ public interface KhachHangInterface {
     public void update(KhachHang khachHang, int index);
 
     public void delete(int khachHang);
+    
+    public ArrayList<KhachHang> search(String searchKey);
+    
+    public ArrayList<KhachHang> getAllEmailUpdate(String email);
+    
+    public KhachHang selectById(String id);
+    
+    public void countDB();
 
 }
