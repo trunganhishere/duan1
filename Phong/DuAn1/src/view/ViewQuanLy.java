@@ -100,7 +100,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
         pnmain.setMaximumSize(new java.awt.Dimension(940, 580));
         pnmain.setLayout(new java.awt.BorderLayout());
         jPanel2.add(pnmain);
-        pnmain.setBounds(140, 80, 940, 630);
+        pnmain.setBounds(140, 80, 950, 640);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/screenshot2.png"))); // NOI18N
         jLabel1.setText(" ");
@@ -113,7 +113,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +121,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanel3);
-        jPanel3.setBounds(790, 0, 290, 80);
+        jPanel3.setBounds(790, 0, 300, 80);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -249,7 +249,7 @@ public class ViewQuanLy extends javax.swing.JFrame {
         jPanel2.add(btnBanHang);
         btnBanHang.setBounds(0, 80, 140, 50);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 710));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 720));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

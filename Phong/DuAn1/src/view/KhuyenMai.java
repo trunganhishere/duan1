@@ -84,7 +84,7 @@ public class KhuyenMai extends javax.swing.JPanel {
         try {
             soLuong = Integer.parseInt(soLuongStr);
             if (soLuong <= 0) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên dương.");
+                JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ.");
                 return;
             }
         } catch (NumberFormatException e) {
@@ -165,8 +165,8 @@ public class KhuyenMai extends javax.swing.JPanel {
         int soLuong;
         try {
             soLuong = Integer.parseInt(soLuongStr);
-            if (soLuong <= 0) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải là một số nguyên dương.");
+            if (soLuong < 0) {
+                JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ.");
                 return;
             }
         } catch (NumberFormatException e) {

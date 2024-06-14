@@ -5,9 +5,14 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.plaf.basic.BasicButtonUI;
 import model.TaiKhoan;
 
@@ -25,7 +30,16 @@ public class ViewNhanVien extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setpanel(new BanHang());
         color();
+////////////////////////////////////////////////////////////////////////
+        new Timer(1000, new ActionListener() {
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss a");
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lblDongHo1.setText(format.format(new Date()));
+            }
+        }).start();
+        ///////////////////////////////////////////////////////////////////////
     }
 
 
@@ -57,6 +71,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
         btnVoucher = new javax.swing.JButton();
         btnNhanVien = new javax.swing.JButton();
         btnSanPham = new javax.swing.JButton();
+        lblDongHo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         pnmain = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -67,6 +82,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
         btnBanHang = new javax.swing.JButton();
         btnHoaDon = new javax.swing.JButton();
         btnKhachHang = new javax.swing.JButton();
+        lblDongHo1 = new javax.swing.JLabel();
 
         btnVoucher.setText("Voucher");
         btnVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -99,6 +115,11 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         });
 
+        lblDongHo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblDongHo.setForeground(new java.awt.Color(255, 51, 51));
+        lblDongHo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Alarm.png"))); // NOI18N
+        lblDongHo.setText("00:00:00 PM");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -109,7 +130,7 @@ public class ViewNhanVien extends javax.swing.JFrame {
         pnmain.setMaximumSize(new java.awt.Dimension(940, 580));
         pnmain.setLayout(new java.awt.BorderLayout());
         jPanel2.add(pnmain);
-        pnmain.setBounds(140, 90, 940, 560);
+        pnmain.setBounds(140, 90, 940, 650);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/screenshot2.png"))); // NOI18N
         jLabel1.setText(" ");
@@ -210,7 +231,14 @@ public class ViewNhanVien extends javax.swing.JFrame {
         jPanel2.add(btnKhachHang);
         btnKhachHang.setBounds(0, 190, 140, 50);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 640));
+        lblDongHo1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblDongHo1.setForeground(new java.awt.Color(255, 51, 51));
+        lblDongHo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Alarm.png"))); // NOI18N
+        lblDongHo1.setText("00:00:00 PM");
+        jPanel2.add(lblDongHo1);
+        lblDongHo1.setBounds(10, 650, 110, 30);
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 740));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -359,6 +387,8 @@ public class ViewNhanVien extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblDongHo;
+    private javax.swing.JLabel lblDongHo1;
     private javax.swing.JPanel pnmain;
     // End of variables declaration//GEN-END:variables
 }
