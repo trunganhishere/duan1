@@ -304,7 +304,7 @@ public class KhuyenMai extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tbl_Bang);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 910, 290));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 910, 320));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Bảng khuyến mãi");

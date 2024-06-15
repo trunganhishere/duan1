@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.plaf.basic.BasicButtonUI;
 import model.TaiKhoan;
+import repository.DangNhapService;
 
 public class ViewNhanVien extends javax.swing.JFrame {
 
     private JPanel childPanel;
     private TaiKhoan user;
+    DangNhapService dnsv = new DangNhapService();
 
     /**
      * Creates new form mainView
@@ -40,9 +42,15 @@ public class ViewNhanVien extends javax.swing.JFrame {
             }
         }).start();
         ///////////////////////////////////////////////////////////////////////
+        showName();
     }
 
-
+    private void showName(){
+        String name = dnsv.login(dnsv.getUsername(), dnsv.getPassword()).getTen();
+        String chucVu = dnsv.login(dnsv.getUsername(), dnsv.getPassword()).getIdCV() == 1 ? "Quản lý" : "Nhân viên";
+        lblName.setText(name);
+        lblChucVu.setText(chucVu);
+    }
     
     private void setpanel(JPanel panel) {
         childPanel = panel;
@@ -83,6 +91,10 @@ public class ViewNhanVien extends javax.swing.JFrame {
         btnHoaDon = new javax.swing.JButton();
         btnKhachHang = new javax.swing.JButton();
         lblDongHo1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblChucVu = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         btnVoucher.setText("Voucher");
         btnVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -238,6 +250,18 @@ public class ViewNhanVien extends javax.swing.JFrame {
         jPanel2.add(lblDongHo1);
         lblDongHo1.setBounds(10, 650, 110, 30);
 
+        jLabel2.setText("Chức vụ:");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(10, 610, 60, 21);
+        jPanel2.add(lblChucVu);
+        lblChucVu.setBounds(70, 610, 80, 21);
+        jPanel2.add(lblName);
+        lblName.setBounds(70, 580, 80, 21);
+
+        jLabel4.setText("Xin chào:");
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(10, 580, 60, 21);
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 740));
 
         pack();
@@ -383,12 +407,16 @@ public class ViewNhanVien extends javax.swing.JFrame {
     private javax.swing.JButton btnSanPham;
     private javax.swing.JButton btnVoucher;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JLabel lblDongHo1;
+    private javax.swing.JLabel lblName;
     private javax.swing.JPanel pnmain;
     // End of variables declaration//GEN-END:variables
 }

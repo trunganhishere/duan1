@@ -147,7 +147,7 @@ public class ThongKe extends javax.swing.JPanel {
         lbl_hd.setText("...");
         jPanel2.add(lbl_hd, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, 60, 39));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 460, 120));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 460, 120));
 
         tbl_Bang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -162,11 +162,11 @@ public class ThongKe extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tbl_Bang);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 356, 928, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 928, 200));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Bảng thống kê");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 320, 190, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 190, 30));
 
         jButton1.setBackground(new java.awt.Color(125, 224, 237));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bill.png"))); // NOI18N
@@ -176,11 +176,11 @@ public class ThongKe extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 300, 120, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 390, 120, 40));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Doanh thu ở");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
 
         rdo_Thang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Thang.setText("Tháng:");
@@ -189,7 +189,7 @@ public class ThongKe extends javax.swing.JPanel {
                 rdo_ThangActionPerformed(evt);
             }
         });
-        jPanel1.add(rdo_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        jPanel1.add(rdo_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
 
         rdo_Nam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         rdo_Nam.setText("Năm:");
@@ -198,7 +198,7 @@ public class ThongKe extends javax.swing.JPanel {
                 rdo_NamActionPerformed(evt);
             }
         });
-        jPanel1.add(rdo_Nam, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+        jPanel1.add(rdo_Nam, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, -1, -1));
 
         txt_Thang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,34 +210,34 @@ public class ThongKe extends javax.swing.JPanel {
                 txt_ThangKeyReleased(evt);
             }
         });
-        jPanel1.add(txt_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 90, -1));
+        jPanel1.add(txt_Thang, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 90, -1));
 
         txt_Nam.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_NamKeyReleased(evt);
             }
         });
-        jPanel1.add(txt_Nam, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 90, -1));
+        jPanel1.add(txt_Nam, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 90, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 928, Short.MAX_VALUE)
+            .addGap(0, 940, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 556, Short.MAX_VALUE)
+            .addGap(0, 662, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 

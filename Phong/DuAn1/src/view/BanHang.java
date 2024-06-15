@@ -240,7 +240,8 @@ public class BanHang extends javax.swing.JPanel {
                     sp.getMauSac(),
                     sp.getThuongHieu(),
                     sp.getSoLuongTon(),
-                    sp.getGiaBan(),});
+                    sp.getGiaBan(),
+                    sp.getNhaSx(),});
             }
         }
         return list;
@@ -641,17 +642,17 @@ public class BanHang extends javax.swing.JPanel {
 
         tbl_sanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tên SP", "Chất liệu", "Kích Cỡ", "Màu Sắc", "Thương Hiệu", "Số Lượng ", "Giá Bán"
+                "ID", "Tên SP", "Chất liệu", "Kích Cỡ", "Màu Sắc", "Thương Hiệu", "Số Lượng ", "Giá Bán", "NSX"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -671,8 +672,11 @@ public class BanHang extends javax.swing.JPanel {
         });
         jScrollPane6.setViewportView(tbl_sanPham);
         if (tbl_sanPham.getColumnModel().getColumnCount() > 0) {
-            tbl_sanPham.getColumnModel().getColumn(0).setPreferredWidth(2);
+            tbl_sanPham.getColumnModel().getColumn(0).setMaxWidth(30);
             tbl_sanPham.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tbl_sanPham.getColumnModel().getColumn(3).setMaxWidth(50);
+            tbl_sanPham.getColumnModel().getColumn(4).setMaxWidth(70);
+            tbl_sanPham.getColumnModel().getColumn(6).setMaxWidth(70);
         }
 
         jPanel3.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 690, 160));
@@ -1055,7 +1059,7 @@ public class BanHang extends javax.swing.JPanel {
         try {
             tienKhachTra = Double.parseDouble(txtTienKhachTra1.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Tiền nhập không hợp lệ");
+//            JOptionPane.showMessageDialog(this, "Tiền nhập không hợp lệ");
             lblTienThua1.setText("Chưa Đủ");
             return;
         }
@@ -1107,30 +1111,31 @@ public class BanHang extends javax.swing.JPanel {
         String tenThuongHieu = cbo_filterThuongHieu1.getSelectedItem().toString();
         if (tenThuongHieu.equals("All")) {
             loadTableSpCt();
-        }else{
+        } else {
             DefaultTableModel model = (DefaultTableModel) tbl_sanPham.getModel();
-        model.setRowCount(0);
-        List<SanPhamChiTiet> listLoc = new ArrayList<>();
-        for (SanPhamChiTiet sanPhamChiTiet : loadTableSpCt()) {
-            if (sanPhamChiTiet.getThuongHieu().getTen().equals(tenThuongHieu)) {
-                listLoc.add(sanPhamChiTiet);
-            }
-        }
-        model.setRowCount(0);
-        for (SanPhamChiTiet sp : listLoc) {
-            model.addRow(new Object[]{
-                sp.getId(),
-                sp.getTenSp().getTen(),
-                sp.getChatLieu(),
-                sp.getKichCo(),
-                sp.getMauSac(),
-                sp.getThuongHieu(),
-                sp.getSoLuongTon(),
-                sp.getGiaBan(),});
-        }
-        if(listLoc.isEmpty()){
             model.setRowCount(0);
-        }
+            List<SanPhamChiTiet> listLoc = new ArrayList<>();
+            for (SanPhamChiTiet sanPhamChiTiet : loadTableSpCt()) {
+                if (sanPhamChiTiet.getThuongHieu().getTen().equals(tenThuongHieu)) {
+                    listLoc.add(sanPhamChiTiet);
+                }
+            }
+            model.setRowCount(0);
+            for (SanPhamChiTiet sp : listLoc) {
+                model.addRow(new Object[]{
+                    sp.getId(),
+                    sp.getTenSp().getTen(),
+                    sp.getChatLieu(),
+                    sp.getKichCo(),
+                    sp.getMauSac(),
+                    sp.getThuongHieu(),
+                    sp.getSoLuongTon(),
+                    sp.getGiaBan(),
+                    sp.getNhaSx()});
+            }
+            if (listLoc.isEmpty()) {
+                model.setRowCount(0);
+            }
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -1138,32 +1143,33 @@ public class BanHang extends javax.swing.JPanel {
         String tenThuongHieu = cbo_filterThuongHieu1.getSelectedItem().toString();
         if (tenThuongHieu.equals("All")) {
             loadTableSpCt();
-        }else{
+        } else {
             DefaultTableModel model = (DefaultTableModel) tbl_sanPham.getModel();
-        model.setRowCount(0);
-        List<SanPhamChiTiet> listLoc = new ArrayList<>();
-        for (SanPhamChiTiet sanPhamChiTiet : loadTableSpCt()) {
-            if (sanPhamChiTiet.getThuongHieu().getTen().equals(tenThuongHieu)) {
-                listLoc.add(sanPhamChiTiet);
+            model.setRowCount(0);
+            List<SanPhamChiTiet> listLoc = new ArrayList<>();
+            for (SanPhamChiTiet sanPhamChiTiet : loadTableSpCt()) {
+                if (sanPhamChiTiet.getThuongHieu().getTen().equals(tenThuongHieu)) {
+                    listLoc.add(sanPhamChiTiet);
+                }
+            }
+            model.setRowCount(0);
+            for (SanPhamChiTiet sp : listLoc) {
+                model.addRow(new Object[]{
+                    sp.getId(),
+                    sp.getTenSp().getTen(),
+                    sp.getChatLieu(),
+                    sp.getKichCo(),
+                    sp.getMauSac(),
+                    sp.getThuongHieu(),
+                    sp.getSoLuongTon(),
+                    sp.getGiaBan(),
+                    sp.getNhaSx()});
+            }
+            if (listLoc.isEmpty()) {
+                model.setRowCount(0);
             }
         }
-        model.setRowCount(0);
-        for (SanPhamChiTiet sp : listLoc) {
-            model.addRow(new Object[]{
-                sp.getId(),
-                sp.getTenSp().getTen(),
-                sp.getChatLieu(),
-                sp.getKichCo(),
-                sp.getMauSac(),
-                sp.getThuongHieu(),
-                sp.getSoLuongTon(),
-                sp.getGiaBan(),});
-        }
-        if(listLoc.isEmpty()){
-            model.setRowCount(0);
-        }
-        }
-        
+
     }//GEN-LAST:event_cbo_filterThuongHieu1ItemStateChanged
 
     private void cbo_filterThuongHieu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbo_filterThuongHieu1MouseClicked
@@ -1341,11 +1347,12 @@ public class BanHang extends javax.swing.JPanel {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa hết giỏ hàng không?");
         if (confirm == JOptionPane.YES_OPTION) {
             boolean check = false;
-            int idHD = Integer.valueOf(hoadonService.getAllHDChuaTT().get(tbl_hoadon1.getSelectedRow()).getId());
+            int idHD = 0;
             if (tbl_hoadon1.getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn");
             } else {
                 try {
+                    idHD = Integer.valueOf(hoadonService.getAllHDChuaTT().get(tbl_hoadon1.getSelectedRow()).getId());
                     for (int i = 0; i < hoaDonCTService.getAllHDCTByIdHD(idHD).size(); i++) {
                         for (int z = 0; z < chiTietSpService.getAll().size(); z++) {
                             if (hoaDonCTService.getAllHDCTByIdHD(idHD).get(i).getHaoDon().getId().equals(idHD)) {

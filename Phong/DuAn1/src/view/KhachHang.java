@@ -175,17 +175,18 @@ public class KhachHang extends javax.swing.JPanel {
             return null;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date ngaySinh;
+        
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             ngaySinh = sdf.parse(ngaySinhkh);
-            if (!String.valueOf(ngaySinh).matches("\\d{2}/\\d{2}/\\d{4}")) {
+            if (!ngaySinhkh.matches("\\d{2}/\\d{2}/\\d{4}")) {
         JOptionPane.showMessageDialog(this,"Năm sinh phải có 4 số");
         return null;
             }
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy.");
-            txtNgaySinh.requestFocus();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ngày sinh chưa đúng định dạng dd/MM/yyyy !");
             return null;
         }
         
@@ -210,8 +211,8 @@ public class KhachHang extends javax.swing.JPanel {
         boolean gt = rdoNam.isSelected();
 
         boolean checkEmail = true;
-        for (int z = 0; z < khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).size(); z++) {
-            if (Email.equals(khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).get(z).getEmail())) {
+        for (int z = 0; z < khachHangService.getAll().size(); z++) {
+            if (Email.equals(khachHangService.getAll().get(z).getEmail())) {
                 checkEmail = false;
                 break;
             }
@@ -244,25 +245,23 @@ public class KhachHang extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để cập nhật.");
             return null;
         }
-
         model.KhachHang kh = new model.KhachHang();
         String tenKh = txtTen1.getText().trim();
         String ngaySinhkh = txtNgaySinh.getText();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date ngaySinh;
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             ngaySinh = sdf.parse(ngaySinhkh);
-            if (!String.valueOf(ngaySinh).matches("\\d{2}/\\d{2}/\\d{4}")) {
+            if (!ngaySinhkh.matches("\\d{2}/\\d{2}/\\d{4}")) {
         JOptionPane.showMessageDialog(this,"Năm sinh phải có 4 số");
         return null;
             }
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ngày sinh không đúng định dạng dd/MM/yyyy !");
             return null;
         }
 
         boolean gt = rdoNam.isSelected();
-
         String Sdt = txtSdt.getText();
         String Email = txtEmail.getText();
 
@@ -293,7 +292,10 @@ public class KhachHang extends javax.swing.JPanel {
         kh.setGioitinh(gt);
         kh.setSdt(Sdt);
         kh.setEmail(Email);
-
+        if(Integer.valueOf(id) == 1){
+            JOptionPane.showMessageDialog(this, "Không thể sửa người này");
+            return null;
+        }
         khachHangService.update(kh, Integer.valueOf(id));
         if (checkValidateKhachHang()) {
             JOptionPane.showMessageDialog(this, "Cập nhật thông tin khách hàng thành công");

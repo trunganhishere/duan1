@@ -92,16 +92,16 @@ public class khachhangdialog extends javax.swing.JFrame {
     }
 
     model.KhachHang kh = new model.KhachHang();
-    boolean gt = rdoNam.isSelected();
-    
-    boolean checkEmail = true;
-        for(int z = 0 ; z < khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).size(); z ++){
-                if(Email.equals(khachHangService.getAllEmailUpdate(khachHangService.getAll().get(row).getEmail()).get(z).getEmail())){
-                    checkEmail = false;
-                    break;
-                }
+        boolean gt = rdoNam.isSelected();
+
+        boolean checkEmail = true;
+        for (int z = 0; z < khachHangService.getAll().size(); z++) {
+            if (Email.equals(khachHangService.getAll().get(z).getEmail())) {
+                checkEmail = false;
+                break;
+            }
         }
-        if(!checkEmail){
+        if (!checkEmail) {
             JOptionPane.showMessageDialog(this, "Email đã tồn tại");
             return null;
         }

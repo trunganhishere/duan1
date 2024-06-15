@@ -12,12 +12,15 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import repository.DangNhapService;
+import repository.TaiKhoanService;
 
 
 
 public class ViewQuanLy extends javax.swing.JFrame {
 
     private JPanel childPanel;
+    DangNhapService dnsv = new DangNhapService();
 
     /**
      * Creates new form mainView
@@ -37,7 +40,6 @@ public class ViewQuanLy extends javax.swing.JFrame {
             btn11.setBackground(new Color(204,255,255));
         }
         
-        ////////////////////////////////////////////////////////////////////////
         new Timer(1000, new ActionListener() {
             SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss a");
 
@@ -46,9 +48,17 @@ public class ViewQuanLy extends javax.swing.JFrame {
                 lblDongHo.setText(format.format(new Date()));
             }
         }).start();
-        ///////////////////////////////////////////////////////////////////////
+        
+        showName();
     }
 
+    
+    private void showName(){
+        String name = dnsv.login(dnsv.getUsername(), dnsv.getPassword()).getTen();
+        String chucVu = dnsv.login(dnsv.getUsername(), dnsv.getPassword()).getIdCV() == 1 ? "Quản lý" : "Nhân viên";
+        lblName.setText(name);
+        lblChucVu.setText(chucVu);
+    }
     
     private void setpanel(JPanel panel) {
         childPanel = panel;
@@ -89,6 +99,10 @@ public class ViewQuanLy extends javax.swing.JFrame {
         btnNhanVien = new javax.swing.JButton();
         lblDongHo = new javax.swing.JLabel();
         btnBanHang = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblChucVu = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -248,6 +262,18 @@ public class ViewQuanLy extends javax.swing.JFrame {
         });
         jPanel2.add(btnBanHang);
         btnBanHang.setBounds(0, 80, 140, 50);
+
+        jLabel2.setText("Chức vụ:");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(10, 610, 60, 21);
+        jPanel2.add(lblName);
+        lblName.setBounds(70, 580, 80, 21);
+
+        jLabel4.setText("Xin chào:");
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(10, 580, 60, 21);
+        jPanel2.add(lblChucVu);
+        lblChucVu.setBounds(70, 610, 80, 21);
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 720));
 
@@ -417,11 +443,15 @@ public class ViewQuanLy extends javax.swing.JFrame {
     private javax.swing.JButton btnThongKe;
     private javax.swing.JButton btnVoucher;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblDongHo;
+    private javax.swing.JLabel lblName;
     private javax.swing.JPanel pnmain;
     // End of variables declaration//GEN-END:variables
 }
